@@ -11,6 +11,38 @@ public class Cliente {
     private List<Serie> listaJaVistas = new LinkedList<>();
 
 
+    public Cliente(String nomeDeUsuario, String senha, List<Serie> listaParaVer, List<Serie> listajaVistas) {
+        this.nomeDeUsuario = nomeDeUsuario;
+        this.senha = senha;
+        this.listaParaVer = listaParaVer;
+        this.listaJaVistas = listajaVistas;
+    }
+
+    public void adicionarNaLista(Serie serie) {
+        listaParaVer.add(serie);
+    }
+
+    public void retirarDaLista(Serie serie) {
+        listaParaVer.remove(serie);
+    }
+
+    public List<Serie> filtrarPorGenero(String genero) {
+
+        List<Serie> listaMesmoGen = new LinkedList<Serie>();
+        for (int i = 0; i < listaParaVer.size(); i++) {
+            if (this.listaParaVer.get(i).getGenero().equals(genero)) {
+                listaMesmoGen.add(listaParaVer.get(i));
+            }
+        }
+        for (int i = 0; i < listaJaVistas.size(); i++) {
+            if (this.listaJaVistas.get(i).getGenero().equals(genero)) {
+                listaMesmoGen.add(listaJaVistas.get(i));
+            }
+        }
+
+        return listaMesmoGen;
+    }
+
     //diferenciar por tostring exemplo
 
     public List<Serie> filtrarPorIdioma (String idioma){
