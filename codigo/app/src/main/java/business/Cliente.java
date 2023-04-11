@@ -86,18 +86,24 @@ public class Cliente {
     }
 
     public void registrarAudiencia(Serie serie) {
-        if(listaJaVistas.size()==0){
+        if (listaJaVistas.size() == 0) {
             serie.registrarAudiencia();
             listaJaVistas.add(serie);
-        }else{
+            for (int j = 0; j < listaParaVer.size(); j++) {
+
+                if ((listaParaVer.get(0).equals(serie))) {
+                    listaParaVer.remove(listaParaVer.get(0));
+                }
+            }
+        } else {
             for (int i = 0; i < listaJaVistas.size(); i++) {
 
                 if (!(listaJaVistas.get(i).equals(serie))) {
                     serie.registrarAudiencia();
                     listaJaVistas.add(serie);
-    
+
                     for (int j = 0; j < listaParaVer.size(); j++) {
-    
+
                         if ((listaParaVer.get(i).equals(serie))) {
                             listaParaVer.remove(listaParaVer.get(i));
                         }
@@ -105,6 +111,5 @@ public class Cliente {
                 }
             }
         }
-
     }
 }
