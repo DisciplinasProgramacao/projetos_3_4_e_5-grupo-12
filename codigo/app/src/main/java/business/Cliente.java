@@ -4,18 +4,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Cliente {
-    
+
     private String nomeDeUsuario;
     private String senha;
     private List<Serie> listaParaVer = new LinkedList<>();
     private List<Serie> listaJaVistas = new LinkedList<>();
 
-
-    public Cliente(String nomeDeUsuario, String senha, List<Serie> listaParaVer, List<Serie> listajaVistas) {
+    public Cliente(String nomeDeUsuario, String senha) {
         this.nomeDeUsuario = nomeDeUsuario;
         this.senha = senha;
-        this.listaParaVer = listaParaVer;
-        this.listaJaVistas = listajaVistas;
     }
 
     public void adicionarNaLista(Serie serie) {
@@ -43,20 +40,20 @@ public class Cliente {
         return listaMesmoGen;
     }
 
-    //diferenciar por tostring exemplo
+    // diferenciar por tostring exemplo
 
-    public List<Serie> filtrarPorIdioma (String idioma){
+    public List<Serie> filtrarPorIdioma(String idioma) {
 
         List<Serie> listaFiltrada = new LinkedList<>();
 
-        for(int i=0; i< listaParaVer.size(); i++){
-            if(listaParaVer.get(i).getIdioma().equals(idioma)){
+        for (int i = 0; i < listaParaVer.size(); i++) {
+            if (listaParaVer.get(i).getIdioma().equals(idioma)) {
                 listaFiltrada.add(listaParaVer.get(i));
             }
         }
 
-        for(int i=0; i< listaJaVistas.size(); i++){
-            if(listaJaVistas.get(i).getIdioma().equals(idioma)){
+        for (int i = 0; i < listaJaVistas.size(); i++) {
+            if (listaJaVistas.get(i).getIdioma().equals(idioma)) {
                 listaFiltrada.add(listaJaVistas.get(i));
             }
         }
@@ -64,18 +61,18 @@ public class Cliente {
         return listaFiltrada;
     }
 
-    public List<Serie> filtrarPorQtdEpisodios (int quantEpisodios){
+    public List<Serie> filtrarPorQtdEpisodios(int quantEpisodios) {
 
         List<Serie> listaFiltrada = new LinkedList<>();
 
-        for(int i=0; i< listaParaVer.size(); i++){
-            if(listaParaVer.get(i).getQuantidadeEpisodios() == quantEpisodios){
+        for (int i = 0; i < listaParaVer.size(); i++) {
+            if (listaParaVer.get(i).getQuantidadeEpisodios() == quantEpisodios) {
                 listaFiltrada.add(listaParaVer.get(i));
             }
         }
 
-        for(int i=0; i< listaJaVistas.size(); i++){
-            if(listaJaVistas.get(i).getQuantidadeEpisodios() == quantEpisodios){
+        for (int i = 0; i < listaJaVistas.size(); i++) {
+            if (listaJaVistas.get(i).getQuantidadeEpisodios() == quantEpisodios) {
                 listaFiltrada.add(listaJaVistas.get(i));
             }
         }
@@ -83,18 +80,17 @@ public class Cliente {
         return listaFiltrada;
     }
 
-    public void registrarAudiencia(Serie serie){
+    public void registrarAudiencia(Serie serie) {
 
-        
-        for(int i =0; i < listaJaVistas.size(); i++){
+        for (int i = 0; i < listaJaVistas.size(); i++) {
 
-            if(!(listaJaVistas.get(i).equals(serie))){
+            if (!(listaJaVistas.get(i).equals(serie))) {
                 serie.registrarAudiencia();
                 listaJaVistas.add(serie);
 
-                for(int j=0; j< listaParaVer.size(); j++){
-            
-                    if((listaParaVer.get(i).equals(serie))){
+                for (int j = 0; j < listaParaVer.size(); j++) {
+
+                    if ((listaParaVer.get(i).equals(serie))) {
                         listaParaVer.remove(listaParaVer.get(i));
                     }
                 }

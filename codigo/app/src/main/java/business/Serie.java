@@ -1,19 +1,19 @@
 package business;
 
 public class Serie {
-    
+
     private String nome;
     private String genero;
     private String idioma;
     private int quantidadeEpisodios;
     private int audiencia = 0;
 
-    static final String[] generos = new String[] {"comedia", "terror", "romance"};
+    static final String[] generos = new String[] { "comedia", "terror", "romance" };
 
     public Serie(String genero, String nome, String idioma, int quantidadeEpisodios) {
-        
+
         boolean generoValido = false;
-        for (int i=0; i<generos.length; i++) {
+        for (int i = 0; i < generos.length; i++) {
             if (genero.equals(generos[i])) {
                 generoValido = true;
             }
@@ -24,7 +24,7 @@ public class Serie {
         } else {
             this.genero = "Sem genero";
         }
-        
+
         this.nome = nome;
         this.idioma = idioma;
 
@@ -33,7 +33,7 @@ public class Serie {
         } else {
             this.quantidadeEpisodios = 1;
         }
-    
+
     }
 
     public String getGenero() {
@@ -79,17 +79,15 @@ public class Serie {
     @Override
     public String toString() {
         return "{" +
-            " genero='" + getGenero() + "'" +
-            ", idioma='" + getIdioma() + "'" +
-            ", quantidadeEpisodios='" + getQuantidadeEpisodios() + "'" +
-            ", audiencia='" + getAudiencia() + "'" +
-            "}";
+                " genero='" + getGenero() + "'" +
+                ", idioma='" + getIdioma() + "'" +
+                ", quantidadeEpisodios='" + getQuantidadeEpisodios() + "'" +
+                ", audiencia='" + getAudiencia() + "'" +
+                "}";
     }
-   
-     
+
     public void registrarAudiencia() {
         this.audiencia++;
     }
-
 
 }
