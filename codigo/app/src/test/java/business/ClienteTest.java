@@ -1,11 +1,14 @@
 package business;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class ClienteTeste {
+
+class ClienteTest {
 Cliente c1;
 Cliente c2;
 Serie NanaABanana;
@@ -23,22 +26,22 @@ Serie PapaLeguas;
 
     @Test
     void adicionarNaListaTest() {
-        c1.adiconarNaLista(NanaABanana);
-        assertTrue(c1.find(NanaABanana));
+        c1.adicionarNaLista(NanaABanana);
+        assertTrue(c1.getListaParaVer().contains(NanaABanana));
     }
     
     @Test
     void retirarDaListaTest() {
-        c1.adiconarNaLista(NanaABanana);
+        c1.adicionarNaLista(NanaABanana);
         c1.retirarDaLista(NanaABanana);
-        assertFalse(c1.find(NanaABanana));
+        assertFalse(c1.getListaParaVer().contains(NanaABanana));
     }
 
     
     @Test
     void filtrarPorGeneroTest() {
         
-        c1.adiconarNaLista(NanaABanana);
+        c1.adicionarNaLista(NanaABanana);
         c1.adicionarNaLista(Polyforme);
         c1.adicionarNaLista(PapaLeguas);
         assertEquals(2,c1.filtrarPorGenero("comedia").size());
@@ -46,7 +49,7 @@ Serie PapaLeguas;
     
     @Test
     void filtrarPorIdiomaTest() {
-        c1.adiconarNaLista(NanaABanana);
+        c1.adicionarNaLista(NanaABanana);
         c1.adicionarNaLista(Polyforme);
         c1.adicionarNaLista(PapaLeguas);
         assertEquals(2,c1.filtrarPorIdioma("portugues").size());
@@ -54,10 +57,10 @@ Serie PapaLeguas;
     
     @Test
     void filtrarPorQntEpisodiosTest() {
-        c1.adiconarNaLista(NanaABanana);
+        c1.adicionarNaLista(NanaABanana);
         c1.adicionarNaLista(Polyforme);
         c1.adicionarNaLista(PapaLeguas);
-        assertEquals(1,c1.filtrarPorQntEpisodios(8).size());
+        assertEquals(1,c1.filtrarPorQtdEpisodios(8).size());
     }
     
     @Test

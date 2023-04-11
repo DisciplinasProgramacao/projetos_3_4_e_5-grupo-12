@@ -15,6 +15,11 @@ public class Cliente {
         this.senha = senha;
     }
 
+    public List<Serie> getListaParaVer() {
+        return this.listaParaVer;
+    }
+
+
     public void adicionarNaLista(Serie serie) {
         listaParaVer.add(serie);
     }
@@ -81,17 +86,21 @@ public class Cliente {
     }
 
     public void registrarAudiencia(Serie serie) {
+        if(listaJaVistas.size()==0){
+            serie.registrarAudiencia();
+            listaJaVistas.add(serie);
+        }else{
+            for (int i = 0; i < listaJaVistas.size(); i++) {
 
-        for (int i = 0; i < listaJaVistas.size(); i++) {
-
-            if (!(listaJaVistas.get(i).equals(serie))) {
-                serie.registrarAudiencia();
-                listaJaVistas.add(serie);
-
-                for (int j = 0; j < listaParaVer.size(); j++) {
-
-                    if ((listaParaVer.get(i).equals(serie))) {
-                        listaParaVer.remove(listaParaVer.get(i));
+                if (!(listaJaVistas.get(i).equals(serie))) {
+                    serie.registrarAudiencia();
+                    listaJaVistas.add(serie);
+    
+                    for (int j = 0; j < listaParaVer.size(); j++) {
+    
+                        if ((listaParaVer.get(i).equals(serie))) {
+                            listaParaVer.remove(listaParaVer.get(i));
+                        }
                     }
                 }
             }
