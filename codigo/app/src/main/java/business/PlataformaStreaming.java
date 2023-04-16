@@ -50,8 +50,16 @@ public class PlataformaStreaming {
         series.add(serie);
     }
 
+    public List<Serie> filtarPorGenero(String genero){
+        return clienteAtual.filtrarPorGenero(genero);
+    }
+
     public List<Serie> filtrarPorQtdEpisodios(int quantEpisodios) {
         return clienteAtual.filtrarPorQtdEpisodios(quantEpisodios);
+    }
+
+    public void registrarAudiencia(Serie serie){
+        clienteAtual.registrarAudiencia(serie);
     }
 
 }
