@@ -11,23 +11,60 @@ public class Cliente {
     private List<Serie> listaJaVistas = new LinkedList<>();
 
     public Cliente(String nomeDeUsuario, String senha) {
-        this.nomeDeUsuario = nomeDeUsuario;
-        this.senha = senha;
+        setNomeDeUsuario(nomeDeUsuario);
+        setSenha(senha);
+        this.nomeDeUsuario = getNomeDeUsuario();
+        this.senha = getSenha();
+    }
+
+    public String getNomeDeUsuario() {
+        return nomeDeUsuario;
+    }
+
+    public void setNomeDeUsuario(String nomeDeUsuario) {
+        if (nomeDeUsuario != "") {
+            this.nomeDeUsuario = nomeDeUsuario;
+        }
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        if (senha != "") {
+            this.senha = senha;
+        }
     }
 
     public List<Serie> getListaParaVer() {
         return this.listaParaVer;
     }
 
-
+    /**
+     * Adiciona uma série na listaParaVer
+     * 
+     * @param serie Serie que se deseja adicionar na lista
+     */
     public void adicionarNaLista(Serie serie) {
         listaParaVer.add(serie);
     }
 
+    /**
+     * Remove uma série da listaParaVer
+     * 
+     * @param serie Serie que se deseja remover da lista
+     */
     public void retirarDaLista(Serie serie) {
         listaParaVer.remove(serie);
     }
 
+    /**
+     * Filtra a listaParaVer e a listaJaVista por gênero
+     * 
+     * @param genero Filtro que será utilizado no método
+     * @return Uma lista com o resultado do filtro realizado
+     */
     public List<Serie> filtrarPorGenero(String genero) {
 
         List<Serie> listaMesmoGen = new LinkedList<Serie>();
@@ -45,8 +82,12 @@ public class Cliente {
         return listaMesmoGen;
     }
 
-    // diferenciar por tostring exemplo
-
+    /**
+     * Filtra a listaParaVer e a listaJaVista por idioma
+     * 
+     * @param idioma Filtro que será utilizado no método
+     * @return Uma lista com o resultado do filtro realizado
+     */
     public List<Serie> filtrarPorIdioma(String idioma) {
 
         List<Serie> listaFiltrada = new LinkedList<>();
@@ -66,6 +107,12 @@ public class Cliente {
         return listaFiltrada;
     }
 
+    /**
+     * Filtra a listaParaVer e a listaJaVista por quantidade de episódios
+     * 
+     * @param quantEpisodios Filtro que será utilizado no método
+     * @return Uma lista com o resultado do filtro realizado
+     */
     public List<Serie> filtrarPorQtdEpisodios(int quantEpisodios) {
 
         List<Serie> listaFiltrada = new LinkedList<>();
@@ -85,6 +132,12 @@ public class Cliente {
         return listaFiltrada;
     }
 
+    /**
+     * Registra que o cliente assistiu uma determinada série se ele não tenha visto
+     * ainda
+     * 
+     * @param serie Série em que o cliente assitiu
+     */
     public void registrarAudiencia(Serie serie) {
         if (listaJaVistas.size() == 0) {
             serie.registrarAudiencia();
