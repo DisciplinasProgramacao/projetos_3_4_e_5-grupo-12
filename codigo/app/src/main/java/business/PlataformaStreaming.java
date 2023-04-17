@@ -67,6 +67,10 @@ public class PlataformaStreaming {
         return clienteAtual.filtrarPorQtdEpisodios(quantEpisodios);
     }
 
+    public List<Serie> filtrarPorIdioma(String idioma) {
+        return clienteAtual.filtrarPorIdioma(idioma);
+    }
+
     public void registrarAudiencia(Serie serie){
         clienteAtual.registrarAudiencia(serie);
     }
