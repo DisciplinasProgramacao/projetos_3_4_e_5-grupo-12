@@ -2,16 +2,18 @@ package business;
 
 public class Serie {
 
+    private static int cont = 1;
+    private int id;
     private String nome;
     private String genero;
     private String idioma;
     private int quantidadeEpisodios;
     private int audiencia = 0;
-
     static final String[] generos = new String[] { "comedia", "terror", "romance" };
 
     public Serie(String genero, String nome, String idioma, int quantidadeEpisodios) {
 
+        this.id = Serie.cont++;
         boolean generoValido = false;
         for (int i = 0; i < generos.length; i++) {
             if (genero.equals(generos[i])) {
@@ -34,6 +36,14 @@ public class Serie {
             this.quantidadeEpisodios = 1;
         }
 
+    }
+
+    public int getId(){
+        return this.id;
+    }
+
+    public int getdata() {
+        return 0;
     }
 
     public String getGenero() {

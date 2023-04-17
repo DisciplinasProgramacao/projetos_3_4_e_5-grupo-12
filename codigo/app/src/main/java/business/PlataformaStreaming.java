@@ -4,13 +4,15 @@ import java.util.*;
 
 public class PlataformaStreaming {
     private String nome;
-    private HashSet<Serie> series;
-    private HashSet<Serie> clientes;
+    private HashMap<Integer,Serie> series = new HashMap<>();
+    private HashMap<Integer,Cliente> clientes = new HashMap<>();
     private Cliente clienteAtual;
+    public static int contCliente = 0;
+    public static int contSerie = 0;
 
-    public PlataformaStreaming(String nome, HashSet<Serie> series, Cliente clienteAtual) {
+
+    public PlataformaStreaming(String nome, Cliente clienteAtual) {
         this.nome = nome;
-        this.series = series;
         this.clienteAtual = clienteAtual;
     }
 
@@ -22,19 +24,19 @@ public class PlataformaStreaming {
         this.nome = nome;
     }
 
-    public HashSet<Serie> getSeries() {
+    public HashMap<Integer,Serie> getSeries() {
         return series;
     }
 
-    public void setSeries(HashSet<Serie> series) {
+    public void setSeries(HashMap<Integer,Serie> series) {
         this.series = series;
     }
 
-    public HashSet<Serie> getClientes() {
+    public HashMap<Integer,Cliente> getClientes() {
         return clientes;
     }
 
-    public void setClientes(HashSet<Serie> clientes) {
+    public void setClientes(HashMap<Integer,Cliente> clientes) {
         this.clientes = clientes;
     }
 
@@ -47,8 +49,15 @@ public class PlataformaStreaming {
     }
 
     public void adicionarSerie(Serie serie) {
-        series.add(serie);
+        series.put(contSerie, serie);
+        contSerie++;
     }
+
+    public void adicionarCliente(Cliente c) {
+        this.clientes.put(contCliente, c);
+        contCliente++;
+    }
+
 
     public List<Serie> filtarPorGenero(String genero){
         return clienteAtual.filtrarPorGenero(genero);
@@ -61,5 +70,10 @@ public class PlataformaStreaming {
     public void registrarAudiencia(Serie serie){
         clienteAtual.registrarAudiencia(serie);
     }
+
+    public String login() {
+        return null;
+    }
+
 
 }
