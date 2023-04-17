@@ -41,6 +41,10 @@ public class Cliente {
         return this.listaParaVer;
     }
 
+    public List<Serie> getListaJaVista() {
+        return this.listaJaVistas;
+    }
+
     /**
      * Adiciona uma série na listaParaVer
      * 
