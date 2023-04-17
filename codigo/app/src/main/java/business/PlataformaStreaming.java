@@ -5,7 +5,7 @@ import java.util.*;
 public class PlataformaStreaming {
     private String nome;
     private HashMap<Integer,Serie> series = new HashMap<>();
-    private HashMap<Integer,Cliente> clientes = new HashMap<>();
+    HashMap<Integer,Cliente> clientes = new HashMap<Integer, Cliente>();
     private Cliente clienteAtual;
     public static int contCliente = 0;
     public static int contSerie = 0;
@@ -71,7 +71,9 @@ public class PlataformaStreaming {
         clienteAtual.registrarAudiencia(serie);
     }
 
-    public String login() {
+    public Cliente login(String nomeUsuario, String senha) {
+    
+
         return null;
     }
 
