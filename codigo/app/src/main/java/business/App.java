@@ -1,41 +1,45 @@
 package business;
 
 import java.io.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.StringTokenizer;
 
-/**
- * Hello world!
- */
+
 public final class App {
-    private App() {
+
+    public static void main(String[] args) throws Exception {
+
+
+
+        /* 
+
+            Cliente c = new Cliente("Pedro", "123dfdasfas");
+            Cliente c2 = new Cliente("bb", "123dsasagfas");
+            Cliente c3 = new Cliente("aa", "123aaa");
+            Serie s1 = new Serie("Terror", "Go", "P", 1);
+            Serie s2 = new Serie("Terror", "Goss", "b", 2);
+            Serie s3 = new Serie("Terror", "Gott", "a", 3);
+            PlataformaStreaming pS = new PlataformaStreaming("Netflix", c);
+            pS.adicionarSerie(s1);
+            pS.adicionarSerie(s2);
+            pS.adicionarSerie(s3);
+            pS.adicionarCliente(c);
+            pS.adicionarCliente(c2);
+            pS.adicionarCliente(c3);
+
+            escreveArqEspectadores(pS);
+            escreveArqSeries(pS);
+            escreveArqAudiencia(pS);
+
+        */
+       
+
     }
 
-    /**
-     * Says hello to the world.
-     * 
-     * @param args The arguments of the program.
-     */
-    public static void main(String[] args) {
-        Cliente c = new Cliente("Pedro", "123dfdasfas");
-        Cliente c2 = new Cliente("bb", "123dsasagfas");
-        Cliente c3 = new Cliente("aa", "123aaa");
-        Serie s1 = new Serie("Terror", "Go", "P", 1);
-        Serie s2 = new Serie("Terror", "Goss", "b", 2);
-        Serie s3 = new Serie("Terror", "Gott", "a", 3);
-        PlataformaStreaming pS = new PlataformaStreaming("Netflix", c);
-        pS.adicionarSerie(s1);
-        pS.adicionarSerie(s2);
-        pS.adicionarSerie(s3);
-        pS.adicionarCliente(c);
-        pS.adicionarCliente(c2);
-        pS.adicionarCliente(c3);
 
-        escreveArqEspectadores(pS);
-        escreveArqSeries(pS);
-        escreveArqAudiencia(pS);
-
-    }
-
-    public static void escreveArqEspectadores(PlataformaStreaming pS) {
+    /*
+        public static void escreveArqEspectadores(PlataformaStreaming pS) {
         String caminho = "Espectadores.csv";
         for (int i = 0; i < pS.getClientes().size(); i++) {
             try {
@@ -98,5 +102,9 @@ public final class App {
             return "Série não encontrada";
         }
     }
+
+    */
+
+    
 
 }
