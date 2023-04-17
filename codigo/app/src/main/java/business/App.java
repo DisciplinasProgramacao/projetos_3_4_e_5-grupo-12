@@ -1,6 +1,7 @@
 package business;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -14,7 +15,10 @@ public final class App {
         for (int i=0; i<listaClientes.size(); i++) {
             System.out.println("Nome de usuario: " + listaClientes.get(i).getNomeDeUsuario() +" | Senha: " + listaClientes.get(i).getSenha());
        
+        }
 
+        HashMap<String, Cliente> clientesMap = cadastrarClientesMap(listaClientes);
+        System.out.println(clientesMap.get("AArr25751").getNomeDeUsuario());
 
         /* 
 
@@ -38,13 +42,13 @@ public final class App {
 
         */
        
-
     }
+    
         
-     // Le o arquivo "POO_Espectadores.csv" e retorna uma lista de clientes cadastrados com o nome e a senha definidos no arquivo
-     public static List<Cliente> cadastrarClientes() throws Exception { 
+    // Le o arquivo "POO_Espectadores.csv" e retorna uma lista de clientes cadastrados com o nome e a senha definidos no arquivo
+    public static List<Cliente> cadastrarClientes() throws Exception { 
         List<Cliente> listaClientes = new LinkedList<>();
-        BufferedReader reader = new BufferedReader(new FileReader("POO_Espectadores.csv"));
+        BufferedReader reader = new BufferedReader(new FileReader("espectadoresteste.csv"));
         String linha;
         reader.read();
         
@@ -57,6 +61,16 @@ public final class App {
 
         reader.close();
         return listaClientes;
+    }
+
+    public static HashMap<String, Cliente> cadastrarClientesMap(List<Cliente> clientes) throws Exception {
+        HashMap<String, Cliente> clientesMap = new HashMap<String, Cliente>();
+        for (int i = 0; i<clientes.size(); i++) {
+            clientesMap.put(clientes.get(i).getSenha(), clientes.get(i));  
+        }
+
+        return clientesMap;
+
     }
 
 

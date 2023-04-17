@@ -76,10 +76,9 @@ public class PlataformaStreaming {
     }
 
     public Cliente login(String nomeUsuario, String senha) {
-    
-
         return null;
     }
+    
 
 
 }
