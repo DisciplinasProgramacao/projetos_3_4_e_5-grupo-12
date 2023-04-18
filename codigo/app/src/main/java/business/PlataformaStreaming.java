@@ -7,7 +7,7 @@ import java.util.*;
 public class PlataformaStreaming {
     private String nome;
     private HashMap<Integer,Serie> series = new HashMap<>();
-    HashMap<Integer,Cliente> clientes = new HashMap<Integer, Cliente>();
+    private HashMap<String,Cliente> clientes = new HashMap<String, Cliente>();
     private Cliente clienteAtual;
     public static int contCliente = 0;
     public static int contSerie = 0;
@@ -33,11 +33,11 @@ public class PlataformaStreaming {
         this.series = series;
     }
 
-    public HashMap<Integer,Cliente> getClientes() {
+    public HashMap<String,Cliente> getClientes() {
         return clientes;
     }
 
-    public void setClientes(HashMap<Integer,Cliente> clientes) {
+    public void setClientes(HashMap<String,Cliente> clientes) {
         this.clientes = clientes;
     }
 
@@ -55,7 +55,7 @@ public class PlataformaStreaming {
     }
 
     public void adicionarCliente(Cliente c) {
-        this.clientes.put(contCliente, c);
+        this.clientes.put(c.getNomeDeUsuario(), c);
         contCliente++;
     }
 
@@ -79,8 +79,8 @@ public class PlataformaStreaming {
     public Cliente login(String nomeUsuario, String senha) {
         clienteAtual = clientes.get(nomeUsuario);
         if(!senha.equals(clienteAtual.getSenha())) {
-             this.clienteAtual = null;
-        }
+            this.clienteAtual = null;
+        } 
         return clienteAtual;
     }
 
