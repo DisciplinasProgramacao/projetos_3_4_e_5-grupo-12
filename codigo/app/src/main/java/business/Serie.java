@@ -1,5 +1,5 @@
 package business;
-
+import java.util.Random;
 public class Serie {
 
     private static int cont = 1;
@@ -8,9 +8,10 @@ public class Serie {
     private String nome;
     private String genero;
     private String idioma;
-    private int quantidadeEpisodios;
+    private int quantidadeEpisodios = 1;
     private int audiencia = 0;
     static final String[] generos = new String[] { "comedia", "terror", "romance" };
+    static final String[] idiomas = new String[]{"portugues", "ingles", "espanhol"};
 
     public Serie(String genero, String nome, String idioma, int quantidadeEpisodios) {
 
@@ -40,9 +41,21 @@ public class Serie {
     }
 
     public Serie(int id, String nome, String dataLancamento) {
+        Random random = new Random();
+        int numAleatorio;
+
+        numAleatorio = random.nextInt(2);
+        this.genero = generos[numAleatorio];
+
+        numAleatorio = random.nextInt(2);
+        this.idioma = idiomas[numAleatorio];
+
+        this.quantidadeEpisodios = random.nextInt(99) + 1;
+
         this.id = id;
         this.nome = nome;
         this.dataLancamento = dataLancamento;
+
 
     }
 
