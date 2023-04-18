@@ -77,8 +77,12 @@ public class PlataformaStreaming {
     }
 
     public Cliente login(String nomeUsuario, String senha) {
-        return null;
-    }
+        clienteAtual = clientes.get(nomeUsuario);
+        if(!senha.equals(clienteAtual.getSenha())) {
+             this.clienteAtual = null;
+        }
+        return clienteAtual;
+     }
 
     public HashMap<String, Cliente> carregarClientes() throws Exception { 
         HashMap<String, Cliente> mapClientes = new HashMap<String, Cliente>();
