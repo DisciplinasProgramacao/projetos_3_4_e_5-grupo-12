@@ -10,15 +10,11 @@ import java.util.StringTokenizer;
 public final class App {
 
     public static void main(String[] args) throws Exception {
-        List<Cliente> listaClientes = cadastrarClientes();
-        // Printando clientes cadastrados na tela
-        for (int i=0; i<listaClientes.size(); i++) {
-            System.out.println("Nome de usuario: " + listaClientes.get(i).getNomeDeUsuario() +" | Senha: " + listaClientes.get(i).getSenha());
-       
-        }
+        PlataformaStreaming plat = new PlataformaStreaming("Netflix");
+        HashMap<String, Cliente> mapClientes = plat.carregarClientes();
+        System.out.println(mapClientes);
 
-        HashMap<String, Cliente> clientesMap = cadastrarClientesMap(listaClientes);
-        System.out.println(clientesMap.get("AArr25751").getNomeDeUsuario());
+        
 
         /* 
 
@@ -44,36 +40,6 @@ public final class App {
        
     }
     
-        
-    // Le o arquivo "POO_Espectadores.csv" e retorna uma lista de clientes cadastrados com o nome e a senha definidos no arquivo
-    public static List<Cliente> cadastrarClientes() throws Exception { 
-        List<Cliente> listaClientes = new LinkedList<>();
-        BufferedReader reader = new BufferedReader(new FileReader("espectadoresteste.csv"));
-        String linha;
-        reader.read();
-        
-        while ((linha = reader.readLine()) != null) {
-            StringTokenizer str = new StringTokenizer(linha, ";");
-            str.nextToken();
-            Cliente cliente = new Cliente(str.nextToken(), str.nextToken());
-            listaClientes.add(cliente);   
-        }
-
-        reader.close();
-        return listaClientes;
-    }
-
-    public static HashMap<String, Cliente> cadastrarClientesMap(List<Cliente> clientes) throws Exception {
-        HashMap<String, Cliente> clientesMap = new HashMap<String, Cliente>();
-        for (int i = 0; i<clientes.size(); i++) {
-            clientesMap.put(clientes.get(i).getSenha(), clientes.get(i));  
-        }
-
-        return clientesMap;
-
-    }
-
-
     /*
         public static void escreveArqEspectadores(PlataformaStreaming pS) {
         String caminho = "Espectadores.csv";

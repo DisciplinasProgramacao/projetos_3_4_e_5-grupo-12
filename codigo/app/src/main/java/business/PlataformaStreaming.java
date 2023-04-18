@@ -1,5 +1,7 @@
 package business;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.*;
 
 public class PlataformaStreaming {
@@ -11,9 +13,8 @@ public class PlataformaStreaming {
     public static int contSerie = 0;
 
 
-    public PlataformaStreaming(String nome, Cliente clienteAtual) {
+    public PlataformaStreaming(String nome) {
         this.nome = nome;
-        this.clienteAtual = clienteAtual;
     }
 
     public String getNome() {
@@ -77,6 +78,22 @@ public class PlataformaStreaming {
 
     public Cliente login(String nomeUsuario, String senha) {
         return null;
+    }
+
+    public HashMap<String, Cliente> carregarClientes() throws Exception { 
+        HashMap<String, Cliente> mapClientes = new HashMap<String, Cliente>();
+        BufferedReader reader = new BufferedReader(new FileReader("espectadoresteste.csv"));
+        String linha;
+        reader.read();
+        
+        while ((linha = reader.readLine()) != null) {
+            StringTokenizer str = new StringTokenizer(linha, ";");
+            str.nextToken();
+            Cliente cliente = new Cliente(str.nextToken(), str.nextToken());
+            mapClientes.put(cliente.getNomeDeUsuario(), cliente) ;
+        }
+        reader.close();
+        return mapClientes;
     }
     
 
