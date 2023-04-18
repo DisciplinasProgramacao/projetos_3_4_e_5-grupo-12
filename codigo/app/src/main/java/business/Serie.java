@@ -4,6 +4,7 @@ public class Serie {
 
     private static int cont = 1;
     private int id;
+    private String dataLancamento;
     private String nome;
     private String genero;
     private String idioma;
@@ -38,6 +39,13 @@ public class Serie {
 
     }
 
+    public Serie(int id, String nome, String dataLancamento) {
+        this.id = id;
+        this.nome = nome;
+        this.dataLancamento = dataLancamento;
+
+    }
+
     public int getId(){
         return this.id;
     }
@@ -60,6 +68,14 @@ public class Serie {
 
     public void setIdioma(String idioma) {
         this.idioma = idioma;
+    }
+
+    public String getDataLancamento() {
+        return this.dataLancamento;
+    }
+
+    public void setDataLancamento(String dataLancamento) {
+        this.dataLancamento = dataLancamento;
     }
 
     public int getQuantidadeEpisodios() {
