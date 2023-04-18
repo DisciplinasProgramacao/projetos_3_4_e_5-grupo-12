@@ -82,7 +82,7 @@ public class PlataformaStreaming {
              this.clienteAtual = null;
         }
         return clienteAtual;
-     }
+    }
 
     public HashMap<String, Cliente> carregarClientes() throws Exception { 
         HashMap<String, Cliente> mapClientes = new HashMap<String, Cliente>();
