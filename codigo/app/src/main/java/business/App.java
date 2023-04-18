@@ -1,10 +1,7 @@
 package business;
 
-import java.io.*;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.StringTokenizer;
+
 
 
 public final class App {
@@ -13,6 +10,9 @@ public final class App {
         PlataformaStreaming plat = new PlataformaStreaming("Netflix");
         HashMap<String, Cliente> mapClientes = plat.carregarClientes();
         System.out.println(mapClientes);
+
+        HashMap<Integer, Serie> mapSeries = plat.carregarSeries();
+        System.out.println(mapSeries);
 
         
 

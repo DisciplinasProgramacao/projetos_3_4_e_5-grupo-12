@@ -95,6 +95,22 @@ public class PlataformaStreaming {
         reader.close();
         return mapClientes;
     }
+
+    public HashMap<Integer, Serie> carregarSeries() throws Exception { 
+        HashMap<Integer, Serie> mapSeries = new HashMap<Integer, Serie>();
+        BufferedReader reader = new BufferedReader(new FileReader("POO_Series.csv"));
+        String linha;
+        reader.read();
+        
+        while ((linha = reader.readLine()) != null) {
+            StringTokenizer str = new StringTokenizer(linha, ";");
+            int id = Integer.parseInt(str.nextToken());
+            Serie serie = new Serie(id,str.nextToken(), str.nextToken());
+            mapSeries.put(serie.getId(), serie) ;
+        }
+        reader.close();
+        return mapSeries;
+    }
     
 
 
