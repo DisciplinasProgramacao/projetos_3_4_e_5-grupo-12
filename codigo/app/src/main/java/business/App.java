@@ -8,11 +8,14 @@ public final class App {
 
     public static void main(String[] args) throws Exception {
         PlataformaStreaming plat = new PlataformaStreaming("Netflix");
-        // HashMap<String, Cliente> mapClientes = plat.carregarClientes();
-        // System.out.println(mapClientes); 
-
+        HashMap<String, Cliente> mapClientes = plat.carregarClientes();
         HashMap<Integer, Serie> mapSeries = plat.carregarSeries();
-        System.out.println(mapSeries);
+
+        plat.setClientes(mapClientes);
+        plat.setSeries(mapSeries);
+        
+        Cliente clienteLogado = plat.login("Ada2", "AArr25751");
+        System.out.println("Logado como: " + clienteLogado);
 
         /* 
 
