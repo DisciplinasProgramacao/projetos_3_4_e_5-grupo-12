@@ -8,7 +8,7 @@ public final class App {
 
     public static void main(String[] args) throws Exception {
         PlataformaStreaming plat = new PlataformaStreaming("Netflix");
-        HashMap<String, Cliente> mapClientes = plat.carregarClientes();
+        // HashMap<String, Cliente> mapClientes = plat.carregarClientes();
         // System.out.println(mapClientes); 
 
         HashMap<Integer, Serie> mapSeries = plat.carregarSeries();

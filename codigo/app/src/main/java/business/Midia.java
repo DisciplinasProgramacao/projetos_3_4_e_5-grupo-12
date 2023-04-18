@@ -1,13 +1,15 @@
 package business;
-
+import java.util.Random;
 public abstract class Midia {
     private static int cont = 1;
     private int id;
     private String nome;
     private String genero;
     private String idioma;
+    private String dataLancamento;
     private int audiencia = 0;
     static final String[] generos = new String[] { "comedia", "terror", "romance" };
+    static final String[] idiomas = new String[] { "portugues", "ingles", "espanhol" };
 
     public Midia(String genero, String nome, String idioma) {
 
@@ -28,6 +30,15 @@ public abstract class Midia {
         this.nome = nome;
         this.idioma = idioma;
 
+    }
+    
+    // Construtor para a criacao de midias durante leitura de dados
+    public Midia(int id, String nome) {
+        Random random = new Random();
+        this.id = id;
+        this.nome = nome;
+        this.genero = generos[random.nextInt(2)];
+        this.idioma = idiomas[random.nextInt(2)];
     }
 
     public int getId(){
@@ -62,6 +73,14 @@ public abstract class Midia {
         this.audiencia = audiencia;
     }
 
+    public String getDataLancamento() {
+        return this.dataLancamento;
+    }
+
+    public void setDataLancamento(String dataLancamento) {
+        this.dataLancamento = dataLancamento;
+    }
+
     public String getNome() {
         return this.nome;
     }
@@ -73,6 +92,7 @@ public abstract class Midia {
     @Override
     public String toString() {
         return "{" +
+                " nome='" + getNome() + "'" +
                 " genero='" + getGenero() + "'" +
                 ", idioma='" + getIdioma() + "'" +
                 ", audiencia='" + getAudiencia() + "'" +
