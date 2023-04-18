@@ -82,7 +82,7 @@ public class PlataformaStreaming {
 
     public HashMap<String, Cliente> carregarClientes() throws Exception { 
         HashMap<String, Cliente> mapClientes = new HashMap<String, Cliente>();
-        BufferedReader reader = new BufferedReader(new FileReader("espectadoresteste.csv"));
+        BufferedReader reader = new BufferedReader(new FileReader("POO_Espectadores.csv"));
         String linha;
         reader.read();
         
