@@ -14,8 +14,6 @@ public final class App {
         HashMap<Integer, Serie> mapSeries = plat.carregarSeries();
         System.out.println(mapSeries);
 
-        
-
         /* 
 
             Cliente c = new Cliente("Pedro", "123dfdasfas");
