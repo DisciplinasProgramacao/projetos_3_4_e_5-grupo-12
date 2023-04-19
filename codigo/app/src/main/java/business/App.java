@@ -69,6 +69,22 @@ public final class App {
         */
        
     }
+
+    // Metodo para testar carregamento de filmes
+    public static void teste() throws Exception {
+
+        PlataformaStreaming p = new PlataformaStreaming("Netflix");
+
+        HashMap<Integer, Filme> mapFilmes = p.carregarFilmes();
+
+        
+        for (Integer name: mapFilmes.keySet()) {
+            String key = name.toString();
+            String value = mapFilmes.get(name).toString();
+            System.out.println(key + " " + value);
+        } 
+        
+    }
     
     /*
         public static void escreveArqEspectadores(PlataformaStreaming pS) {
