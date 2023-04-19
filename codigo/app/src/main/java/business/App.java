@@ -1,6 +1,8 @@
 package business;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 
 
@@ -13,9 +15,36 @@ public final class App {
 
         plat.setClientes(mapClientes);
         plat.setSeries(mapSeries);
-        
+
         Cliente clienteLogado = plat.login("Ada2", "AArr25751");
         System.out.println("Logado como: " + clienteLogado);
+        System.out.println();
+
+        clienteLogado.adicionarSerieVista(mapSeries.get(3459));
+        clienteLogado.adicionarSerieVista(mapSeries.get(3460));
+        clienteLogado.adicionarSerieVista(mapSeries.get(3462));
+        clienteLogado.adicionarSerieVista(mapSeries.get(3465));
+        
+
+        clienteLogado.adicionarNaLista(mapSeries.get(3514));
+        clienteLogado.adicionarNaLista(mapSeries.get(3560));
+        clienteLogado.adicionarNaLista(mapSeries.get(3518));
+        clienteLogado.adicionarNaLista(mapSeries.get(3533));
+
+        System.out.println("Series já vistas: " + clienteLogado.getListaJaVista().toString());
+        System.out.println();
+        System.out.println("Series para ver: " + clienteLogado.getListaParaVer().toString());
+
+        List<Serie> comediaVisto = new LinkedList<>();
+        comediaVisto = clienteLogado.filtrarPorGenero("comedia");
+        System.out.println();
+        System.out.println("Series de comedia vistas: " + comediaVisto);
+
+        List<Serie> portuguesVisto = new LinkedList<>();
+        portuguesVisto = clienteLogado.filtrarPorIdioma("portugues");
+        System.out.println();
+        System.out.println("Series em portugues vistas: " + portuguesVisto);
+
 
         /* 
 
