@@ -97,7 +97,7 @@ public class PlataformaStreaming {
         HashMap<String, Cliente> mapClientes = new HashMap<String, Cliente>();
         BufferedReader reader = new BufferedReader(new FileReader("POO_Espectadores.csv"));
         String linha;
-        reader.read();
+        reader.readLine();
         
         while ((linha = reader.readLine()) != null) {
             StringTokenizer str = new StringTokenizer(linha, ";");
@@ -113,7 +113,7 @@ public class PlataformaStreaming {
         HashMap<Integer, Serie> mapSeries = new HashMap<Integer, Serie>();
         BufferedReader reader = new BufferedReader(new FileReader("POO_Series.csv"));
         String linha;
-        reader.read();
+        reader.readLine();
         
         while ((linha = reader.readLine()) != null) {
             StringTokenizer str = new StringTokenizer(linha.trim(), ";");
