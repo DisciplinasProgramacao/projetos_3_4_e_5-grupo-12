@@ -63,6 +63,15 @@ public class Cliente {
         listaParaVer.remove(serie);
     }
 
+    public void adicionarSerieVista(Serie serie) {
+        listaJaVistas.add(serie);
+        serie.registrarAudiencia();
+    }
+
+    public void retirarSerieVista(Serie serie) {
+        listaJaVistas.remove(serie);
+    }
+
     /**
      * Filtra a listaParaVer e a listaJaVista por gênero
      * 
