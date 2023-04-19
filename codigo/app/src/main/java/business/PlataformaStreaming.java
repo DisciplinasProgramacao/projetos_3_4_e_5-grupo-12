@@ -8,6 +8,7 @@ public class PlataformaStreaming {
     private String nome;
     private HashMap<Integer,Serie> series = new HashMap<>();
     private HashMap<String,Cliente> clientes = new HashMap<String, Cliente>();
+    private HashMap<Integer,Filme> filmes = new HashMap<>();
     private Cliente clienteAtual;
     public static int contCliente = 0;
     public static int contSerie = 0;
@@ -31,6 +32,14 @@ public class PlataformaStreaming {
 
     public void setSeries(HashMap<Integer,Serie> series) {
         this.series = series;
+    }
+
+    public void setFilmes(HashMap<Integer, Filme> filmes) {
+        this.filmes = filmes;
+    }
+
+    public HashMap<Integer, Filme> getFilmes() {
+        return filmes;
     }
 
     public HashMap<String,Cliente> getClientes() {
@@ -107,10 +116,10 @@ public class PlataformaStreaming {
         reader.read();
         
         while ((linha = reader.readLine()) != null) {
-            StringTokenizer str = new StringTokenizer(linha, ";");
+            StringTokenizer str = new StringTokenizer(linha.trim(), ";");
             int id = Integer.parseInt(str.nextToken());
             Serie serie = new Serie(id,str.nextToken(), str.nextToken());
-            mapSeries.put(serie.getId(), serie) ;
+            mapSeries.put(serie.getId(), serie);
         }
         reader.close();
         return mapSeries;
@@ -120,18 +129,19 @@ public class PlataformaStreaming {
         HashMap<Integer, Filme> mapFilmes = new HashMap<Integer, Filme>();
         BufferedReader reader = new BufferedReader(new FileReader("POO_Filmes.csv"));
         String linha;
-        reader.read();
+
+        reader.readLine();
         
         while ((linha = reader.readLine()) != null) {
+
             StringTokenizer str = new StringTokenizer(linha, ";");
             int id = Integer.parseInt(str.nextToken());
             Filme filme = new Filme(id,str.nextToken(), str.nextToken(), Integer.parseInt(str.nextToken()));
-            mapFilmes.put(filme.getId(), filme) ;
+            mapFilmes.put(filme.getId(), filme);
         }
+
         reader.close();
         return mapFilmes;
     }
-    
-
 
 }
