@@ -10,8 +10,8 @@ public class PlataformaStreaming {
     private HashMap<String,Cliente> clientes = new HashMap<String, Cliente>();
     private HashMap<Integer,Filme> filmes = new HashMap<>();
     private Cliente clienteAtual;
-    public static int contCliente = 0;
-    public static int contSerie = 0;
+    private static int contCliente = 0;
+    private static int contSerie = 0;
 
 
     public PlataformaStreaming(String nome) {
