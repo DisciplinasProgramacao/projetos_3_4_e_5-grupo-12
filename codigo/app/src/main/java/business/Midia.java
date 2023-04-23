@@ -8,8 +8,8 @@ public abstract class Midia {
     private String idioma;
     private String dataLancamento;
     private int audiencia = 0;
-    static final String[] generos = new String[] { "comedia", "terror", "romance" };
-    static final String[] idiomas = new String[] { "portugues", "ingles", "espanhol" };
+    private static final String[] generos = new String[] { "comedia", "terror", "romance" };
+    private static final String[] idiomas = new String[] { "portugues", "ingles", "espanhol" };
 
     public Midia(String genero, String nome, String idioma) {
 
