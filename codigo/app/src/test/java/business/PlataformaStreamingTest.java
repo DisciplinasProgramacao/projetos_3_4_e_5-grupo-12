@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 public class PlataformaStreamingTest {
     Cliente c1;
     Cliente c2;
+    Cliente c3;
     Serie NanaABanana;
     Serie Polyforme;
     Serie PapaLeguas;
@@ -17,6 +18,7 @@ public class PlataformaStreamingTest {
     void setUp() throws Exception {
         c1 = new Cliente("George","123pogchamp456");
         c2 = new Cliente("paulo","MalFeitoFeito");
+        c3 = new Cliente("João","orei123");
         NanaABanana = new Serie("comedia","Nana a Banana", "portugues",10);
         Polyforme = new Serie("terror","Polyforme", "portugues",8);
         PapaLeguas = new Serie("comedia","Papaleguas", "alemao",12);
@@ -32,7 +34,14 @@ public class PlataformaStreamingTest {
         assertEquals(3,p.getSeries().size());
     }
 
-
+    @Test
+    void testAdicionarCliente() {
+        p.adicionarCliente(c1);
+        p.adicionarCliente(c2);
+        p.adicionarCliente(c3);
+        assertEquals(3,p.getClientes().size());
+    }
+     
     @Test
     void testFiltrarPorGenero() {
         p.adicionarCliente(c1);
@@ -65,5 +74,14 @@ public class PlataformaStreamingTest {
         p.login("George", "123pogchamp456");
         assertEquals(2,p.filtrarPorIdioma("portugues").size());
     }
-    
+
+    @Test
+    void testRegistrarAudiencia() {
+        p.adicionarCliente(c1);
+        p.adicionarSerie(NanaABanana);
+        p.login("George", "123pogchamp456");
+        p.registrarAudiencia(NanaABanana);
+        assertEquals(1,p.getClienteAtual().getListaJaVista().size());
+    }
+
 }
