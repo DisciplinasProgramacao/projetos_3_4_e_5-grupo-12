@@ -144,4 +144,8 @@ public class PlataformaStreaming {
         return mapFilmes;
     }
 
+    public void cadastrarCliente() {
+
+    }
+
 }
