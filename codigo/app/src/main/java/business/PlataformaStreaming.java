@@ -145,7 +145,7 @@ public class PlataformaStreaming {
     }
 
     public void cadastrarCliente() {
-
+        //poladoaohtbasydbb
     }
 
 }
