@@ -1,7 +1,6 @@
 package business;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +26,8 @@ Serie PapaLeguas;
     @Test
     void adicionarNaListaTest() {
         c1.adicionarNaLista(NanaABanana);
-        assertTrue(c1.getListaParaVer().contains(NanaABanana));
+        c1.adicionarNaLista(NanaABanana);
+        assertEquals(1,c1.getListaParaVer().size());
     }
     
     @Test
