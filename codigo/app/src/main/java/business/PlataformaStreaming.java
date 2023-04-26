@@ -6,11 +6,10 @@ import java.util.*;
 
 public class PlataformaStreaming {
     private String nome;
-    private HashMap<Integer,Serie> series = new HashMap<>();
-    private HashMap<String,Cliente> clientes = new HashMap<String, Cliente>();
-    private HashMap<Integer,Filme> filmes = new HashMap<>();
+    private HashMap<Integer, Serie> series = new HashMap<>();
+    private HashMap<String, Cliente> clientes = new HashMap<String, Cliente>();
+    private HashMap<Integer, Filme> filmes = new HashMap<>();
     private Cliente clienteAtual;
-
 
     public PlataformaStreaming(String nome) {
         this.nome = nome;
@@ -24,11 +23,11 @@ public class PlataformaStreaming {
         this.nome = nome;
     }
 
-    public HashMap<Integer,Serie> getSeries() {
+    public HashMap<Integer, Serie> getSeries() {
         return series;
     }
 
-    public void setSeries(HashMap<Integer,Serie> series) {
+    public void setSeries(HashMap<Integer, Serie> series) {
         this.series = series;
     }
 
@@ -40,11 +39,11 @@ public class PlataformaStreaming {
         return filmes;
     }
 
-    public HashMap<String,Cliente> getClientes() {
+    public HashMap<String, Cliente> getClientes() {
         return clientes;
     }
 
-    public void setClientes(HashMap<String,Cliente> clientes) {
+    public void setClientes(HashMap<String, Cliente> clientes) {
         this.clientes = clientes;
     }
 
@@ -58,19 +57,19 @@ public class PlataformaStreaming {
 
     public void adicionarSerie(Serie serie) {
         series.put(serie.getId(), serie);
-        
+
     }
+
     public void adicionarFilme(Filme filme) {
         filmes.put(filme.getId(), filme);
-        
+
     }
 
     public void adicionarCliente(Cliente c) {
         this.clientes.put(c.getNomeDeUsuario(), c);
     }
 
-
-    public List<Serie> filtarPorGenero(String genero){
+    public List<Serie> filtarPorGenero(String genero) {
         return clienteAtual.filtrarPorGenero(genero);
     }
 
@@ -82,62 +81,62 @@ public class PlataformaStreaming {
         return clienteAtual.filtrarPorIdioma(idioma);
     }
 
-    public void registrarAudiencia(Serie serie){
+    public void registrarAudiencia(Serie serie) {
         clienteAtual.registrarAudiencia(serie);
     }
 
     public Cliente login(String nomeUsuario, String senha) {
         clienteAtual = clientes.get(nomeUsuario);
-        if(!senha.equals(clienteAtual.getSenha())) {
+        if (!senha.equals(clienteAtual.getSenha())) {
             this.clienteAtual = null;
-        } 
+        }
         return clienteAtual;
     }
 
-    public HashMap<String, Cliente> carregarClientes() throws Exception { 
+    public HashMap<String, Cliente> carregarClientes() throws Exception {
         HashMap<String, Cliente> mapClientes = new HashMap<String, Cliente>();
         BufferedReader reader = new BufferedReader(new FileReader("POO_Espectadores.csv"));
         String linha;
         reader.readLine();
-        
+
         while ((linha = reader.readLine()) != null) {
             StringTokenizer str = new StringTokenizer(linha, ";");
             str.nextToken();
             Cliente cliente = new Cliente(str.nextToken(), str.nextToken());
-            mapClientes.put(cliente.getNomeDeUsuario(), cliente) ;
+            mapClientes.put(cliente.getNomeDeUsuario(), cliente);
         }
         reader.close();
         return mapClientes;
     }
 
-    public HashMap<Integer, Serie> carregarSeries() throws Exception { 
+    public HashMap<Integer, Serie> carregarSeries() throws Exception {
         HashMap<Integer, Serie> mapSeries = new HashMap<Integer, Serie>();
         BufferedReader reader = new BufferedReader(new FileReader("POO_Series.csv"));
         String linha;
         reader.readLine();
-        
+
         while ((linha = reader.readLine()) != null) {
             StringTokenizer str = new StringTokenizer(linha.trim(), ";");
             int id = Integer.parseInt(str.nextToken());
-            Serie serie = new Serie(id,str.nextToken(), str.nextToken());
+            Serie serie = new Serie(id, str.nextToken(), str.nextToken());
             mapSeries.put(serie.getId(), serie);
         }
         reader.close();
         return mapSeries;
     }
 
-    public HashMap<Integer, Filme> carregarFilmes() throws Exception { 
+    public HashMap<Integer, Filme> carregarFilmes() throws Exception {
         HashMap<Integer, Filme> mapFilmes = new HashMap<Integer, Filme>();
         BufferedReader reader = new BufferedReader(new FileReader("POO_Filmes.csv"));
         String linha;
 
         reader.readLine();
-        
+
         while ((linha = reader.readLine()) != null) {
 
             StringTokenizer str = new StringTokenizer(linha, ";");
             int id = Integer.parseInt(str.nextToken());
-            Filme filme = new Filme(id,str.nextToken(), str.nextToken(), Integer.parseInt(str.nextToken()));
+            Filme filme = new Filme(id, str.nextToken(), str.nextToken(), Integer.parseInt(str.nextToken()));
             mapFilmes.put(filme.getId(), filme);
         }
 

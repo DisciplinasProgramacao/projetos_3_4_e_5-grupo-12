@@ -1,5 +1,7 @@
 package business;
+
 import java.util.Random;
+
 public abstract class Midia {
     private static int cont = 1;
     private int id;
@@ -30,7 +32,7 @@ public abstract class Midia {
         setNome(nome);
         setIdioma(idioma);
     }
-    
+
     // Construtor para a criacao de midias durante leitura de dados
     public Midia(int id, String nome) {
         Random random = new Random();
@@ -41,7 +43,7 @@ public abstract class Midia {
         this.idioma = idiomas[random.nextInt(2)];
     }
 
-    public int getId(){
+    public int getId() {
         return this.id;
     }
 
@@ -62,7 +64,7 @@ public abstract class Midia {
     }
 
     public void setIdioma(String idioma) {
-        if(idioma.length() > 0){
+        if (idioma.length() > 0) {
 
             this.idioma = idioma;
         }
@@ -89,7 +91,7 @@ public abstract class Midia {
     }
 
     public void setNome(String nome) {
-        if(nome.length() > 0){
+        if (nome.length() > 0) {
 
             this.idioma = nome;
         }
