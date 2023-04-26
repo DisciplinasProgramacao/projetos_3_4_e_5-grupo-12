@@ -27,16 +27,16 @@ public abstract class Midia {
             this.genero = "Sem genero";
         }
 
-        this.nome = nome;
-        this.idioma = idioma;
-
+        setNome(nome);
+        setIdioma(idioma);
     }
     
     // Construtor para a criacao de midias durante leitura de dados
     public Midia(int id, String nome) {
         Random random = new Random();
         this.id = id;
-        this.nome = nome;
+        cont = id;
+        setNome(nome);
         this.genero = generos[random.nextInt(2)];
         this.idioma = idiomas[random.nextInt(2)];
     }
@@ -62,7 +62,10 @@ public abstract class Midia {
     }
 
     public void setIdioma(String idioma) {
-        this.idioma = idioma;
+        if(idioma.length() > 0){
+
+            this.idioma = idioma;
+        }
     }
 
     public int getAudiencia() {
@@ -86,7 +89,10 @@ public abstract class Midia {
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        if(nome.length() > 0){
+
+            this.idioma = nome;
+        }
     }
 
     @Override
