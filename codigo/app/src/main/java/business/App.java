@@ -190,8 +190,15 @@ public final class App {
     }
 
     private static Cliente cadastrarCliente(PlataformaStreaming plat) {
+        String nome, senha;
+        entrada.nextLine();
+        System.out.println("Digite seu nome de usuario: ");
+        nome = entrada.nextLine();
+        System.out.println("Digite a sua senha: ");
+        senha = entrada.nextLine();
 
-        return null;
+        Cliente clienteCad = new Cliente(nome,senha);
+        return clienteCad;
     }
 
     private static PlataformaStreaming cadastrarSerie(PlataformaStreaming plat) {
