@@ -4,6 +4,7 @@ public class Serie extends Midia {
 
     
     private int quantidadeEpisodios;
+
     static final String[] generos = new String[] { "comedia", "terror", "romance" };
 
     public Serie(String genero, String nome, String idioma, int quantidadeEpisodios) {

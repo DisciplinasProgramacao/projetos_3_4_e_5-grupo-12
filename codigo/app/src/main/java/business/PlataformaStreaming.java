@@ -10,8 +10,6 @@ public class PlataformaStreaming {
     private HashMap<String,Cliente> clientes = new HashMap<String, Cliente>();
     private HashMap<Integer,Filme> filmes = new HashMap<>();
     private Cliente clienteAtual;
-    private static int contCliente = 0;
-    private static int contSerie = 0;
 
 
     public PlataformaStreaming(String nome) {
@@ -59,13 +57,16 @@ public class PlataformaStreaming {
     }
 
     public void adicionarSerie(Serie serie) {
-        series.put(contSerie, serie);
-        contSerie++;
+        series.put(serie.getId(), serie);
+        
+    }
+    public void adicionarFilme(Filme filme) {
+        filmes.put(filme.getId(), filme);
+        
     }
 
     public void adicionarCliente(Cliente c) {
         this.clientes.put(c.getNomeDeUsuario(), c);
-        contCliente++;
     }
 
 
