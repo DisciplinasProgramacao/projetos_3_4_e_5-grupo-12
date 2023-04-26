@@ -1,7 +1,5 @@
 package business;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,6 +29,7 @@ public class PlataformaStreamingTest {
         p.adicionarSerie(NanaABanana);
         p.adicionarSerie(Polyforme);
         p.adicionarSerie(PapaLeguas);
+        p.adicionarSerie(PapaLeguas);
         assertEquals(3,p.getSeries().size());
     }
 
@@ -39,6 +38,7 @@ public class PlataformaStreamingTest {
         p.adicionarCliente(c1);
         p.adicionarCliente(c2);
         p.adicionarCliente(c3);
+        p.adicionarCliente(c1);
         assertEquals(3,p.getClientes().size());
     }
      
@@ -58,6 +58,7 @@ public class PlataformaStreamingTest {
     void testFiltrarPorQntEpisodios() {
         p.adicionarCliente(c1);
         c1.adicionarNaLista(NanaABanana);
+        c1.adicionarNaLista(Polyforme);
         c1.adicionarNaLista(Polyforme);
         c1.adicionarNaLista(PapaLeguas);
         p.login("George", "123pogchamp456");
@@ -81,7 +82,11 @@ public class PlataformaStreamingTest {
         p.adicionarSerie(NanaABanana);
         p.login("George", "123pogchamp456");
         p.registrarAudiencia(NanaABanana);
-        assertEquals(1,p.getClienteAtual().getListaJaVista().size());
+        p.adicionarCliente(c2);
+        p.login("paulo", "MalFeitoFeito");
+        p.registrarAudiencia(NanaABanana);
+        p.registrarAudiencia(NanaABanana);
+        assertEquals(2,NanaABanana.getAudiencia());
     }
 
 }
