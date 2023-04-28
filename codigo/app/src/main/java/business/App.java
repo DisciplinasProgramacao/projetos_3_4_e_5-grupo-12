@@ -62,7 +62,7 @@ public final class App {
          * 
          * escreveArqEspectadores(pS);
          * escreveArqSeries(pS);
-         * escreveArqAudiencia(pS);
+         * escreveArqAudiencia(pS); 
          * 
          */
 
