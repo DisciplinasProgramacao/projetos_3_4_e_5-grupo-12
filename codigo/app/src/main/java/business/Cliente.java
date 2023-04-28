@@ -104,6 +104,15 @@ public class Cliente {
         listaJaVistas.remove(serie);
     }
 
+    public void adicionarFilmeVisto(Filme filme) {
+        filmesJaVistos.add(filme);
+        filme.registrarAudiencia();
+    }
+
+    public void retirarFilmeVisto(Filme filme) {
+        filmesJaVistos.remove(filme);
+    }
+
     /**
      * Filtra filmesParaVer e a filmesJaVistos por gênero
      * 
