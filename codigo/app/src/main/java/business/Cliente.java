@@ -9,6 +9,8 @@ public class Cliente {
     private String senha;
     private List<Serie> listaParaVer = new LinkedList<>();
     private List<Serie> listaJaVistas = new LinkedList<>();
+    private List<Filme> filmesParaVer = new LinkedList<>();
+    private List<Filme> filmesJaVistos = new LinkedList<>();
 
     public Cliente(String nomeDeUsuario, String senha) {
         setNomeDeUsuario(nomeDeUsuario);
@@ -45,6 +47,14 @@ public class Cliente {
         return this.listaJaVistas;
     }
 
+    public List<Filme> getFilmesParaVer() {
+        return this.filmesParaVer;
+    }
+
+    public List<Filme> getFilmesJaVistos() {
+        return this.filmesJaVistos;
+    }
+
     /**
      * Adiciona uma série na listaParaVer
      * 
@@ -54,6 +64,26 @@ public class Cliente {
         if (!listaParaVer.contains(serie)) {
             listaParaVer.add(serie);
         }
+    }
+
+     /**
+     * Adiciona um filme em filmesParaVer
+     * 
+     * @param filme Filme que se deseja adicionar na lista
+     */
+    public void adicionarFilmeParaVer(Filme filme) {
+        if (!filmesParaVer.contains(filme)) {
+            filmesParaVer.add(filme);
+        }
+    }
+
+     /**
+     * Remove um filme de filmesParaVer
+     * 
+     * @param filme Filme que se deseja remover da lista
+     */
+    public void removerFilmeParaVer(Filme filme) {
+        filmesParaVer.remove(filme);
     }
 
     /**
@@ -75,11 +105,59 @@ public class Cliente {
     }
 
     /**
-     * Filtra a listaParaVer e a listaJaVista por gênero
+     * Filtra filmesParaVer e a filmesJaVistos por gênero
      * 
      * @param genero Filtro que será utilizado no método
      * @return Uma lista com o resultado do filtro realizado
      */
+    public List<Filme> filtrarFilmePorGenero(String genero) {
+
+        List<Filme> listaMesmoGen = new LinkedList<Filme>();
+        for (int i = 0; i < filmesParaVer.size(); i++) {
+            if (this.filmesParaVer.get(i).getGenero().equals(genero)) {
+                listaMesmoGen.add(filmesParaVer.get(i));
+            }
+        }
+        for (int i = 0; i < filmesJaVistos.size(); i++) {
+            if (this.filmesJaVistos.get(i).getGenero().equals(genero)) {
+                listaMesmoGen.add(filmesJaVistos.get(i));
+            }
+        }
+
+        return listaMesmoGen;
+    }
+
+    /**
+     * Filtra filmesParaVer e filmesJaVistos por idioma
+     * 
+     * @param idioma Filtro que será utilizado no método
+     * @return Uma lista com o resultado do filtro realizado
+     */
+    public List<Filme> filtrarFilmePorIdioma(String idioma) {
+
+        List<Filme> listaFiltrada = new LinkedList<>();
+
+        for (int i = 0; i < filmesParaVer.size(); i++) {
+            if (filmesParaVer.get(i).getIdioma().equals(idioma)) {
+                listaFiltrada.add(filmesParaVer.get(i));
+            }
+        }
+
+        for (int i = 0; i < filmesJaVistos.size(); i++) {
+            if (filmesJaVistos.get(i).getIdioma().equals(idioma)) {
+                listaFiltrada.add(filmesJaVistos.get(i));
+            }
+        }
+
+        return listaFiltrada;
+    }
+
+    /**
+    * Filtra a listaParaVer e a listaJaVista por gênero
+    * 
+    * @param genero Filtro que será utilizado no método
+    * @return Uma lista com o resultado do filtro realizado
+    */
     public List<Serie> filtrarPorGenero(String genero) {
 
         List<Serie> listaMesmoGen = new LinkedList<Serie>();
@@ -96,6 +174,7 @@ public class Cliente {
 
         return listaMesmoGen;
     }
+
 
     /**
      * Filtra a listaParaVer e a listaJaVista por idioma
@@ -121,6 +200,7 @@ public class Cliente {
 
         return listaFiltrada;
     }
+
 
     /**
      * Filtra a listaParaVer e a listaJaVista por quantidade de episódios
