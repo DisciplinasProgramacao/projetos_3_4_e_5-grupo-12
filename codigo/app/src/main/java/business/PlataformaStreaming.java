@@ -119,7 +119,7 @@ public class PlataformaStreaming {
             StringTokenizer str = new StringTokenizer(linha.trim(), ";");
             int id = Integer.parseInt(str.nextToken());
             Serie serie = new Serie(id, str.nextToken(), str.nextToken());
-            mapSeries.put(serie.getId(), serie);
+            mapSeries.put(serie.getId(), serie);  
         }
         reader.close();
         return mapSeries;

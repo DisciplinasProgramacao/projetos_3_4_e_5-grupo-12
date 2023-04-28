@@ -92,8 +92,7 @@ public abstract class Midia {
 
     public void setNome(String nome) {
         if (nome.length() > 0) {
-
-            this.idioma = nome;
+            this.nome = nome;
         }
     }
 
