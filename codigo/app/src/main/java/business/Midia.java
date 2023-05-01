@@ -1,5 +1,7 @@
 package business;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 public abstract class Midia {
@@ -12,6 +14,8 @@ public abstract class Midia {
     private int audiencia = 0;
     private static final String[] generos = new String[] { "comedia", "terror", "romance" };
     private static final String[] idiomas = new String[] { "portugues", "ingles", "espanhol" };
+    DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    LocalDate dataAtual = LocalDate.now();
 
     public Midia(String genero, String nome, String idioma) {
 
@@ -31,6 +35,7 @@ public abstract class Midia {
 
         setNome(nome);
         setIdioma(idioma);
+        setDataLancamento(dataAtual.format(formatoData).toString());
     }
 
     // Construtor para a criacao de midias durante leitura de dados

@@ -7,16 +7,22 @@ public class Cliente {
 
     private String nomeDeUsuario;
     private String senha;
+    private String nomeCompleto;
     private List<Serie> listaParaVer = new LinkedList<>();
     private List<Serie> listaJaVistas = new LinkedList<>();
     private List<Filme> filmesParaVer = new LinkedList<>();
     private List<Filme> filmesJaVistos = new LinkedList<>();
 
-    public Cliente(String nomeDeUsuario, String senha) {
+    public Cliente(String nomeCompleto, String nomeDeUsuario, String senha) {
+        this.nomeCompleto = nomeCompleto;
         setNomeDeUsuario(nomeDeUsuario);
         setSenha(senha);
         this.nomeDeUsuario = getNomeDeUsuario();
         this.senha = getSenha();
+    }
+
+    public String getNomeCompleto() {
+        return nomeCompleto;
     }
 
     public String getNomeDeUsuario() {
@@ -277,5 +283,7 @@ public class Cliente {
                 ", senha='" + getSenha() + "'" +
                 "}";
     }
+
+    
 
 }
