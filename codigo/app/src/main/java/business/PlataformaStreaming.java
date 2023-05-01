@@ -144,8 +144,27 @@ public class PlataformaStreaming {
         return mapFilmes;
     }
 
-    public void cadastrarCliente() {
-
+    public void carregarAudiencia() throws Exception { 
+        
+        BufferedReader reader = new BufferedReader(new FileReader("POO_Audiencia.csv"));
+        String linha;
+        reader.readLine();
+        
+        while ((linha = reader.readLine()) != null) {
+            StringTokenizer str = new StringTokenizer(linha, ";");
+            String login = str.nextToken();
+            clienteAtual = clientes.get(login);
+            if(str.nextToken().equals("F")){
+                Serie temp = series.get(Integer.parseInt(str.nextToken()));
+                clienteAtual.adicionarNaLista(temp);
+            } else {
+                Serie temp = series.get(Integer.parseInt(str.nextToken()));
+                clienteAtual.adicionarSerieVista(temp);
+            }
+        }
+        reader.close();
     }
+
+  
 
 }

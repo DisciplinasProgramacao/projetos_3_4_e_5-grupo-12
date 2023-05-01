@@ -61,7 +61,7 @@ public class Cliente {
      * @param serie Serie que se deseja adicionar na lista
      */
     public void adicionarNaLista(Serie serie) {
-        if (!listaParaVer.contains(serie)) {
+        if(!listaParaVer.contains(serie)){
             listaParaVer.add(serie);
         }
     }
