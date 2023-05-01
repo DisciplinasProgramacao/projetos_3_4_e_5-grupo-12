@@ -16,8 +16,8 @@ Serie PapaLeguas;
 
     @BeforeEach
     void setUp() throws Exception {
-        c1 = new Cliente("George","123pogchamp456");
-        c2 = new Cliente("paulo","MalFeitoFeito");
+        c1 = new Cliente("Geoge o Curioso","George","123pogchamp456");
+        c2 = new Cliente("Paulo BEM Grande", "paulo","MalFeitoFeito");
         NanaABanana = new Serie("comedia","Nana a Banana", "portugues",10);
         Polyforme = new Serie("terror","Polyforme", "portugues",8);
         PapaLeguas = new Serie("comedia","Papaleguas", "alemao",12);

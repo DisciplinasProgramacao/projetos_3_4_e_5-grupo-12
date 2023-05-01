@@ -19,7 +19,7 @@ public class Serie extends Midia {
         Random random = new Random();
         super.setDataLancamento(dataLancamento);
         setQuantidadeEpisodios(random.nextInt(99) + 1);
-        ;
+        
     }
 
     /*
