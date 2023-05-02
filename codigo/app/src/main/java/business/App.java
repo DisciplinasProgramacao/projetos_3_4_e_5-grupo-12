@@ -1,8 +1,4 @@
 package business;
-
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 
 public final class App {
@@ -333,17 +329,4 @@ public final class App {
         }
         return false;
     }
-
-    public static String tipoAssistir(Cliente cliente, int id,
-            PlataformaStreaming pS) {
-        Serie serie = pS.getSeries().get(id);
-        if (cliente.getListaParaVer().contains(serie)) {
-            return "F";
-        } else if (cliente.getListaJaVista().contains(serie)) {
-            return "A";
-        } else {
-            return "Série não encontrada";
-        }
-    }
-
 }
