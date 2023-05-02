@@ -3,7 +3,7 @@ package business;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Cliente {
+public class Cliente implements ISalvavel {
 
     private String nomeDeUsuario;
     private String senha;
@@ -284,6 +284,13 @@ public class Cliente {
                 "}";
     }
 
+    @Override
+    public String getDadosString() {
+        String login = getNomeDeUsuario();
+        String senha = getSenha();
+        String nome = getNomeCompleto();
+        return ("\n" + nome + ";" + login + ";" + senha);
+    }
     
 
 }
