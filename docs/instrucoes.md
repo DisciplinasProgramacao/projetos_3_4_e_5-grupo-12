@@ -1,3 +1,9 @@
 # Instruções de uso
 
-Coloque neste arquivo qualquer instrução que julgar pertinente para a execução correta do sistema: arquivos de configuração, arquivos de dados, possíveis dados de teste etc.
+- Para rodar o programa, baixe a estrutura de arquivos e execute o arquivo "App.java", localizado no caminho \projetos_3_4_e_5-grupo-12\codigo\app\src\main\java\business
+- Os dados utilizados estão localizados nos arquivos POO_Audiencia.csv, POO_Espectadores.csv, POO_Filmes.csv e POO_Series.csv
+- O arquivo espectadoresteste.csv foi utilizado apenas como uma amostragem menor de dados e pode ser ignorado, pois não é utilizado no projeto
+- A documentação se encontra no caminho \projetos_3_4_e_5-grupo-12\docs
+- Ao executar o programa pelo arquivo App.java o usuário irá se deparar com um menu de opções, que poderá ser utilizado para interagir com o sistema como um todo
+
+
