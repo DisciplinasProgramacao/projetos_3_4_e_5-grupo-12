@@ -1,6 +1,6 @@
 package business;
 
-public class Filme extends Midia implements ISalvavel{
+public class Filme extends Midia implements ISalvavel {
 
     private int duracao;
 

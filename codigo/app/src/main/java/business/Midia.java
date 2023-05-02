@@ -5,6 +5,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 public abstract class Midia {
+
+    private static float contNota = 0;
+    private static int contNumeroNotas = 0;
+    private float nota;
     private static int cont = 1;
     private int id;
     private String nome;
@@ -46,6 +50,16 @@ public abstract class Midia {
         setNome(nome);
         this.genero = generos[random.nextInt(2)];
         this.idioma = idiomas[random.nextInt(2)];
+    }
+
+    public float getNota() {
+        return nota;
+    }
+
+    public void setNota(float nota) {
+        contNumeroNotas++;
+        contNota += nota;
+        this.nota = contNota / contNumeroNotas;
     }
 
     public int getId() {

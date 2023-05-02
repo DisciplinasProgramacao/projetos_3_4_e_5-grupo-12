@@ -16,13 +16,12 @@ public final class App {
 
     }
 
-  
     public static void menu(PlataformaStreaming plat) {
 
-        try {     
+        try {
             HashMap<String, Cliente> mapClientes = plat.carregarClientes();
-            HashMap<Integer, Serie> mapSeries = plat.carregarSeries();
-            HashMap<Integer, Filme> mapFilmes = plat.carregarFilmes();
+            HashMap<String, Serie> mapSeries = plat.carregarSeries();
+            HashMap<String, Filme> mapFilmes = plat.carregarFilmes();
 
             plat.setClientes(mapClientes);
             plat.setSeries(mapSeries);
@@ -30,10 +29,11 @@ public final class App {
 
             int op;
             int op2;
+            int op3;
             Cliente clienteLogado = null;
             boolean logado = false;
             do {
-                Cliente clienteCad; 
+                Cliente clienteCad;
                 Filme filmeCad;
                 Serie serieCad;
                 System.out.println("Selecione uma opção:");
@@ -63,7 +63,7 @@ public final class App {
                         if (serieCad == null) {
                             throw new SerieInvalida(serieCad);
                         }
-                        mapSeries.put(serieCad.getId(), serieCad);
+                        mapSeries.put(serieCad.getNome(), serieCad);
                         plat.escreveArqSerie(serieCad);
                         System.out.println("Serie cadastrado com sucesso");
                         System.out.println(serieCad);
@@ -77,7 +77,7 @@ public final class App {
                         if (filmeCad == null) {
                             throw new FilmeInvalido(filmeCad);
                         }
-                        mapFilmes.put(filmeCad.getId(), filmeCad);
+                        mapFilmes.put(filmeCad.getNome(), filmeCad);
                         plat.escreveArqFilme(filmeCad);
                         System.out.println("Filme cadastrado com sucesso");
                         System.out.println(mapFilmes);
@@ -141,31 +141,66 @@ public final class App {
                         case 1:
                             break;
 
-
                         case 2:
-                            break;
 
+                            System.out.println("Você gostaria de avaliar essa série:");
+                            System.out.println("1 - SIM");
+                            System.out.println("2 - Não");
+                            op3 = entrada.nextInt();
+                            switch (op3) {
+                                case 1:
+                                    int nota;
+                                    String nomeS;
+                                    System.out.println("Digite o nome da série que você deseja adicionar:");
+                                    nomeS = entrada.nextLine();
+                                    Serie s = plat.findSerie(nomeS);
+                                    System.out.println("Qual a sua nota para essa série:");
+                                    nota = entrada.nextInt();
+                                    clienteLogado.adicionarSerieVista(s, nota);
+                                    break;
+                                case 2:
+                                    System.out.println("Digite o nome da série que você deseja adicionar:");
+                                    nomeS = entrada.nextLine();
+                                    s = plat.findSerie(nomeS);
+                                    clienteLogado.adicionarSerieVista(s);
+                                    break;
+                            }
+
+                            break;
 
                         case 3:
                             break;
 
-
                         case 4:
-                            break;   
-
+                            break;
 
                         case 5:
                             break;
 
-
                         case 6:
+                            System.out.println("Digite o nome do filme que você deseja adicionar:");
+                            String nomeS = entrada.nextLine();
+                            Filme f = plat.findFilme(nomeS);
+                            System.out.println("Você gostaria de avaliar esse filme:");
+                            System.out.println("1 - SIM");
+                            System.out.println("2 - Não");
+                            op3 = entrada.nextInt();
+                            switch (op3) {
+                                case 1:
+                                    int nota;
+                                    System.out.println("Qual a sua nota para essa série:");
+                                    nota = entrada.nextInt();
+                                    clienteLogado.adicionarFilmeVisto(f, nota);
+                                    break;
+                                case 2:
+                                    clienteLogado.adicionarFilmeVisto(f);
+                                    break;
+                            }
                             break;
-
 
                         case 7:
                             break;
 
-                            
                         case 8:
                             break;
                     }
@@ -173,19 +208,17 @@ public final class App {
                 } while (op2 != 0);
             }
 
-
         } catch (ClienteInvalido e1) {
             System.out.println(e1.getMessage());
-        }  catch (SerieInvalida e2) {
+        } catch (SerieInvalida e2) {
             System.out.println(e2.getMessage());
         } catch (InputMismatchException e3) {
             System.out.println("Ocorreu um erro no input. Verifique se inseriu a informacao correta");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-    }
 
+    }
 
     private static Cliente cadastrarCliente(PlataformaStreaming plat) {
         String nomeCompleto, nome, senha;
@@ -193,7 +226,7 @@ public final class App {
 
         System.out.println("Digite seu nome completo: ");
         nomeCompleto = entrada.nextLine();
-        
+
         System.out.println("Digite seu nome de usuario: ");
         nome = entrada.nextLine();
         if (nome.length() < 5) {
@@ -204,11 +237,12 @@ public final class App {
         senha = entrada.nextLine();
 
         if (!checkString(senha) && senha.length() < 6) {
-            System.out.println("A senha deve possuir pelo menos 6 caracteres, entre letras maiusculas, minusculas e numeros.");
+            System.out.println(
+                    "A senha deve possuir pelo menos 6 caracteres, entre letras maiusculas, minusculas e numeros.");
             return null;
         }
 
-        Cliente clienteCad = new Cliente(nomeCompleto,nome,senha); 
+        Cliente clienteCad = new Cliente(nomeCompleto, nome, senha);
         plat.adicionarCliente(clienteCad);
         return clienteCad;
     }
@@ -252,7 +286,8 @@ public final class App {
         System.out.println("Digite o nome do filme");
         nome = entrada.nextLine();
 
-        System.out.println("Digite o idioma do filme");;
+        System.out.println("Digite o idioma do filme");
+        ;
         idioma = entrada.nextLine();
         if (!idioma.equals("ingles") && !idioma.equals("portugues") && !idioma.equals("espanhol")) {
             System.out.println("O idioma deve ser 'portugues', 'ingles' ou 'espanhol'");
@@ -272,7 +307,7 @@ public final class App {
             System.out.println("O filme deve possuir pelo menos 1 minuto");
             return null;
         }
-                
+
         Filme filmeCad = new Filme(genero, nome, idioma, duracao);
         plat.adicionarFilme(filmeCad);
 
@@ -284,22 +319,20 @@ public final class App {
         boolean letraMaiuscula = false;
         boolean letraMinuscula = false;
         boolean num = false;
-        for(int i=0;i < str.length();i++) {
+        for (int i = 0; i < str.length(); i++) {
             ch = str.charAt(i);
-            if( Character.isDigit(ch)) {
+            if (Character.isDigit(ch)) {
                 num = true;
-            }
-            else if (Character.isUpperCase(ch)) {
+            } else if (Character.isUpperCase(ch)) {
                 letraMaiuscula = true;
             } else if (Character.isLowerCase(ch)) {
                 letraMinuscula = true;
             }
-            if(num && letraMaiuscula && letraMinuscula)
+            if (num && letraMaiuscula && letraMinuscula)
                 return true;
         }
         return false;
     }
-
 
     public static String tipoAssistir(Cliente cliente, int id,
             PlataformaStreaming pS) {
@@ -314,6 +347,3 @@ public final class App {
     }
 
 }
-
-
-  

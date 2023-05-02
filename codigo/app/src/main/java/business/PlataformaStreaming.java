@@ -13,9 +13,9 @@ public class PlataformaStreaming {
     private static final String arqClientes = "POO_Espectadores.csv";
     private static final String arqAudiencia = "POO_Audiencia.csv";
     private String nome;
-    private HashMap<Integer, Serie> series = new HashMap<>();
+    private HashMap<String, Serie> series = new HashMap<>();
     private HashMap<String, Cliente> clientes = new HashMap<String, Cliente>();
-    private HashMap<Integer, Filme> filmes = new HashMap<>();
+    private HashMap<String, Filme> filmes = new HashMap<>();
     private Cliente clienteAtual;
 
     public PlataformaStreaming(String nome) {
@@ -30,19 +30,19 @@ public class PlataformaStreaming {
         this.nome = nome;
     }
 
-    public HashMap<Integer, Serie> getSeries() {
+    public HashMap<String, Serie> getSeries() {
         return series;
     }
 
-    public void setSeries(HashMap<Integer, Serie> series) {
+    public void setSeries(HashMap<String, Serie> series) {
         this.series = series;
     }
 
-    public void setFilmes(HashMap<Integer, Filme> filmes) {
+    public void setFilmes(HashMap<String, Filme> filmes) {
         this.filmes = filmes;
     }
 
-    public HashMap<Integer, Filme> getFilmes() {
+    public HashMap<String, Filme> getFilmes() {
         return filmes;
     }
 
@@ -63,12 +63,12 @@ public class PlataformaStreaming {
     }
 
     public void adicionarSerie(Serie serie) {
-        series.put(serie.getId(), serie);
+        series.put(serie.getNome(), serie);
 
     }
 
     public void adicionarFilme(Filme filme) {
-        filmes.put(filme.getId(), filme);
+        filmes.put(filme.getNome(), filme);
 
     }
 
@@ -109,16 +109,16 @@ public class PlataformaStreaming {
 
         while ((linha = reader.readLine()) != null) {
             StringTokenizer str = new StringTokenizer(linha, ";");
-            
-            Cliente cliente = new Cliente(str.nextToken(),str.nextToken(), str.nextToken());
+
+            Cliente cliente = new Cliente(str.nextToken(), str.nextToken(), str.nextToken());
             mapClientes.put(cliente.getNomeDeUsuario(), cliente);
         }
         reader.close();
         return mapClientes;
     }
 
-    public HashMap<Integer, Serie> carregarSeries() throws Exception {
-        HashMap<Integer, Serie> mapSeries = new HashMap<Integer, Serie>();
+    public HashMap<String, Serie> carregarSeries() throws Exception {
+        HashMap<String, Serie> mapSeries = new HashMap<String, Serie>();
         BufferedReader reader = new BufferedReader(new FileReader("POO_Series.csv"));
         String linha;
         reader.readLine();
@@ -127,14 +127,14 @@ public class PlataformaStreaming {
             StringTokenizer str = new StringTokenizer(linha.trim(), ";");
             int id = Integer.parseInt(str.nextToken());
             Serie serie = new Serie(id, str.nextToken(), str.nextToken());
-            mapSeries.put(serie.getId(), serie);  
+            mapSeries.put(serie.getNome(), serie);
         }
         reader.close();
         return mapSeries;
     }
 
-    public HashMap<Integer, Filme> carregarFilmes() throws Exception {
-        HashMap<Integer, Filme> mapFilmes = new HashMap<Integer, Filme>();
+    public HashMap<String, Filme> carregarFilmes() throws Exception {
+        HashMap<String, Filme> mapFilmes = new HashMap<String, Filme>();
         BufferedReader reader = new BufferedReader(new FileReader("POO_Filmes.csv"));
         String linha;
 
@@ -145,24 +145,24 @@ public class PlataformaStreaming {
             StringTokenizer str = new StringTokenizer(linha, ";");
             int id = Integer.parseInt(str.nextToken());
             Filme filme = new Filme(id, str.nextToken(), str.nextToken(), Integer.parseInt(str.nextToken()));
-            mapFilmes.put(filme.getId(), filme);
+            mapFilmes.put(filme.getNome(), filme);
         }
 
         reader.close();
         return mapFilmes;
     }
 
-    public void carregarAudiencia() throws Exception { 
-        
+    public void carregarAudiencia() throws Exception {
+
         BufferedReader reader = new BufferedReader(new FileReader("POO_Audiencia.csv"));
         String linha;
         reader.readLine();
-        
+
         while ((linha = reader.readLine()) != null) {
             StringTokenizer str = new StringTokenizer(linha, ";");
             String login = str.nextToken();
             clienteAtual = clientes.get(login);
-            if(str.nextToken().equals("F")){
+            if (str.nextToken().equals("F")) {
                 Serie temp = series.get(Integer.parseInt(str.nextToken()));
                 clienteAtual.adicionarNaLista(temp);
             } else {
@@ -173,9 +173,8 @@ public class PlataformaStreaming {
         reader.close();
     }
 
-
     public void escreveArquivo(ISalvavel objeto, String nomeArquivo) {
-        
+
         try {
             FileWriter arquivo = new FileWriter(nomeArquivo, true);
             arquivo.write(objeto.getDadosString());
@@ -188,32 +187,32 @@ public class PlataformaStreaming {
 
     public void escreveArqFilme(Filme filmeCad) {
         escreveArquivo(filmeCad, arqFilmes);
-        
+
     }
 
-    public void escreveArqSerie(Serie serieCad) { 
+    public void escreveArqSerie(Serie serieCad) {
         escreveArquivo(serieCad, arqSeries);
     }
 
     public void escreveArqCliente(Cliente clienteCad) {
         escreveArquivo(clienteCad, arqClientes);
-        
+
     }
 
     public void escreveArqAudiencia(Cliente clienteCad) {
         escreveArquivo(clienteCad, arqAudiencia);
-        
+
     }
 
-    //fazer verificacao
-    public void escreveArqAudiencia(String tipo, Serie serieCad) {  
-        
+    // fazer verificacao
+    public void escreveArqAudiencia(String tipo, Serie serieCad) {
+
         try {
             FileWriter arquivo = new FileWriter("POO_Audiencia.csv", true);
-      
+
             String login = clienteAtual.getNomeDeUsuario();
             int id = serieCad.getId();
-            
+
             arquivo.write("\n" + login + ";" + tipo + ";" + id);
             arquivo.close();
         } catch (IOException e) {
@@ -222,8 +221,18 @@ public class PlataformaStreaming {
         }
     }
 
+    public Serie findSerie(String nome) {
+        Serie serie;
 
-    
-  
+        serie = series.get(nome);
+        return serie;
+    }
+
+    public Filme findFilme(String nome) {
+        Filme filme;
+
+        filme = filmes.get(nome);
+        return filme;
+    }
 
 }

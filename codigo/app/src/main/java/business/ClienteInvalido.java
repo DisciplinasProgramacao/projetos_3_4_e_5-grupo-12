@@ -12,5 +12,5 @@ public class ClienteInvalido extends Exception {
     public String getMessage() {
         return "Erro ao cadastrar cliente";
     }
-    
+
 }
