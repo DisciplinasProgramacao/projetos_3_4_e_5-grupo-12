@@ -304,14 +304,14 @@ public class PlataformaStreaming {
 
     }
 
-    /**
-     * Esse metodo escreve a audiencia no arquivo de audiencia
-     * @param clienteCad esse é o cliente que esta sendo posto como audiencia
-     */
-    public void escreveArqAudiencia(Cliente clienteCad) {
-        escreveArquivo(clienteCad, arqAudiencia);
+    // /**
+    //  * Esse metodo escreve a audiencia no arquivo de audiencia
+    //  * @param clienteCad esse é o cliente que esta sendo posto como audiencia
+    //  */
+    // public void escreveArqAudiencia(Cliente clienteCad) {
+    //     escreveArquivo(clienteCad, arqAudiencia);
 
-    }
+    // }
 
     /**
      * Esse metodo escreve a audiencia no arquivo de audiencia
