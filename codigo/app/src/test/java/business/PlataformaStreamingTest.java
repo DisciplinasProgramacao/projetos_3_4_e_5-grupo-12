@@ -89,4 +89,10 @@ public class PlataformaStreamingTest {
         assertEquals(2,NanaABanana.getAudiencia());
     }
 
+    @Test
+    void testLogin() {
+        p.adicionarCliente(c1);
+        assertEquals(c1, p.login("George", "123pogchamp456"));
+    }
+
 }
