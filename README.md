@@ -1,6 +1,6 @@
 [![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-7f7980b617ed060a017424585567c406b6ee15c891e84e1186181d67ecf80aa0.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=10825584)
-# Nome do projeto
-Escreva um ou dois parágrafos resumindo o objetivo do seu projeto.
+# Plataforma Streamming - Grupo 12
+Nesse projeto temos o objetivo de aprender java ao fazer uma plataforma de streamming contendo series, filmes, espectadores... Com diversos metodos, para salvar, cadastrar, logar, avaliar...
 
 ## Alunos integrantes da equipe
 
