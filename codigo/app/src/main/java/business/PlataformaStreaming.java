@@ -17,10 +17,18 @@ public class PlataformaStreaming {
     private HashMap<String, Filme> filmes = new HashMap<>();
     private Cliente clienteAtual;
 
+    /**
+     * Constutor da plataforma de Streamming
+     * @param nome esse é o nome da plataforma de Streamming
+     */
     public PlataformaStreaming(String nome) {
         this.nome = nome;
     }
 
+    /**
+     * Método para pegar o nome da plataforma
+     * @return retorna o nome da plataforma
+     */
     public String getNome() {
         return nome;
     }
@@ -29,69 +37,131 @@ public class PlataformaStreaming {
         this.nome = nome;
     }
 
+    /**
+     * Método para pegar as series cadastradas
+     * @return retorna as series cadastradas na plataforma
+     */
     public HashMap<String, Serie> getSeries() {
         return series;
     }
 
+    /**
+     * Método para cadastrar as series da plataforma
+     * @param series mapa de todas as series que a plataforma ira conter
+     */
     public void setSeries(HashMap<String, Serie> series) {
         this.series = series;
     }
 
+    /**
+     * Método para cadastrar os filmes da plataforma
+     * @param filmes mapa de todos os filmes que a plataforma irá conter
+     */
     public void setFilmes(HashMap<String, Filme> filmes) {
         this.filmes = filmes;
     }
 
+    /**
+     * Método para pegar os filmes cadastrados
+     * @return retorna os filmes cadastrados na plataforma
+     */
     public HashMap<String, Filme> getFilmes() {
         return filmes;
     }
 
+    /**
+     * Método para pegar os clientes cadastrados
+     * @return retorna os clientes cadastrados na plataforma
+     */
     public HashMap<String, Cliente> getClientes() {
         return clientes;
     }
 
+    /**
+     * Método para cadastrar os clientes da plataforma
+     * @param clientes mapa de todos os clientes que a plataforma irá conter
+     */
     public void setClientes(HashMap<String, Cliente> clientes) {
         this.clientes = clientes;
     }
 
+    /**
+     * Método para pegar o cliente logado atualmente 
+     * @return retorna o cliente logado atualmente
+     */
     public Cliente getClienteAtual() {
         return clienteAtual;
     }
 
-    public void setClienteAtual(Cliente clienteAtual) {
-        this.clienteAtual = clienteAtual;
-    }
 
+    /**
+     * Método para adicionar uma serie na lista de series
+     * @param serie Esse é a serie que será recebido
+     */
     public void adicionarSerie(Serie serie) {
         series.put(serie.getNome(), serie);
 
     }
 
+    /**
+     * Método para adicionar um filme na lista de filmes
+     * @param filme Esse é o filme que será recebido
+     */
     public void adicionarFilme(Filme filme) {
         filmes.put(filme.getNome(), filme);
 
     }
 
+    /**
+     * Método para adicionar um cliente na lista de clientes
+     * @param c Esse é o cliente que será recebido
+     */
     public void adicionarCliente(Cliente c) {
 
         this.clientes.put(c.getNomeDeUsuario(), c);
     }
 
+    /**
+     * Metodo para filtrar uma serie pelo seu genero
+     * @param genero Esse é o genero que foi escolhido para ser filtrado
+     * @return retorna a lista filtrada do cliente atual
+     */
     public List<Serie> filtarPorGenero(String genero) {
         return clienteAtual.filtrarPorGenero(genero);
     }
 
+    /**
+     * Metodo para filtrar uma serie pela quantidade de episodios
+     * @param quantEpisodios Essa é a quantidade de episodioes escolhida para ser filtrada
+     * @return retorna a lista filtrada do cliente atual
+     */
     public List<Serie> filtrarPorQtdEpisodios(int quantEpisodios) {
         return clienteAtual.filtrarPorQtdEpisodios(quantEpisodios);
     }
 
+    /**
+     * Metodo para filtrar uma serie pelo idioma 
+     * @param idioma Esse é o idioma escolhido para ser filtrado
+     * @return retorna a lista filtrada do cliente atual
+     */
     public List<Serie> filtrarPorIdioma(String idioma) {
         return clienteAtual.filtrarPorIdioma(idioma);
     }
 
+    /**
+     * Esse método registra o cliente atual como audiencia da serie especificada
+     * @param serie Essa é a serie especificada
+     */
     public void registrarAudiencia(Serie serie) {
         clienteAtual.registrarAudiencia(serie);
     }
 
+    /**
+     * Esse método faz o cliente logar se a senha e o nome de usuario ja estiverem cadastrados
+     * @param nomeUsuario esse é o nome de login do usuario
+     * @param senha essa é a senha do usuario
+     * @return retorna o cliente logado como cliente atual
+     */
     public Cliente login(String nomeUsuario, String senha) {
         clienteAtual = clientes.get(nomeUsuario);
         if (!senha.equals(clienteAtual.getSenha())) {
@@ -100,6 +170,11 @@ public class PlataformaStreaming {
         return clienteAtual;
     }
 
+    /**
+     * Esse método carrega os clientes do arquivo de clientes
+     * @return Retorna um mapa com as series do arquivo
+     * @throws Exception
+     */
     public HashMap<String, Cliente> carregarClientes() throws Exception {
         HashMap<String, Cliente> mapClientes = new HashMap<String, Cliente>();
         BufferedReader reader = new BufferedReader(new FileReader("POO_Espectadores.csv"));
@@ -116,6 +191,11 @@ public class PlataformaStreaming {
         return mapClientes;
     }
 
+    /**
+     * Esse método carrega as series do arquivo de serie
+     * @return Retorna um mapa com as series do arquivo
+     * @throws Exception
+     */
     public HashMap<String, Serie> carregarSeries() throws Exception {
         HashMap<String, Serie> mapSeries = new HashMap<String, Serie>();
         BufferedReader reader = new BufferedReader(new FileReader("POO_Series.csv"));
@@ -132,6 +212,11 @@ public class PlataformaStreaming {
         return mapSeries;
     }
 
+    /**
+     * 
+     * @return esse método carrega os filems do arquivo de filmes
+     * @throws Exception
+     */
     public HashMap<String, Filme> carregarFilmes() throws Exception {
         HashMap<String, Filme> mapFilmes = new HashMap<String, Filme>();
         BufferedReader reader = new BufferedReader(new FileReader("POO_Filmes.csv"));
@@ -151,6 +236,10 @@ public class PlataformaStreaming {
         return mapFilmes;
     }
 
+    /**
+     * Esse metodo carrega as audiencias do arquivo de audiencia
+     * @throws Exception
+     */
     public void carregarAudiencia() throws Exception {
 
         BufferedReader reader = new BufferedReader(new FileReader("POO_Audiencia.csv"));
@@ -172,6 +261,11 @@ public class PlataformaStreaming {
         reader.close();
     }
 
+    /**
+     * esse metodo escreve o objeto no arquivo escolhido
+     * @param objeto Esse é o objeto a ser escrito
+     * @param nomeArquivo Esse é o arquivo em que sera escrito o objeto
+     */
     public void escreveArquivo(ISalvavel objeto, String nomeArquivo) {
 
         try {
@@ -184,26 +278,46 @@ public class PlataformaStreaming {
         }
     }
 
+    /**
+     * Esse metodo escreve um filme no arquivo de filmes
+     * @param filmeCad Esse é o filme a ser escrito
+     */
     public void escreveArqFilme(Filme filmeCad) {
         escreveArquivo(filmeCad, arqFilmes);
 
     }
 
+    /**
+     * Esse metodo escreve uma serie no arquivo de serie
+     * @param serieCad Esse é a serie a ser escrita
+     */
     public void escreveArqSerie(Serie serieCad) {
         escreveArquivo(serieCad, arqSeries);
     }
 
+    /**
+     *  Esse metodo escreve um cliente no arquivo de cliente
+     * @param clienteCad Esse é o cliente a ser posto
+     */
     public void escreveArqCliente(Cliente clienteCad) {
         escreveArquivo(clienteCad, arqClientes);
 
     }
 
+    /**
+     * Esse metodo escreve a audiencia no arquivo de audiencia
+     * @param clienteCad esse é o cliente que esta sendo posto como audiencia
+     */
     public void escreveArqAudiencia(Cliente clienteCad) {
         escreveArquivo(clienteCad, arqAudiencia);
 
     }
 
-    // fazer verificacao
+    /**
+     * Esse metodo escreve a audiencia no arquivo de audiencia
+     * @param tipo Isso indica se o cliente ja viu a serie ou futuramente assistira
+     * @param serieCad Essa é a serie que tera a audiencia
+     */
     public void escreveArqAudiencia(String tipo, Serie serieCad) {
 
         try {
@@ -220,6 +334,11 @@ public class PlataformaStreaming {
         }
     }
 
+    /**
+     * Esse metodo acha a serie com o nome enviado
+     * @param nome Esse é o nome enviado
+     * @return Retorna a serie com o mesmo nome que o enviado
+     */
     public Serie findSerie(String nome) {
         Serie serie;
 
@@ -227,6 +346,11 @@ public class PlataformaStreaming {
         return serie;
     }
 
+    /**
+     * Esse metodo acha o filme com o nome enviado
+     * @param nome Esse é o nome enviado
+     * @return Retorna o filme com o mesmo nome que o enviado
+     */
     public Filme findFilme(String nome) {
         Filme filme;
 
