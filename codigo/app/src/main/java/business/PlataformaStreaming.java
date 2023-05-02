@@ -8,6 +8,10 @@ import java.lang.ref.Cleaner.Cleanable;
 import java.util.*;
 
 public class PlataformaStreaming {
+    private static final String arqFilmes = "POO_Filmes.csv";
+    private static final String arqSeries = "POO_Series.csv";
+    private static final String arqClientes = "POO_Espectadores.csv";
+    private static final String arqAudiencia = "POO_Audiencia.csv";
     private String nome;
     private HashMap<Integer, Serie> series = new HashMap<>();
     private HashMap<String, Cliente> clientes = new HashMap<String, Cliente>();
@@ -169,30 +173,12 @@ public class PlataformaStreaming {
         reader.close();
     }
 
-    public void escreveArqSeries(Serie serieCad) {
-        
-        try {
-            FileWriter arquivo = new FileWriter("POO_Series.csv", true);
-            int id = serieCad.getId();
-            String nome = serieCad.getNome();
-            String dataL = serieCad.getDataLancamento();
-            arquivo.write("\n" + id + ";" + nome + ";" + dataL);
-            arquivo.close();
-        } catch (IOException e) {
-            System.out.println("Ocorreu um erro ao salvar os dados no arquivo.");
-            e.printStackTrace();
-        }
-    }
 
-    public void escreveArqClientes(Cliente clienteCad) {
+    public void escreveArquivo(ISalvavel objeto, String nomeArquivo) {
         
         try {
-            FileWriter arquivo = new FileWriter("POO_Espectadores.csv", true);
-      
-            String login = clienteCad.getNomeDeUsuario();
-            String senha = clienteCad.getSenha();
-            String nome = clienteCad.getNomeCompleto();
-            arquivo.write("\n" + nome + ";" + login + ";" + senha);
+            FileWriter arquivo = new FileWriter(nomeArquivo, true);
+            arquivo.write(objeto.getDadosString());
             arquivo.close();
         } catch (IOException e) {
             System.out.println("Ocorreu um erro ao salvar os dados no arquivo.");
@@ -201,21 +187,43 @@ public class PlataformaStreaming {
     }
 
     public void escreveArqFilme(Filme filmeCad) {
+        escreveArquivo(filmeCad, arqFilmes);
+        
+    }
+
+    public void escreveArqSerie(Serie serieCad) { 
+        escreveArquivo(serieCad, arqSeries);
+    }
+
+    public void escreveArqCliente(Cliente clienteCad) {
+        escreveArquivo(clienteCad, arqClientes);
+        
+    }
+
+    public void escreveArqAudiencia(Cliente clienteCad) {
+        escreveArquivo(clienteCad, arqAudiencia);
+        
+    }
+
+    //fazer verificacao
+    public void escreveArqAudiencia(String tipo, Serie serieCad) {  
         
         try {
-            FileWriter arquivo = new FileWriter("POO_Filmes.csv", true);
+            FileWriter arquivo = new FileWriter("POO_Audiencia.csv", true);
       
-            int id = filmeCad.getId();
-            String nome = filmeCad.getNome();
-            String dataL = filmeCad.getDataLancamento();
-            int duracao = filmeCad.getDuracao();
-            arquivo.write("\n" + id + ";" + nome + ";" + dataL + ";" + duracao);
+            String login = clienteAtual.getNomeDeUsuario();
+            int id = serieCad.getId();
+            
+            arquivo.write("\n" + login + ";" + tipo + ";" + id);
             arquivo.close();
         } catch (IOException e) {
             System.out.println("Ocorreu um erro ao salvar os dados no arquivo.");
             e.printStackTrace();
         }
     }
+
+
+    
   
 
 }

@@ -1,6 +1,6 @@
 package business;
 
-public class Filme extends Midia {
+public class Filme extends Midia implements ISalvavel{
 
     private int duracao;
 
@@ -25,4 +25,13 @@ public class Filme extends Midia {
         }
     }
 
+    @Override
+    public String getDadosString() {
+        int id = getId();
+        String nome = getNome();
+        String dataL = getDataLancamento();
+        int duracao = getDuracao();
+
+        return ("\n" + id + ";" + nome + ";" + dataL + ";" + duracao);
+    }
 }

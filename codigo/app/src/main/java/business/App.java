@@ -51,7 +51,7 @@ public final class App {
                             throw new ClienteInvalido(clienteCad);
                         }
                         mapClientes.put(clienteCad.getNomeDeUsuario(), clienteCad);
-                        plat.escreveArqClientes(clienteCad);
+                        plat.escreveArqCliente(clienteCad);
                         System.out.println("Cliente cadastrado com sucesso");
                         System.out.println();
                         break;
@@ -64,7 +64,7 @@ public final class App {
                             throw new SerieInvalida(serieCad);
                         }
                         mapSeries.put(serieCad.getId(), serieCad);
-                        plat.escreveArqSeries(serieCad);
+                        plat.escreveArqSerie(serieCad);
                         System.out.println("Serie cadastrado com sucesso");
                         System.out.println(serieCad);
                         System.out.println();

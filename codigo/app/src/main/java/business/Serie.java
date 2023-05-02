@@ -2,7 +2,7 @@ package business;
 
 import java.util.Random;
 
-public class Serie extends Midia {
+public class Serie extends Midia implements ISalvavel {
 
     private int quantidadeEpisodios;
 
@@ -64,4 +64,13 @@ public class Serie extends Midia {
                 "}";
     }
 
+    @Override
+    public String getDadosString() {
+        int id = getId();
+        String nome = getNome();
+        String dataL = getDataLancamento();
+        
+
+        return ("\n" + id + ";" + nome + ";" + dataL);
+    }
 }
