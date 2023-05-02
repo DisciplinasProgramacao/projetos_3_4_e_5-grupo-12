@@ -19,7 +19,7 @@ public class Serie extends Midia implements ISalvavel {
         Random random = new Random();
         super.setDataLancamento(dataLancamento);
         setQuantidadeEpisodios(random.nextInt(99) + 1);
-        
+
     }
 
     /*
@@ -69,7 +69,6 @@ public class Serie extends Midia implements ISalvavel {
         int id = getId();
         String nome = getNome();
         String dataL = getDataLancamento();
-        
 
         return ("\n" + id + ";" + nome + ";" + dataL);
     }

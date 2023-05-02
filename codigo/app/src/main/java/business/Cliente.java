@@ -67,12 +67,12 @@ public class Cliente implements ISalvavel {
      * @param serie Serie que se deseja adicionar na lista
      */
     public void adicionarNaLista(Serie serie) {
-        if(!listaParaVer.contains(serie)){
+        if (!listaParaVer.contains(serie)) {
             listaParaVer.add(serie);
         }
     }
 
-     /**
+    /**
      * Adiciona um filme em filmesParaVer
      * 
      * @param filme Filme que se deseja adicionar na lista
@@ -83,7 +83,7 @@ public class Cliente implements ISalvavel {
         }
     }
 
-     /**
+    /**
      * Remove um filme de filmesParaVer
      * 
      * @param filme Filme que se deseja remover da lista
@@ -117,6 +117,18 @@ public class Cliente implements ISalvavel {
 
     public void retirarFilmeVisto(Filme filme) {
         filmesJaVistos.remove(filme);
+    }
+
+    public void adicionarSerieVista(Serie serie, Integer nota) {
+        serie.setNota(nota);
+        listaJaVistas.add(serie);
+        serie.registrarAudiencia();
+    }
+
+    public void adicionarFilmeVisto(Filme filme, Integer nota) {
+        filme.setNota(nota);
+        filmesJaVistos.add(filme);
+        filme.registrarAudiencia();
     }
 
     /**
@@ -168,11 +180,11 @@ public class Cliente implements ISalvavel {
     }
 
     /**
-    * Filtra a listaParaVer e a listaJaVista por gênero
-    * 
-    * @param genero Filtro que será utilizado no método
-    * @return Uma lista com o resultado do filtro realizado
-    */
+     * Filtra a listaParaVer e a listaJaVista por gênero
+     * 
+     * @param genero Filtro que será utilizado no método
+     * @return Uma lista com o resultado do filtro realizado
+     */
     public List<Serie> filtrarPorGenero(String genero) {
 
         List<Serie> listaMesmoGen = new LinkedList<Serie>();
@@ -189,7 +201,6 @@ public class Cliente implements ISalvavel {
 
         return listaMesmoGen;
     }
-
 
     /**
      * Filtra a listaParaVer e a listaJaVista por idioma
@@ -215,7 +226,6 @@ public class Cliente implements ISalvavel {
 
         return listaFiltrada;
     }
-
 
     /**
      * Filtra a listaParaVer e a listaJaVista por quantidade de episódios
@@ -291,6 +301,5 @@ public class Cliente implements ISalvavel {
         String nome = getNomeCompleto();
         return ("\n" + nome + ";" + login + ";" + senha);
     }
-    
 
 }
