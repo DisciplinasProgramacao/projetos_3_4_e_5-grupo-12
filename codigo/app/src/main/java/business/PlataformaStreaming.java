@@ -17,10 +17,18 @@ public class PlataformaStreaming {
     private HashMap<String, Filme> filmes = new HashMap<>();
     private Cliente clienteAtual;
 
+    /**
+     * Constutor da plataforma de Streamming
+     * @param nome esse é o nome da plataforma de Streamming
+     */
     public PlataformaStreaming(String nome) {
         this.nome = nome;
     }
 
+    /**
+     * 
+     * @return
+     */
     public String getNome() {
         return nome;
     }
