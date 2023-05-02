@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.ref.Cleaner.Cleanable;
 import java.util.*;
 
 public class PlataformaStreaming {

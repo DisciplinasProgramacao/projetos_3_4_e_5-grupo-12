@@ -140,6 +140,7 @@ public class Cliente implements ISalvavel {
     public List<Filme> filtrarFilmePorGenero(String genero) {
 
         List<Filme> listaMesmoGen = new LinkedList<Filme>();
+        
         for (int i = 0; i < filmesParaVer.size(); i++) {
             if (this.filmesParaVer.get(i).getGenero().equals(genero)) {
                 listaMesmoGen.add(filmesParaVer.get(i));
