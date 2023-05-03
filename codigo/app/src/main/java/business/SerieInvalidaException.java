@@ -1,11 +1,9 @@
 package business;
 
-public class SerieInvalida extends Exception {
-    private Serie s;
+public class SerieInvalidaException extends Exception {
 
-    public SerieInvalida(Serie s) {
+    public SerieInvalidaException() {
         super();
-        this.s = s;
     }
 
     @Override

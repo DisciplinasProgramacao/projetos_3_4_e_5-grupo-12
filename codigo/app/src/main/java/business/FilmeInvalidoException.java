@@ -1,11 +1,9 @@
 package business;
 
-public class FilmeInvalido extends Exception {
-    private Filme f;
+public class FilmeInvalidoException extends Exception {
 
-    public FilmeInvalido(Filme f) {
+    public FilmeInvalidoException() {
         super();
-        this.f = f;
     }
 
     @Override
