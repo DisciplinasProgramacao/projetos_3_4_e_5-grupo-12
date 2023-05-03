@@ -64,6 +64,7 @@ public abstract class Midia {
         this.idioma = idiomas[random.nextInt(2)];
     }
 
+  
 /**
  * Retorna a nota associada a este objeto.
  *
@@ -190,13 +191,14 @@ public abstract class Midia {
 /**
  * Retorna uma representação em String do objeto Midia.
  * 
- * @return uma String que contém o nome, genero, idioma e audiencia.
+ * @return uma String que contém o nome, id, genero, idioma e audiencia.
  */   
     @Override
     public String toString() {
         return "{" +
                 " nome='" + getNome() + "'" +
-                " genero='" + getGenero() + "'" +
+                ", id='" + getId() + "'" +
+                ", genero='" + getGenero() + "'" +
                 ", idioma='" + getIdioma() + "'" +
                 ", audiencia='" + getAudiencia() + "'" +
                 "}";

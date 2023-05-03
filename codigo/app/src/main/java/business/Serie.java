@@ -19,6 +19,8 @@ public class Serie extends Midia implements ISalvavel {
         setQuantidadeEpisodios(quantidadeEpisodios);
     }
 
+
+
     /**
      * Esse é o construtor da classe serie para usar quando pego do arquivo
      * @param id Esse é o id da serie
@@ -54,16 +56,17 @@ public class Serie extends Midia implements ISalvavel {
 /**
  * Retorna uma representação em String do objeto Série.
  * 
- * @return uma String que contém o nome, o gênero, o idioma, a quantidade de episódios
+ * @return uma String que contém o nome, o id, o gênero, o idioma, a quantidade de episódios
  *         e a audiência da Série
  */
     @Override
     public String toString() {
         return "{" +
                 " nome='" + getNome() + "'" +
-                " genero='" + getGenero() + "'" +
+                ", id='" + getId() + "'" +
+                ", genero='" + getGenero() + "'" +
                 ", idioma='" + getIdioma() + "'" +
-                " quantidadeEpisodios='" + getQuantidadeEpisodios() + "'" +
+                ", quantidadeEpisodios='" + getQuantidadeEpisodios() + "'" +
                 ", audiencia='" + getAudiencia() + "'" +
                 "}";
     }
