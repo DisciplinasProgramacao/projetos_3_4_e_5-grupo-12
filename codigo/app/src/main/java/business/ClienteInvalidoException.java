@@ -1,11 +1,10 @@
 package business;
 
-public class ClienteInvalido extends Exception {
-    private Cliente c;
+public class ClienteInvalidoException extends Exception {
+   
 
-    public ClienteInvalido(Cliente c) {
+    public ClienteInvalidoException() {
         super();
-        this.c = c;
     }
 
     @Override

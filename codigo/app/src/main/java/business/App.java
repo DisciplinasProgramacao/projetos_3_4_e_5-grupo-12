@@ -43,9 +43,9 @@ public final class App {
                     case 1:
                         System.out.println("Opção 1 selecionada.");
                         clienteCad = cadastrarCliente(plat);
-                        if (clienteCad == null) {
-                            throw new ClienteInvalido(clienteCad);
-                        }
+                        // if (clienteCad == null) {
+                        //     throw new ClienteInvalido(clienteCad);
+                        // }
                         mapClientes.put(clienteCad.getNomeDeUsuario(), clienteCad);
                         plat.escreveArqCliente(clienteCad);
                         System.out.println("Cliente cadastrado com sucesso");
@@ -56,9 +56,6 @@ public final class App {
                         System.out.println("Opção 2 selecionada.");
                         entrada.nextLine();
                         serieCad = cadastrarSerie(plat);
-                        if (serieCad == null) {
-                            throw new SerieInvalida(serieCad);
-                        }
                         mapSeries.put(serieCad.getNome(), serieCad);
                         plat.escreveArqSerie(serieCad);
                         System.out.println("Serie cadastrado com sucesso");
@@ -70,9 +67,6 @@ public final class App {
                         System.out.println("Opção 3 selecionada.");
                         entrada.nextLine();
                         filmeCad = cadastrarFilmSerie(plat);
-                        if (filmeCad == null) {
-                            throw new FilmeInvalido(filmeCad);
-                        }
                         mapFilmes.put(filmeCad.getNome(), filmeCad);
                         plat.escreveArqFilme(filmeCad);
                         System.out.println("Filme cadastrado com sucesso");
@@ -89,12 +83,11 @@ public final class App {
                         String senha = entrada.nextLine();
 
                         if (mapClientes.get(nomeUsuario) == null) {
-                            System.out.println("Erro no login: usario nao encontrado");
+                            System.out.println("Erro no login: usuario nao encontrado");
                             System.out.println();
                             break;
                         }
                         clienteLogado = plat.login(nomeUsuario, senha);
-                        // System.out.println("Logado como: " + clienteLogado);
                         if (clienteLogado != null) {
                             System.out.println("Logado com sucesso");
                             op = 0;
@@ -204,19 +197,27 @@ public final class App {
                 } while (op2 != 0);
             }
 
-        } catch (ClienteInvalido e1) {
+        } catch (ClienteInvalidoException e1) {
             System.out.println(e1.getMessage());
-        } catch (SerieInvalida e2) {
+            System.out.println();   
+            menu(plat);
+        } catch (SerieInvalidaException e2) {
             System.out.println(e2.getMessage());
+            System.out.println();   
+            menu(plat);
         } catch (InputMismatchException e3) {
-            System.out.println("Ocorreu um erro no input. Verifique se inseriu a informacao correta");
+            System.out.println("Ocorreu um erro no input. Verifique se inseriu a informacao correta e tente novamente");
+        } catch (FilmeInvalidoException e4) {
+            System.out.println(e4.getMessage());
+            System.out.println();   
+            menu(plat);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    private static Cliente cadastrarCliente(PlataformaStreaming plat) {
+    private static Cliente cadastrarCliente(PlataformaStreaming plat) throws ClienteInvalidoException {
         String nomeCompleto, nome, senha;
         entrada.nextLine();
 
@@ -227,15 +228,14 @@ public final class App {
         nome = entrada.nextLine();
         if (nome.length() < 5) {
             System.out.println("O nome de usuario deve ter pelo menos 5 caracteres");
-            return null;
+            throw new ClienteInvalidoException();
         }
         System.out.println("Digite a sua senha: ");
         senha = entrada.nextLine();
 
-        if (!checkString(senha) && senha.length() < 6) {
-            System.out.println(
-                    "A senha deve possuir pelo menos 6 caracteres, entre letras maiusculas, minusculas e numeros.");
-            return null;
+        if (!checkString(senha) || senha.length() < 6) {
+            System.out.println( "A senha deve possuir pelo menos 6 caracteres, entre letras maiusculas, minusculas e numeros.");
+           throw new ClienteInvalidoException();
         }
 
         Cliente clienteCad = new Cliente(nomeCompleto, nome, senha);
@@ -243,7 +243,7 @@ public final class App {
         return clienteCad;
     }
 
-    private static Serie cadastrarSerie(PlataformaStreaming plat) {
+    private static Serie cadastrarSerie(PlataformaStreaming plat) throws SerieInvalidaException {
 
         String nome, idioma, genero;
         int qtdEpisodios;
@@ -254,21 +254,21 @@ public final class App {
         idioma = entrada.nextLine();
         if (!idioma.equals("ingles") && !idioma.equals("portugues") && !idioma.equals("espanhol")) {
             System.out.println("O idioma deve ser 'portugues', 'ingles' ou 'espanhol'");
-            return null;
+            throw new SerieInvalidaException();
         }
 
         System.out.println("Digite o genero da série");
         genero = entrada.nextLine();
         if (!genero.equals("comedia") && !genero.equals("terror") && !genero.equals("romance")) {
             System.out.println("O genero deve ser 'comedia', 'terror' ou 'romance'");
-            return null;
+            throw new SerieInvalidaException();
         }
 
         System.out.println("Digite a quantidade de episódios que a série possui");
         qtdEpisodios = entrada.nextInt();
         if (qtdEpisodios <= 0) {
             System.out.println("A serie deve possuir pelo menos 1 episodio");
-            return null;
+            throw new SerieInvalidaException();
         }
 
         Serie serieCad = new Serie(genero, nome, idioma, qtdEpisodios);
@@ -276,32 +276,32 @@ public final class App {
         return serieCad;
     }
 
-    private static Filme cadastrarFilmSerie(PlataformaStreaming plat) {
+    private static Filme cadastrarFilmSerie(PlataformaStreaming plat) throws FilmeInvalidoException {
         String nome, idioma, genero;
         int duracao;
         System.out.println("Digite o nome do filme");
         nome = entrada.nextLine();
 
         System.out.println("Digite o idioma do filme");
-        ;
+        
         idioma = entrada.nextLine();
         if (!idioma.equals("ingles") && !idioma.equals("portugues") && !idioma.equals("espanhol")) {
             System.out.println("O idioma deve ser 'portugues', 'ingles' ou 'espanhol'");
-            return null;
+            throw new FilmeInvalidoException();
         }
 
         System.out.println("Digite o genero do filme");
         genero = entrada.nextLine();
         if (!genero.equals("comedia") && !genero.equals("terror") && !genero.equals("romance")) {
             System.out.println("O genero deve ser 'comedia', 'terror' ou 'romance'");
-            return null;
+            throw new FilmeInvalidoException();
         }
 
         System.out.println("Digite a duração do filme");
         duracao = entrada.nextInt();
         if (duracao < 1) {
             System.out.println("O filme deve possuir pelo menos 1 minuto");
-            return null;
+            throw new FilmeInvalidoException();
         }
 
         Filme filmeCad = new Filme(genero, nome, idioma, duracao);
