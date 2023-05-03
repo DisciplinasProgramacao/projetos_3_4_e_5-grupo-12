@@ -16,8 +16,8 @@ public final class App {
 
         try {
             HashMap<String, Cliente> mapClientes = plat.carregarClientes();
-            HashMap<String, Serie> mapSeries = plat.carregarSeries();
-            HashMap<String, Filme> mapFilmes = plat.carregarFilmes();
+            HashMap<Integer, Serie> mapSeries = plat.carregarSeries();
+            HashMap<Integer, Filme> mapFilmes = plat.carregarFilmes();
 
             plat.setClientes(mapClientes);
             plat.setSeries(mapSeries);
@@ -56,7 +56,7 @@ public final class App {
                         System.out.println("Opção 2 selecionada.");
                         entrada.nextLine();
                         serieCad = cadastrarSerie(plat);
-                        mapSeries.put(serieCad.getNome(), serieCad);
+                        mapSeries.put(serieCad.getId(), serieCad);
                         plat.escreveArqSerie(serieCad);
                         System.out.println("Serie cadastrado com sucesso");
                         System.out.println(serieCad);
@@ -67,7 +67,7 @@ public final class App {
                         System.out.println("Opção 3 selecionada.");
                         entrada.nextLine();
                         filmeCad = cadastrarFilmSerie(plat);
-                        mapFilmes.put(filmeCad.getNome(), filmeCad);
+                        mapFilmes.put(filmeCad.getId(), filmeCad);
                         plat.escreveArqFilme(filmeCad);
                         System.out.println("Filme cadastrado com sucesso");
                         System.out.println(mapFilmes);

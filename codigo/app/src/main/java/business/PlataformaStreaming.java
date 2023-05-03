@@ -12,9 +12,9 @@ public class PlataformaStreaming {
     private static final String arqClientes = "POO_Espectadores.csv";
     private static final String arqAudiencia = "POO_Audiencia.csv";
     private String nome;
-    private HashMap<String, Serie> series = new HashMap<>();
+    private HashMap<Integer, Serie> series = new HashMap<>();
     private HashMap<String, Cliente> clientes = new HashMap<String, Cliente>();
-    private HashMap<String, Filme> filmes = new HashMap<>();
+    private HashMap<Integer, Filme> filmes = new HashMap<>();
     private Cliente clienteAtual;
 
     /**
@@ -41,7 +41,7 @@ public class PlataformaStreaming {
      * Método para pegar as series cadastradas
      * @return retorna as series cadastradas na plataforma
      */
-    public HashMap<String, Serie> getSeries() {
+    public HashMap<Integer, Serie> getSeries() {
         return series;
     }
 
@@ -49,7 +49,7 @@ public class PlataformaStreaming {
      * Método para cadastrar as series da plataforma
      * @param series mapa de todas as series que a plataforma ira conter
      */
-    public void setSeries(HashMap<String, Serie> series) {
+    public void setSeries(HashMap<Integer, Serie> series) {
         this.series = series;
     }
 
@@ -57,7 +57,7 @@ public class PlataformaStreaming {
      * Método para cadastrar os filmes da plataforma
      * @param filmes mapa de todos os filmes que a plataforma irá conter
      */
-    public void setFilmes(HashMap<String, Filme> filmes) {
+    public void setFilmes(HashMap<Integer, Filme> filmes) {
         this.filmes = filmes;
     }
 
@@ -65,7 +65,7 @@ public class PlataformaStreaming {
      * Método para pegar os filmes cadastrados
      * @return retorna os filmes cadastrados na plataforma
      */
-    public HashMap<String, Filme> getFilmes() {
+    public HashMap<Integer, Filme> getFilmes() {
         return filmes;
     }
 
@@ -99,7 +99,7 @@ public class PlataformaStreaming {
      * @param serie Esse é a serie que será recebido
      */
     public void adicionarSerie(Serie serie) {
-        series.put(serie.getNome(), serie);
+        series.put(serie.getId(), serie);
 
     }
 
@@ -108,7 +108,7 @@ public class PlataformaStreaming {
      * @param filme Esse é o filme que será recebido
      */
     public void adicionarFilme(Filme filme) {
-        filmes.put(filme.getNome(), filme);
+        filmes.put(filme.getId(), filme);
 
     }
 
@@ -196,8 +196,8 @@ public class PlataformaStreaming {
      * @return Retorna um mapa com as series do arquivo
      * @throws Exception
      */
-    public HashMap<String, Serie> carregarSeries() throws Exception {
-        HashMap<String, Serie> mapSeries = new HashMap<String, Serie>();
+    public HashMap<Integer, Serie> carregarSeries() throws Exception {
+        HashMap<Integer, Serie> mapSeries = new HashMap<Integer, Serie>();
         BufferedReader reader = new BufferedReader(new FileReader("POO_Series.csv"));
         String linha;
         reader.readLine();
@@ -206,7 +206,7 @@ public class PlataformaStreaming {
             StringTokenizer str = new StringTokenizer(linha.trim(), ";");
             int id = Integer.parseInt(str.nextToken());
             Serie serie = new Serie(id, str.nextToken(), str.nextToken());
-            mapSeries.put(serie.getNome(), serie);
+            mapSeries.put(serie.getId(), serie);
         }
         reader.close();
         return mapSeries;
@@ -217,8 +217,8 @@ public class PlataformaStreaming {
      * @return esse método carrega os filems do arquivo de filmes
      * @throws Exception
      */
-    public HashMap<String, Filme> carregarFilmes() throws Exception {
-        HashMap<String, Filme> mapFilmes = new HashMap<String, Filme>();
+    public HashMap<Integer, Filme> carregarFilmes() throws Exception {
+        HashMap<Integer, Filme> mapFilmes = new HashMap<Integer, Filme>();
         BufferedReader reader = new BufferedReader(new FileReader("POO_Filmes.csv"));
         String linha;
 
@@ -229,7 +229,7 @@ public class PlataformaStreaming {
             StringTokenizer str = new StringTokenizer(linha, ";");
             int id = Integer.parseInt(str.nextToken());
             Filme filme = new Filme(id, str.nextToken(), str.nextToken(), Integer.parseInt(str.nextToken()));
-            mapFilmes.put(filme.getNome(), filme);
+            mapFilmes.put(filme.getId(), filme);
         }
 
         reader.close();
@@ -340,8 +340,11 @@ public class PlataformaStreaming {
      * @return Retorna a serie com o mesmo nome que o enviado
      */
     public Serie findSerie(String nome) {
+       
         Serie serie;
-
+ 
+         
+        // nao funciona
         serie = series.get(nome);
         return serie;
     }
@@ -354,6 +357,7 @@ public class PlataformaStreaming {
     public Filme findFilme(String nome) {
         Filme filme;
 
+        // nao funciona
         filme = filmes.get(nome);
         return filme;
     }
