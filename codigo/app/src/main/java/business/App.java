@@ -43,12 +43,8 @@ public final class App {
                     case 1:
                         System.out.println("Opção 1 selecionada.");
                         clienteCad = cadastrarCliente(plat);
-                        // if (clienteCad == null) {
-                        //     throw new ClienteInvalido(clienteCad);
-                        // }
                         mapClientes.put(clienteCad.getNomeDeUsuario(), clienteCad);
                         plat.escreveArqCliente(clienteCad);
-                        System.out.println("Cliente cadastrado com sucesso");
                         System.out.println();
                         break;
 
@@ -211,7 +207,11 @@ public final class App {
             System.out.println(e4.getMessage());
             System.out.println();   
             menu(plat);
-        } catch (Exception e) {
+        } catch (NomeUsuarioException e5) {
+            System.out.println(e5.getMessage());
+            System.out.println();   
+            menu(plat);
+        }  catch (Exception e) {
             e.printStackTrace();
         }
 
