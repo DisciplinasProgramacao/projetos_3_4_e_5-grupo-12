@@ -296,12 +296,32 @@ public class PlataformaStreaming {
     }
 
     /**
-     *  Esse metodo escreve um cliente no arquivo de cliente
+     *  Esse metodo escreve um cliente no arquivo de cliente, se o nome de usuario dele ja nao estiver cadastrado
      * @param clienteCad Esse é o cliente a ser posto
+     * @throws Exception excecao a ser lancada caso o nome de usuario esteja indisponivel ou haja algum erro
      */
-    public void escreveArqCliente(Cliente clienteCad) {
-        escreveArquivo(clienteCad, arqClientes);
+    public void escreveArqCliente(Cliente clienteCad) throws Exception {
+        boolean clienteExistente = clienteExistente(clienteCad);
+        if (!clienteExistente) {
+            escreveArquivo(clienteCad, arqClientes);
+            System.out.println("Cliente cadastrado com sucesso");
+        } else {
+            throw new NomeUsuarioException();
+        }
+    }
 
+    /**
+     *  Esse metodo verifica se o nome de usuario escolhido ja esta cadastrado
+     * @param cliente é o cliente cujo nome de usuario sera verificado
+     * @throws Exception exceção a ser lançada caso haja algum erro
+     */
+    public boolean clienteExistente (Cliente cliente) throws Exception {
+        boolean flag = false;
+        HashMap<String, Cliente> mapClientes = carregarClientes();
+        if (mapClientes.containsKey(cliente.getNomeDeUsuario())) {
+            flag = true;
+        }
+        return flag;
     }
 
     // /**
