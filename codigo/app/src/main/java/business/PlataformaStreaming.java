@@ -393,4 +393,15 @@ public class PlataformaStreaming {
         return listaNova.get(0);
     }
 
+    public Filme filtrarFilmePorNome(String nome) {
+        List<Filme> listaNova = new LinkedList<>();
+        for (Filme s : this.filmes.values()) {
+          if (s.getNome().equals(nome)) {
+            listaNova.add(s);
+          }
+        }
+        
+        return listaNova.get(0);
+    }
+
 }

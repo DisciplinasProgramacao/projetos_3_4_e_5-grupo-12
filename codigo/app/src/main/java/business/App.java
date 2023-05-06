@@ -175,9 +175,12 @@ public final class App {
                             switch (op3) {
                                 case 1:
                                     int nota;
-                                    System.out.println("Qual a sua nota para essa série:");
+                                    System.out.println("Digite o nome do filme que você deseja adicionar:");
+                                    nomeS = entrada.nextLine();
+                                    Filme filme = plat.filtrarFilmePorNome(nomeS);
+                                    System.out.println("Qual a sua nota para esse filme:");
                                     nota = entrada.nextInt();
-                                    clienteLogado.adicionarFilmeVisto(f, nota);
+                                    clienteLogado.adicionarFilmeVisto(filme, nota);
                                     break;
                                 case 2:
                                     clienteLogado.adicionarFilmeVisto(f);
