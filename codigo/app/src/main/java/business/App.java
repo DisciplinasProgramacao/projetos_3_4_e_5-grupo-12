@@ -1,4 +1,5 @@
 package business;
+
 import java.util.*;
 
 public final class App {
@@ -122,7 +123,7 @@ public final class App {
                     System.out.println("0 - Sair");
                     op2 = entrada.nextInt();
 
-                    switch (op) {
+                    switch (op2) {
                         case 1:
                             break;
 
@@ -132,13 +133,14 @@ public final class App {
                             System.out.println("1 - SIM");
                             System.out.println("2 - Não");
                             op3 = entrada.nextInt();
+                            entrada.nextLine();
                             switch (op3) {
                                 case 1:
                                     int nota;
                                     String nomeS;
                                     System.out.println("Digite o nome da série que você deseja adicionar:");
                                     nomeS = entrada.nextLine();
-                                    Serie s = plat.findSerie(nomeS);
+                                    Serie s = plat.filtrarSeriePorNome(nomeS);
                                     System.out.println("Qual a sua nota para essa série:");
                                     nota = entrada.nextInt();
                                     clienteLogado.adicionarSerieVista(s, nota);
@@ -146,7 +148,7 @@ public final class App {
                                 case 2:
                                     System.out.println("Digite o nome da série que você deseja adicionar:");
                                     nomeS = entrada.nextLine();
-                                    s = plat.findSerie(nomeS);
+                                    s = plat.filtrarSeriePorNome(nomeS);
                                     clienteLogado.adicionarSerieVista(s);
                                     break;
                             }
@@ -195,23 +197,23 @@ public final class App {
 
         } catch (ClienteInvalidoException e1) {
             System.out.println(e1.getMessage());
-            System.out.println();   
+            System.out.println();
             menu(plat);
         } catch (SerieInvalidaException e2) {
             System.out.println(e2.getMessage());
-            System.out.println();   
+            System.out.println();
             menu(plat);
         } catch (InputMismatchException e3) {
             System.out.println("Ocorreu um erro no input. Verifique se inseriu a informacao correta e tente novamente");
         } catch (FilmeInvalidoException e4) {
             System.out.println(e4.getMessage());
-            System.out.println();   
+            System.out.println();
             menu(plat);
         } catch (NomeUsuarioException e5) {
             System.out.println(e5.getMessage());
-            System.out.println();   
+            System.out.println();
             menu(plat);
-        }  catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -234,8 +236,9 @@ public final class App {
         senha = entrada.nextLine();
 
         if (!checkString(senha) || senha.length() < 6) {
-            System.out.println( "A senha deve possuir pelo menos 6 caracteres, entre letras maiusculas, minusculas e numeros.");
-           throw new ClienteInvalidoException();
+            System.out.println(
+                    "A senha deve possuir pelo menos 6 caracteres, entre letras maiusculas, minusculas e numeros.");
+            throw new ClienteInvalidoException();
         }
 
         Cliente clienteCad = new Cliente(nomeCompleto, nome, senha);
@@ -283,7 +286,7 @@ public final class App {
         nome = entrada.nextLine();
 
         System.out.println("Digite o idioma do filme");
-        
+
         idioma = entrada.nextLine();
         if (!idioma.equals("ingles") && !idioma.equals("portugues") && !idioma.equals("espanhol")) {
             System.out.println("O idioma deve ser 'portugues', 'ingles' ou 'espanhol'");
