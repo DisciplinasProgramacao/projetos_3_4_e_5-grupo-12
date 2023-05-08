@@ -13,13 +13,13 @@ public class Cliente implements ISalvavel {
     private List<Filme> filmesParaVer = new LinkedList<>();
     private List<Filme> filmesJaVistos = new LinkedList<>();
 
-/**
- * Cria um novo objeto Cliente com nome completo, nome de usuário e senha.
- * 
- * @param nomeCompleto o nome completo do Cliente
- * @param nomeDeUsuario o nome de usuário do Cliente
- * @param senha a senha do Cliente
- */
+    /**
+     * Cria um novo objeto Cliente com nome completo, nome de usuário e senha.
+     * 
+     * @param nomeCompleto  o nome completo do Cliente
+     * @param nomeDeUsuario o nome de usuário do Cliente
+     * @param senha         a senha do Cliente
+     */
     public Cliente(String nomeCompleto, String nomeDeUsuario, String senha) {
         this.nomeCompleto = nomeCompleto;
         setNomeDeUsuario(nomeDeUsuario);
@@ -28,87 +28,87 @@ public class Cliente implements ISalvavel {
         this.senha = getSenha();
     }
 
-/**
- * Retorna o nome completo do cliente.
- *
- * @return o nome completo do cliente.
- */
+    /**
+     * Retorna o nome completo do cliente.
+     *
+     * @return o nome completo do cliente.
+     */
     public String getNomeCompleto() {
         return nomeCompleto;
     }
 
-/**
- * Retorna o nome de usuário do cliente.
- *
- * @return o nome de usuário do cliente.
- */
+    /**
+     * Retorna o nome de usuário do cliente.
+     *
+     * @return o nome de usuário do cliente.
+     */
     public String getNomeDeUsuario() {
         return nomeDeUsuario;
     }
 
-/**
- * Define o nome de usuário do cliente.
- *
- * @param nomeDeUsuario o novo nome de usuário do cliente.
- */
+    /**
+     * Define o nome de usuário do cliente.
+     *
+     * @param nomeDeUsuario o novo nome de usuário do cliente.
+     */
     public void setNomeDeUsuario(String nomeDeUsuario) {
         if (nomeDeUsuario != "") {
             this.nomeDeUsuario = nomeDeUsuario;
         }
     }
 
-/**
- * Retorna a senha do cliente.
- *
- * @return a senha do cliente.
- */
+    /**
+     * Retorna a senha do cliente.
+     *
+     * @return a senha do cliente.
+     */
     public String getSenha() {
         return senha;
     }
 
-/**
- * Define a senha do cliente.
- *
- * @param senha a nova senha do cliente.
- */
+    /**
+     * Define a senha do cliente.
+     *
+     * @param senha a nova senha do cliente.
+     */
     public void setSenha(String senha) {
         if (senha != "") {
             this.senha = senha;
         }
     }
 
-/**
- * Retorna a lista de séries que o cliente deseja assistir.
- *
- * @return a lista de séries que o cliente deseja assistir.
- */
+    /**
+     * Retorna a lista de séries que o cliente deseja assistir.
+     *
+     * @return a lista de séries que o cliente deseja assistir.
+     */
     public List<Serie> getListaParaVer() {
         return this.listaParaVer;
     }
 
-/**
- * Retorna a lista de séries que o cliente já assistiu.
- *
- * @return a lista de séries que o cliente já assistiu.
- */
+    /**
+     * Retorna a lista de séries que o cliente já assistiu.
+     *
+     * @return a lista de séries que o cliente já assistiu.
+     */
     public List<Serie> getListaJaVista() {
         return this.listaJaVistas;
     }
 
-/**
- * Retorna a lista de filmes que o cliente deseja assistir.
- *
- * @return a lista de filmes que o cliente deseja assistir.
- */
+    /**
+     * Retorna a lista de filmes que o cliente deseja assistir.
+     *
+     * @return a lista de filmes que o cliente deseja assistir.
+     */
     public List<Filme> getFilmesParaVer() {
         return this.filmesParaVer;
     }
 
-/**
- * Retorna a lista de filmes que o cliente já assistiu.
- *
- * @return a lista de filmes que o cliente já assistiu.
- */
+    /**
+     * Retorna a lista de filmes que o cliente já assistiu.
+     *
+     * @return a lista de filmes que o cliente já assistiu.
+     */
     public List<Filme> getFilmesJaVistos() {
         return this.filmesJaVistos;
     }
@@ -153,63 +153,68 @@ public class Cliente implements ISalvavel {
         listaParaVer.remove(serie);
     }
 
-/**
- * Adiciona uma série à lista de séries já vistas pelo cliente e registra a audiência da série.
- *
- * @param serie a série que foi vista pelo cliente.
- */   
+    /**
+     * Adiciona uma série à lista de séries já vistas pelo cliente e registra a
+     * audiência da série.
+     *
+     * @param serie a série que foi vista pelo cliente.
+     */
     public void adicionarSerieVista(Serie serie) {
         listaJaVistas.add(serie);
         serie.registrarAudiencia();
     }
 
-/**
- * Remove uma série da lista de séries já vistas pelo cliente.
- *
- * @param serie a série que deve ser removida da lista.
- */
+    /**
+     * Remove uma série da lista de séries já vistas pelo cliente.
+     *
+     * @param serie a série que deve ser removida da lista.
+     */
     public void retirarSerieVista(Serie serie) {
         listaJaVistas.remove(serie);
     }
 
-/**
- * Adiciona um filme à lista de filmes já vistos pelo cliente e registra sua audiência.
- *
- * @param filme o filme que deve ser adicionado à lista.
- */
+    /**
+     * Adiciona um filme à lista de filmes já vistos pelo cliente e registra sua
+     * audiência.
+     *
+     * @param filme o filme que deve ser adicionado à lista.
+     */
     public void adicionarFilmeVisto(Filme filme) {
         filmesJaVistos.add(filme);
         filme.registrarAudiencia();
     }
 
-
-/**
-* Método que remove um filme da lista de filmes já vistos pelo cliente.
-*
-* @param filme O objeto do tipo Filme que representa o filme a ser removido da lista de filmes já vistos.
-*/    
+    /**
+     * Método que remove um filme da lista de filmes já vistos pelo cliente.
+     *
+     * @param filme O objeto do tipo Filme que representa o filme a ser removido da
+     *              lista de filmes já vistos.
+     */
     public void retirarFilmeVisto(Filme filme) {
         filmesJaVistos.remove(filme);
     }
 
-/**
-* Método que adiciona uma série à lista de séries já vistas pelo cliente e atribui uma nota para essa série.
-*
-* @param serie O objeto do tipo Serie que representa a série a ser adicionada à lista de séries já vistas.
-* @param nota Um inteiro que representa a nota que será atribuída à série.
-*/    
+    /**
+     * Método que adiciona uma série à lista de séries já vistas pelo cliente e
+     * atribui uma nota para essa série.
+     *
+     * @param serie O objeto do tipo Serie que representa a série a ser adicionada à
+     *              lista de séries já vistas.
+     * @param nota  Um inteiro que representa a nota que será atribuída à série.
+     */
     public void adicionarSerieVista(Serie serie, Integer nota) {
         serie.setNota(nota);
         listaJaVistas.add(serie);
         serie.registrarAudiencia();
     }
 
-/**
-* Adiciona um filme na lista de filmes já vistos pelo cliente, registrando a nota dada pelo cliente e a audiência do filme.
-*
-* @param filme o objeto Filme a ser adicionado na lista de filmes já vistos
-* @param nota a nota dada pelo cliente ao filme
-*/    
+    /**
+     * Adiciona um filme na lista de filmes já vistos pelo cliente, registrando a
+     * nota dada pelo cliente e a audiência do filme.
+     *
+     * @param filme o objeto Filme a ser adicionado na lista de filmes já vistos
+     * @param nota  a nota dada pelo cliente ao filme
+     */
     public void adicionarFilmeVisto(Filme filme, Integer nota) {
         filme.setNota(nota);
         filmesJaVistos.add(filme);
@@ -225,7 +230,7 @@ public class Cliente implements ISalvavel {
     public List<Filme> filtrarFilmePorGenero(String genero) {
 
         List<Filme> listaMesmoGen = new LinkedList<Filme>();
-        
+
         for (int i = 0; i < filmesParaVer.size(); i++) {
             if (this.filmesParaVer.get(i).getGenero().equals(genero)) {
                 listaMesmoGen.add(filmesParaVer.get(i));
@@ -372,12 +377,11 @@ public class Cliente implements ISalvavel {
         }
     }
 
-
-/**
- * Retorna uma representação em String do objeto Cliente.
- * 
- * @return uma String que contém o nome de usuario e senha
- */   
+    /**
+     * Retorna uma representação em String do objeto Cliente.
+     * 
+     * @return uma String que contém o nome de usuario e senha
+     */
     @Override
     public String toString() {
         return "{" +
@@ -386,11 +390,11 @@ public class Cliente implements ISalvavel {
                 "}";
     }
 
-/**
- * Retorna uma String formatada contendo os dados do objeto.
- * 
- * @return uma String contendo o login, senha e nome
- */
+    /**
+     * Retorna uma String formatada contendo os dados do objeto.
+     * 
+     * @return uma String contendo o login, senha e nome
+     */
     @Override
     public String getDadosString() {
         String login = getNomeDeUsuario();
