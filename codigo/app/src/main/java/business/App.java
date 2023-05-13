@@ -167,7 +167,7 @@ public final class App {
                         case 6:
                             System.out.println("Digite o nome do filme que você deseja adicionar:");
                             String nomeS = entrada.nextLine();
-                            Filme f = plat.findFilme(nomeS);
+                            Filme f = plat.filtrarFilmePorNome(nomeS);
                             System.out.println("Você gostaria de avaliar esse filme:");
                             System.out.println("1 - SIM");
                             System.out.println("2 - Não");
