@@ -1,7 +1,7 @@
 package business;
 
 public class NomeUsuarioException extends Exception {
-    
+
     public NomeUsuarioException() {
         super();
     }

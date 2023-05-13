@@ -1,7 +1,6 @@
 package business;
 
 public class ClienteInvalidoException extends Exception {
-   
 
     public ClienteInvalidoException() {
         super();

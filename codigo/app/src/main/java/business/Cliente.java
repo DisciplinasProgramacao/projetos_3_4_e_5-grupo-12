@@ -203,7 +203,6 @@ public class Cliente implements ISalvavel {
      * @param nota  Um inteiro que representa a nota que será atribuída à série.
      */
     public void adicionarSerieVista(Serie serie, Integer nota) {
-        serie.setNota(nota);
         listaJaVistas.add(serie);
         serie.registrarAudiencia();
     }
@@ -216,7 +215,6 @@ public class Cliente implements ISalvavel {
      * @param nota  a nota dada pelo cliente ao filme
      */
     public void adicionarFilmeVisto(Filme filme, Integer nota) {
-        filme.setNota(nota);
         filmesJaVistos.add(filme);
         filme.registrarAudiencia();
     }
