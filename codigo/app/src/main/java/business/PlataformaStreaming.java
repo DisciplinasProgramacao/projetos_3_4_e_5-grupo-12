@@ -15,7 +15,7 @@ public class PlataformaStreaming {
     private HashMap<Integer, Serie> series = new HashMap<>();
     private HashMap<String, Cliente> clientes = new HashMap<String, Cliente>();
     private HashMap<Integer, Filme> filmes = new HashMap<>();
-    private static HashMap<Key<Integer, Integer>, Avaliacao> Avaliacoes = new HashMap<>();
+    private static HashMap<Key<String, Integer>, Avaliacao> Avaliacoes = new HashMap<>(); //(id cliente / id Serie)
     private Cliente clienteAtual;
 
     /**
@@ -419,18 +419,40 @@ public class PlataformaStreaming {
         return listaNova.get(0);
     }
 
-    public void setNota(int id_Cliente, int id_Midia, float nota) {
+    public void setNota(String nomeUsuario, int id_Midia, float nota) {
 
         Avaliacao avaliacao = new Avaliacao(nota);
         Key key = new Key<Integer, Integer>(id_Cliente, id_Midia);
         Avaliacoes.put(key, avaliacao);
     }
 
-    public void setNota(int id_Cliente, int id_Midia, float nota, String comentario) {
+    public void setNota(String nomeUsuario, int id_Midia, float nota, String comentario) {
 
         Avaliacao avaliacao = new Avaliacao(nota, comentario);
         Key<Integer, Integer> key = new Key<Integer, Integer>(id_Cliente, id_Midia);
         Avaliacoes.put(key, avaliacao);
+    }
+
+    public boolean checkAvaliacao(String nomeM) {
+
+        boolean permitido = false;
+
+        if(clienteAtual.getListaJaVista().contains(nomeM)){
+            int idMidia = filtrarFilmePorNome(nomeM).getId();
+            String nomeUsuario = this.clienteAtual.getNomeDeUsuario();
+            Key key = new Key<K1,K2>(nomeUsuario, idMidia);
+            
+            if(!Avaliacoes.containsKey(key)){
+                permitido = true;
+            }            
+        }
+
+        return permitido;
+    }
+
+    public boolean eEspecialista() {
+
+        return (this.clienteAtual instanceof ClienteEspecialista);
     }
 
 }
