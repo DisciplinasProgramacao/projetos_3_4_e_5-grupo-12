@@ -422,14 +422,14 @@ public class PlataformaStreaming {
     public void setNota(String nomeUsuario, int id_Midia, float nota) {
 
         Avaliacao avaliacao = new Avaliacao(nota);
-        Key key = new Key<Integer, Integer>(id_Cliente, id_Midia);
+        Key<String, Integer> key = new Key<String, Integer>(nomeUsuario, id_Midia);
         Avaliacoes.put(key, avaliacao);
     }
 
     public void setNota(String nomeUsuario, int id_Midia, float nota, String comentario) {
 
         Avaliacao avaliacao = new Avaliacao(nota, comentario);
-        Key<Integer, Integer> key = new Key<Integer, Integer>(id_Cliente, id_Midia);
+        Key<String, Integer> key = new Key<String, Integer>(nomeUsuario, id_Midia);
         Avaliacoes.put(key, avaliacao);
     }
 
@@ -437,10 +437,12 @@ public class PlataformaStreaming {
 
         boolean permitido = false;
 
-        if(clienteAtual.getListaJaVista().contains(nomeM)){
+        Serie s = filtrarSeriePorNome(nomeM);
+        Filme f = filtrarFilmePorNome(nomeM);
+        if(clienteAtual.getListaJaVista().contains(s)){
             int idMidia = filtrarFilmePorNome(nomeM).getId();
             String nomeUsuario = this.clienteAtual.getNomeDeUsuario();
-            Key key = new Key<K1,K2>(nomeUsuario, idMidia);
+            Key<String, Integer> key = new Key<String, Integer>(nomeUsuario, idMidia);
             
             if(!Avaliacoes.containsKey(key)){
                 permitido = true;
