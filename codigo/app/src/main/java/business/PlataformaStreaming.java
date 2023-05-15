@@ -439,7 +439,7 @@ public class PlataformaStreaming {
 
         Serie s = filtrarSeriePorNome(nomeM);
         Filme f = filtrarFilmePorNome(nomeM);
-        if(clienteAtual.getListaJaVista().contains(s)){
+        if(clienteAtual.getListaJaVista().contains(f)){
             int idMidia = filtrarFilmePorNome(nomeM).getId();
             String nomeUsuario = this.clienteAtual.getNomeDeUsuario();
             Key<String, Integer> key = new Key<String, Integer>(nomeUsuario, idMidia);
@@ -447,6 +447,14 @@ public class PlataformaStreaming {
             if(!Avaliacoes.containsKey(key)){
                 permitido = true;
             }            
+        } else if(clienteAtual.getListaJaVista().contains(s)) {
+            int idMidia = filtrarSeriePorNome(nomeM).getId();
+            String nomeUsuario = this.clienteAtual.getNomeDeUsuario();
+            Key<String, Integer> key = new Key<String, Integer>(nomeUsuario, idMidia);
+            
+            if(!Avaliacoes.containsKey(key)){
+                permitido = true;
+            }     
         }
 
         return permitido;
