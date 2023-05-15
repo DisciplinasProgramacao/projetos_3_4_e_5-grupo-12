@@ -5,7 +5,8 @@
 - Implementação da lógica de carga de dados do catálogo de filmes; ✔️ 
 - Implementação do cadastro de clientes, filmes e séries; ✔️ 
 - Salvar dados de clientes, filmes e séries; ✔️ 
-- Implementação do protótipo de sistema cobrindo os requisitos atuais (documento anterior); 👨‍💻
+- Implementação do sistema de avaliação de mídias. ✔️
+- Implementação do protótipo de sistema cobrindo os requisitos atuais (documento anterior); ✔️
 - Garantir a robustez do sistema principal.👨‍💻
 
 
