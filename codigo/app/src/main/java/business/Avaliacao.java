@@ -28,4 +28,17 @@ public class Avaliacao {
         contNota += nota;
         this.nota = contNota / contNumeroNotas;
     }
+
+    public float getNota() {
+        return this.nota;
+    }
+
+
+    public String getComentario() {
+        return this.comentario;
+    }
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
 }
