@@ -11,6 +11,8 @@ public class PlataformaStreamingTest {
     Serie Polyforme;
     Serie PapaLeguas;
     PlataformaStreaming p;
+    Filme DemandaDosConselheiros;
+    Filme SinestesiaDoOdio;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -21,11 +23,13 @@ public class PlataformaStreamingTest {
         Polyforme = new Serie("terror","Polyforme", "portugues",8);
         PapaLeguas = new Serie("comedia","Papaleguas", "alemao",12);
         p = new PlataformaStreaming("POPlux");
+        DemandaDosConselheiros = new Filme("ficção científica", "Demanda Dos Conselheiros", "portugues", 160);
+        SinestesiaDoOdio = new Filme("terror", "Sinestesia Do Ódio", "portugues", 180);
     }
 
 
     @Test
-    void testAdicionarSerie() {
+    void AdicionarSerieTest() {
         p.adicionarSerie(NanaABanana);
         p.adicionarSerie(Polyforme);
         p.adicionarSerie(PapaLeguas);
@@ -34,7 +38,7 @@ public class PlataformaStreamingTest {
     }
 
     @Test
-    void testAdicionarCliente() {
+    void AdicionarClienteTest() {
         p.adicionarCliente(c1);
         p.adicionarCliente(c2);
         p.adicionarCliente(c3);
@@ -43,7 +47,7 @@ public class PlataformaStreamingTest {
     }
      
     @Test
-    void testFiltrarPorGenero() {
+    void FiltrarSeriePorGeneroTest() {
         p.adicionarCliente(c1);
         c1.adicionarNaLista(NanaABanana);
         c1.adicionarNaLista(PapaLeguas);
@@ -55,7 +59,7 @@ public class PlataformaStreamingTest {
 
 
     @Test
-    void testFiltrarPorQntEpisodios() {
+    void FiltrarSeriePorQntEpisodiosTest() {
         p.adicionarCliente(c1);
         c1.adicionarNaLista(NanaABanana);
         c1.adicionarNaLista(Polyforme);
@@ -66,7 +70,7 @@ public class PlataformaStreamingTest {
     }
 
     @Test
-    void filtrarPorIdiomaTest() {
+    void FiltrarSeriePorIdiomaTest() {
         p.adicionarCliente(c1);
         c1.adicionarNaLista(NanaABanana);
         c1.adicionarNaLista(Polyforme);
@@ -77,7 +81,7 @@ public class PlataformaStreamingTest {
     }
 
     @Test
-    void testRegistrarAudiencia() {
+    void RegistrarAudienciaTest() {
         p.adicionarCliente(c1);
         p.adicionarSerie(NanaABanana);
         p.login("George", "123pogchamp456");
@@ -95,4 +99,24 @@ public class PlataformaStreamingTest {
         assertEquals(c1, p.login("George", "123pogchamp456"));
     }
 
-}
+    @Test
+    void FiltrarSeriePorNomeTest() {
+        p.adicionarCliente(c1);
+        c1.adicionarNaLista(NanaABanana);
+        c1.adicionarNaLista(Polyforme);
+        c1.adicionarNaLista(PapaLeguas);
+        c1.adicionarNaLista(PapaLeguas);
+        p.login("George", "123pogchamp456");
+        assertEquals(2,p.filtrarSeriePorNome("Papaleguas"));
+    }
+
+    @Test
+    void FiltrarFilmePorNomeTest() {
+        p.adicionarCliente(c1);
+        c1.adicionarFilmeParaVer(DemandaDosConselheiros);
+        c1.adicionarFilmeParaVer(DemandaDosConselheiros);
+        c1.adicionarFilmeParaVer(SinestesiaDoOdio);
+        c1.adicionarFilmeParaVer(DemandaDosConselheiros);
+        p.login("George", "123pogchamp456");
+        assertEquals(3,p.filtrarSeriePorNome("Demanda Dos Conselheiros"));
+    }
