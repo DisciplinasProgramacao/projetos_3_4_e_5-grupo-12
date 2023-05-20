@@ -409,6 +409,7 @@ public class PlataformaStreaming {
      * @return Retorna o filme com o mesmo nome que o enviado
      */
     public Filme filtrarFilmePorNome(String nome) {
+        
         List<Filme> listaNova = new LinkedList<>();
         for (Filme s : this.filmes.values()) {
             if (s.getNome().equals(nome)) {
@@ -419,36 +420,49 @@ public class PlataformaStreaming {
         return listaNova.get(0);
     }
 
-    public void setNota(String nomeUsuario, int id_Midia, float nota) {
+    public Avaliacao setNota(String nomeUsuario, int id_Midia, float nota) {
 
         Avaliacao avaliacao = new Avaliacao(nota);
         Key<String, Integer> key = new Key<String, Integer>(nomeUsuario, id_Midia);
         Avaliacoes.put(key, avaliacao);
+
+        return avaliacao;
     }
 
-    public void setNota(String nomeUsuario, int id_Midia, float nota, String comentario) {
+    public Avaliacao setNota(String nomeUsuario, int id_Midia, float nota, String comentario) {
 
         Avaliacao avaliacao = new Avaliacao(nota, comentario);
         Key<String, Integer> key = new Key<String, Integer>(nomeUsuario, id_Midia);
         Avaliacoes.put(key, avaliacao);
+        return avaliacao;
     }
 
-    public boolean checkAvaliacao(String nomeM) {
+    public boolean checkAvaliacaoFilme(String nomeM) {
 
         boolean permitido = false;
-
-        Serie s = filtrarSeriePorNome(nomeM);
+        
         Filme f = filtrarFilmePorNome(nomeM);
-        if(clienteAtual.getListaJaVista().contains(f)){
-            int idMidia = filtrarFilmePorNome(nomeM).getId();
+        if(clienteAtual.getFilmesJaVistos().contains(f)){
+            int idMidia = f.getId();
             String nomeUsuario = this.clienteAtual.getNomeDeUsuario();
             Key<String, Integer> key = new Key<String, Integer>(nomeUsuario, idMidia);
             
             if(!Avaliacoes.containsKey(key)){
                 permitido = true;
             }            
-        } else if(clienteAtual.getListaJaVista().contains(s)) {
-            int idMidia = filtrarSeriePorNome(nomeM).getId();
+        } 
+
+        return permitido;
+    }
+
+    public boolean checkAvaliacaoSerie(String nomeM) {
+
+        boolean permitido = false;
+
+        Serie s = filtrarSeriePorNome(nomeM);
+   
+        if(clienteAtual.getListaJaVista().contains(s)) {
+            int idMidia = s.getId();
             String nomeUsuario = this.clienteAtual.getNomeDeUsuario();
             Key<String, Integer> key = new Key<String, Integer>(nomeUsuario, idMidia);
             
