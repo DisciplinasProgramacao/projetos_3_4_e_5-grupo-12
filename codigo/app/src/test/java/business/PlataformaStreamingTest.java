@@ -120,3 +120,4 @@ public class PlataformaStreamingTest {
         p.login("George", "123pogchamp456");
         assertEquals(3,p.filtrarSeriePorNome("Demanda Dos Conselheiros"));
     }
+}
