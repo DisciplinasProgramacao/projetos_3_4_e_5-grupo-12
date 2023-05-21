@@ -144,6 +144,7 @@ public final class App {
                                 case 1:
                                     float nota;
 
+                                    
                                     if (plat.checkAvaliacaoSerie(nomeS)) {
 
                                         if (plat.eEspecialista()) {
@@ -186,7 +187,7 @@ public final class App {
                                         clienteLogado.adicionarSerieVista(s);
 
                                     } else {
-                                        System.out.println("Você já avaliou" + nomeS + "!");
+                                        System.out.println("Você já avaliou " + nomeS + "!");
                                     }
                                     break;
                                 case 2:
@@ -220,6 +221,7 @@ public final class App {
                                     System.out.println("Digite o nome do filme que você deseja adicionar:");
                                     nomeS = entrada.nextLine();
                                     Filme filme = plat.filtrarFilmePorNome(nomeS);
+                                    
 
                                     if (plat.checkAvaliacaoFilme(nomeS)) {
 
@@ -279,6 +281,10 @@ public final class App {
                         case 9:
                             menu(plat);
                             break;
+                        case 10:
+                            System.out.println("Numero de avaliações: " + plat.getQtdAvaliacoes());
+                            System.out.println(plat.eEspecialista());
+                        break;
                     }
 
                 } while (op2 != 0);

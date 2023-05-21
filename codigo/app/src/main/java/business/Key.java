@@ -9,6 +9,15 @@ class Key<K1, K2> {
         this.key2 = key2;
     }
 
+    public K1 getKey1() {
+        return this.key1;
+    }
+
+    public K2 getKey2() {
+        return this.key2;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

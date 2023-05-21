@@ -15,7 +15,7 @@ public class PlataformaStreaming {
     private HashMap<Integer, Serie> series = new HashMap<>();
     private HashMap<String, Cliente> clientes = new HashMap<String, Cliente>();
     private HashMap<Integer, Filme> filmes = new HashMap<>();
-    private static HashMap<Key<String, Integer>, Avaliacao> Avaliacoes = new HashMap<>(); //(id cliente / id Serie)
+    private static HashMap<Key<String, Integer>, Avaliacao> Avaliacoes = new HashMap<>(); // (id cliente / id Serie)
     private Cliente clienteAtual;
 
     /**
@@ -409,7 +409,7 @@ public class PlataformaStreaming {
      * @return Retorna o filme com o mesmo nome que o enviado
      */
     public Filme filtrarFilmePorNome(String nome) {
-        
+
         List<Filme> listaNova = new LinkedList<>();
         for (Filme s : this.filmes.values()) {
             if (s.getNome().equals(nome)) {
@@ -442,7 +442,7 @@ public class PlataformaStreaming {
         boolean permitido = false;
         
         Filme f = filtrarFilmePorNome(nomeM);
-        if(clienteAtual.getFilmesJaVistos().contains(f)){
+        if(this.clienteAtual.getFilmesJaVistos().contains(f)){
             int idMidia = f.getId();
             String nomeUsuario = this.clienteAtual.getNomeDeUsuario();
             Key<String, Integer> key = new Key<String, Integer>(nomeUsuario, idMidia);
@@ -461,7 +461,7 @@ public class PlataformaStreaming {
 
         Serie s = filtrarSeriePorNome(nomeM);
    
-        if(clienteAtual.getListaJaVista().contains(s)) {
+        if(this.clienteAtual.getListaJaVista().contains(s)) {
             int idMidia = s.getId();
             String nomeUsuario = this.clienteAtual.getNomeDeUsuario();
             Key<String, Integer> key = new Key<String, Integer>(nomeUsuario, idMidia);
@@ -473,10 +473,36 @@ public class PlataformaStreaming {
 
         return permitido;
     }
-
     public boolean eEspecialista() {
 
         return (this.clienteAtual instanceof ClienteEspecialista);
     }
+
+
+    //Na mudança de Regular para Especialista, todos as series começam a ja ter sido avaliadas
+
+    public int getQtdAvaliacoes() {
+ 
+        int contador = 0;
+
+        for (Key<String, Integer> chave : Avaliacoes.keySet()) {
+            if(chave.getKey1().equals(this.clienteAtual.getNomeDeUsuario())){
+                contador++;
+                
+            }
+        }
+
+        if(contador>=0) {
+            String usuario = clienteAtual.getNomeDeUsuario();
+            clientes.remove(usuario);
+            ClienteEspecialista novo = new ClienteEspecialista(clienteAtual.getNomeCompleto(),clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha());
+            this.clienteAtual = novo;
+            adicionarCliente(novo);
+        }
+
+        return contador;
+    }
+
+    
 
 }
