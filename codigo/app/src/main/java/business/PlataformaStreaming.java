@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 
 public class PlataformaStreaming {
@@ -263,8 +264,8 @@ public class PlataformaStreaming {
      * @throws Exception
      */
     public void carregarAudiencia() throws Exception {
-
-        BufferedReader reader = new BufferedReader(new FileReader("POO_Audiencia.csv"));
+        float nota;
+        BufferedReader reader = new BufferedReader(new FileReader(arqAudiencia));
         String linha;
         reader.readLine();
 
@@ -276,7 +277,12 @@ public class PlataformaStreaming {
                 Serie temp = series.get(Integer.parseInt(str.nextToken()));
                 clienteAtual.adicionarNaLista(temp);
             } else {
-                Serie temp = series.get(Integer.parseInt(str.nextToken()));
+                int id = Integer.parseInt(str.nextToken());
+                Serie temp = series.get(id);
+                nota = Float.parseFloat(str.nextToken());
+                Key<String, Integer> key = new Key<String, Integer>(login, id);
+                Avaliacao av = new Avaliacao(nota);
+                Avaliacoes.put(key, av);
                 clienteAtual.adicionarSerieVista(temp);
             }
         }
@@ -369,15 +375,16 @@ public class PlataformaStreaming {
      *                 assistira
      * @param serieCad Essa é a serie que tera a audiencia
      */
-    public void escreveArqAudiencia(String tipo, Serie serieCad) {
+    public void escreveArqAudiencia(String tipo, Serie serieCad, float nota) {
 
         try {
-            FileWriter arquivo = new FileWriter("POO_Audiencia.csv", true);
-
-            String login = clienteAtual.getNomeDeUsuario();
+            FileWriter arquivo = new FileWriter(arqAudiencia, true);
             int id = serieCad.getId();
+            String login = clienteAtual.getNomeDeUsuario();
 
-            arquivo.write("\n" + login + ";" + tipo + ";" + id);
+            Key<String, Integer> chave = new Key<>(login, id);
+            LocalDate data = Avaliacoes.get(chave).getData();
+            arquivo.write("\n" + login + ";" + tipo + ";" + id + ";" + nota + ";" + data);
             arquivo.close();
         } catch (IOException e) {
             System.out.println("Ocorreu um erro ao salvar os dados no arquivo.");
@@ -440,18 +447,18 @@ public class PlataformaStreaming {
     public boolean checkAvaliacaoFilme(String nomeM) {
 
         boolean permitido = false;
-        
+
         Filme f = filtrarFilmePorNome(nomeM);
-       
-        if(this.clienteAtual.getFilmesJaVistos().contains(f)){
+
+        if (this.clienteAtual.getFilmesJaVistos().contains(f)) {
             int idMidia = f.getId();
             String nomeUsuario = this.clienteAtual.getNomeDeUsuario();
             Key<String, Integer> key = new Key<String, Integer>(nomeUsuario, idMidia);
-            
-            if(!Avaliacoes.containsKey(key)){
+
+            if (!Avaliacoes.containsKey(key)) {
                 permitido = true;
-            }            
-        } 
+            }
+        }
 
         return permitido;
     }
@@ -462,43 +469,45 @@ public class PlataformaStreaming {
 
         Serie s = filtrarSeriePorNome(nomeM);
         System.out.println("checkAvaliacao:" + this.clienteAtual.getListaJaVista());
-        if(this.clienteAtual.getListaJaVista().contains(s)) {
+        if (this.clienteAtual.getListaJaVista().contains(s)) {
             int idMidia = s.getId();
             String nomeUsuario = this.clienteAtual.getNomeDeUsuario();
             Key<String, Integer> key = new Key<String, Integer>(nomeUsuario, idMidia);
-            
+
             System.out.println("Passou aqui");
-            if(!Avaliacoes.containsKey(key)){
+            if (!Avaliacoes.containsKey(key)) {
                 System.out.println("Passou aqui 2");
                 permitido = true;
-            }     
+            }
         }
 
         return permitido;
     }
+
     public boolean eEspecialista() {
 
         return (this.clienteAtual instanceof ClienteEspecialista);
     }
 
-
-    //Na mudança de Regular para Especialista, todos as series começam a ja ter sido avaliadas
+    // Na mudança de Regular para Especialista, todos as series começam a ja ter
+    // sido avaliadas
 
     public Cliente getQtdAvaliacoes() {
- 
+
         int contador = 0;
 
         for (Key<String, Integer> chave : Avaliacoes.keySet()) {
-            if(chave.getKey1().equals(this.clienteAtual.getNomeDeUsuario())){
+            if (chave.getKey1().equals(this.clienteAtual.getNomeDeUsuario())) {
                 contador++;
-                
+
             }
         }
 
-        if(contador>=0) {
+        if (contador >= 0) {
             String usuario = clienteAtual.getNomeDeUsuario();
             clientes.remove(usuario);
-            ClienteEspecialista novo = new ClienteEspecialista(clienteAtual.getNomeCompleto(),clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha());
+            ClienteEspecialista novo = new ClienteEspecialista(clienteAtual.getNomeCompleto(),
+                    clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha());
             this.clienteAtual = novo;
             adicionarCliente(novo);
             System.out.println(this.clienteAtual.getListaJaVista());
@@ -507,6 +516,16 @@ public class PlataformaStreaming {
         return this.clienteAtual;
     }
 
-    
+    public String getMidia(int id) {
+
+        String nome = "";
+        for (Serie s : this.series.values()) {
+            if (s.getId() == id) {
+                nome = s.getNome();
+
+            }
+        }
+        return nome;
+    }
 
 }
