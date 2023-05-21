@@ -442,6 +442,7 @@ public class PlataformaStreaming {
         boolean permitido = false;
         
         Filme f = filtrarFilmePorNome(nomeM);
+       
         if(this.clienteAtual.getFilmesJaVistos().contains(f)){
             int idMidia = f.getId();
             String nomeUsuario = this.clienteAtual.getNomeDeUsuario();
@@ -460,13 +461,15 @@ public class PlataformaStreaming {
         boolean permitido = false;
 
         Serie s = filtrarSeriePorNome(nomeM);
-   
+        System.out.println("checkAvaliacao:" + this.clienteAtual.getListaJaVista());
         if(this.clienteAtual.getListaJaVista().contains(s)) {
             int idMidia = s.getId();
             String nomeUsuario = this.clienteAtual.getNomeDeUsuario();
             Key<String, Integer> key = new Key<String, Integer>(nomeUsuario, idMidia);
             
+            System.out.println("Passou aqui");
             if(!Avaliacoes.containsKey(key)){
+                System.out.println("Passou aqui 2");
                 permitido = true;
             }     
         }
@@ -481,7 +484,7 @@ public class PlataformaStreaming {
 
     //Na mudança de Regular para Especialista, todos as series começam a ja ter sido avaliadas
 
-    public int getQtdAvaliacoes() {
+    public Cliente getQtdAvaliacoes() {
  
         int contador = 0;
 
@@ -498,9 +501,10 @@ public class PlataformaStreaming {
             ClienteEspecialista novo = new ClienteEspecialista(clienteAtual.getNomeCompleto(),clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha());
             this.clienteAtual = novo;
             adicionarCliente(novo);
+            System.out.println(this.clienteAtual.getListaJaVista());
         }
 
-        return contador;
+        return this.clienteAtual;
     }
 
     
