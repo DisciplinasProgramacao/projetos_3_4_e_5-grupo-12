@@ -153,13 +153,14 @@ public final class App {
                                             nota = entrada.nextFloat();
                                             entrada.nextLine();
 
-                                            System.out.println("Gostaria de deixar um comentário?");
-                                            int resposta = entrada.nextInt();
+                                            System.out.println("Gostaria de deixar um comentário?");                       
                                             System.out.println("1- Sim");
                                             System.out.println("2- Não");
+                                            int resposta = entrada.nextInt();
 
                                             if (resposta == 1) {
                                                 System.out.println("Qual é seu comentário para essa serie:");
+                                                entrada.nextLine();
                                                 String comentario = entrada.nextLine();
 
                                                 plat.setNota(clienteLogado.getNomeDeUsuario(), s.getId(), nota,
@@ -282,7 +283,7 @@ public final class App {
                             menu(plat);
                             break;
                         case 10:
-                            System.out.println("Numero de avaliações: " + plat.getQtdAvaliacoes());
+                            clienteLogado = plat.getQtdAvaliacoes();
                             System.out.println(plat.eEspecialista());
                         break;
                     }
