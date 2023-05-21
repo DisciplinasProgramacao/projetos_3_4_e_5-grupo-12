@@ -19,10 +19,12 @@ public final class App {
             HashMap<String, Cliente> mapClientes = plat.carregarClientes();
             HashMap<Integer, Serie> mapSeries = plat.carregarSeries();
             HashMap<Integer, Filme> mapFilmes = plat.carregarFilmes();
+            
 
             plat.setClientes(mapClientes);
             plat.setSeries(mapSeries);
             plat.setFilmes(mapFilmes);
+            plat.carregarAudiencia();
 
             int op;
             int op2;

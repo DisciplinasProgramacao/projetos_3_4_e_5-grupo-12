@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class PlataformaStreaming {
@@ -264,6 +266,8 @@ public class PlataformaStreaming {
      * @throws Exception
      */
     public void carregarAudiencia() throws Exception {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
         float nota;
         BufferedReader reader = new BufferedReader(new FileReader(arqAudiencia));
         String linha;
@@ -272,17 +276,29 @@ public class PlataformaStreaming {
         while ((linha = reader.readLine()) != null) {
             StringTokenizer str = new StringTokenizer(linha, ";");
             String login = str.nextToken();
-            clienteAtual = clientes.get(login);
+
+            this.clienteAtual = clientes.get(login);
+
             if (str.nextToken().equals("F")) {
                 Serie temp = series.get(Integer.parseInt(str.nextToken()));
                 clienteAtual.adicionarNaLista(temp);
             } else {
                 int id = Integer.parseInt(str.nextToken());
                 Serie temp = series.get(id);
-                nota = Float.parseFloat(str.nextToken());
-                Key<String, Integer> key = new Key<String, Integer>(login, id);
-                Avaliacao av = new Avaliacao(nota);
-                Avaliacoes.put(key, av);
+                if (str.hasMoreTokens()) {
+                    nota = Float.parseFloat(str.nextToken());
+                    Key<String, Integer> key = new Key<String, Integer>(login, id);
+                    if (str.hasMoreTokens()) {
+                        String dataS = str.nextToken();
+                        LocalDate data = LocalDate.parse(dataS, formatter);
+                        Avaliacao av = new Avaliacao(nota, data);
+                        Avaliacoes.put(key, av);
+                    } else {
+                        Avaliacao av = new Avaliacao(nota);
+                        Avaliacoes.put(key, av);
+                    }
+                }
+
                 clienteAtual.adicionarSerieVista(temp);
             }
         }
