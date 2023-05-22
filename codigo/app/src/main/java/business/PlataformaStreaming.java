@@ -409,6 +409,23 @@ public class PlataformaStreaming {
         }
     }
 
+    public void escreveArqAudiencia(String tipo, Serie serieCad) {
+
+        try {
+            FileWriter arquivo = new FileWriter(arqAudiencia, true);
+            int id = serieCad.getId();
+            String login = clienteAtual.getNomeDeUsuario();
+
+            //Key<String, Integer> chave = new Key<>(login, id);
+            //LocalDate data = Avaliacoes.get(chave).getData();
+            arquivo.write(login + ";" + tipo + ";" + id + "\n");
+            arquivo.close();
+        } catch (IOException e) {
+            System.out.println("Ocorreu um erro ao salvar os dados no arquivo.");
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Esse metodo acha a serie com o nome enviado
      * 
