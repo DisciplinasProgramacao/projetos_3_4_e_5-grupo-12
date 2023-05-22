@@ -142,12 +142,17 @@ public final class App {
                             System.out.println("1 - SIM");
                             System.out.println("2 - Não");
                             op3 = entrada.nextInt();
+
+                            
+
                             switch (op3) {
                                 case 1:
                                     float nota;
 
                                     
                                     if (plat.checkAvaliacaoSerie(nomeS)) {
+
+                                        clienteLogado = plat.setClienteEspecialista();
 
                                         if (plat.eEspecialista()) {
 
@@ -172,6 +177,7 @@ public final class App {
                                             }
 
                                         } else {
+
 
                                             System.out.println("Qual a sua nota para essa serie (0 a 5):");
                                             entrada.nextLine();
@@ -210,6 +216,7 @@ public final class App {
 
                         case 6:
                             System.out.println("Digite o nome do filme que você deseja adicionar:");
+                            entrada.nextLine();
                             nomeS = entrada.nextLine();
                             Filme f = plat.filtrarFilmePorNome(nomeS);
                             clienteLogado.adicionarFilmeVisto(f);
@@ -221,12 +228,10 @@ public final class App {
                             switch (op3) {
                                 case 1:
                                     float nota;
-                                    System.out.println("Digite o nome do filme que você deseja adicionar:");
-                                    nomeS = entrada.nextLine();
-                                    Filme filme = plat.filtrarFilmePorNome(nomeS);
-                                    
 
                                     if (plat.checkAvaliacaoFilme(nomeS)) {
+
+                                        clienteLogado = plat.setClienteEspecialista();
 
                                         if (plat.eEspecialista()) {
 
@@ -235,19 +240,19 @@ public final class App {
                                             entrada.nextLine();
 
                                             System.out.println("Gostaria de deixar um comentário?");
-                                            int resposta = entrada.nextInt();
                                             System.out.println("1- Sim");
                                             System.out.println("2- Não");
+                                            int resposta = entrada.nextInt();
 
                                             if (resposta == 1) {
                                                 System.out.println("Qual é seu comentário para esse filme:");
                                                 entrada.nextLine();
                                                 String comentario = entrada.nextLine();
 
-                                                plat.setNota(clienteLogado.getNomeDeUsuario(), filme.getId(), nota,
+                                                plat.setNota(clienteLogado.getNomeDeUsuario(), f.getId(), nota,
                                                         comentario);
                                             } else {
-                                                plat.setNota(clienteLogado.getNomeDeUsuario(), filme.getId(), nota);
+                                                plat.setNota(clienteLogado.getNomeDeUsuario(), f.getId(), nota);
                                             }
 
                                         } else {
@@ -259,12 +264,12 @@ public final class App {
                                             }
 
                                             float n = plat
-                                                    .setNota(clienteLogado.getNomeDeUsuario(), filme.getId(), nota)
+                                                    .setNota(clienteLogado.getNomeDeUsuario(), f.getId(), nota)
                                                     .getNota();
                                             System.out.println(n);
                                         }
 
-                                        clienteLogado.adicionarFilmeVisto(filme);
+                                        clienteLogado.adicionarFilmeVisto(f);
 
                                     } else {
                                         System.out.println("Você já avaliou" + nomeS + "!");
@@ -285,7 +290,6 @@ public final class App {
                             menu(plat);
                             break;
                         case 10:
-                            clienteLogado = plat.getQtdAvaliacoes();
                             System.out.println(plat.eEspecialista());
                         break;
                     }

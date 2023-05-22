@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class PlataformaStreaming {
@@ -484,15 +485,12 @@ public class PlataformaStreaming {
         boolean permitido = false;
 
         Serie s = filtrarSeriePorNome(nomeM);
-        System.out.println("checkAvaliacao:" + this.clienteAtual.getListaJaVista());
         if (this.clienteAtual.getListaJaVista().contains(s)) {
             int idMidia = s.getId();
             String nomeUsuario = this.clienteAtual.getNomeDeUsuario();
             Key<String, Integer> key = new Key<String, Integer>(nomeUsuario, idMidia);
 
-            System.out.println("Passou aqui");
             if (!Avaliacoes.containsKey(key)) {
-                System.out.println("Passou aqui 2");
                 permitido = true;
             }
         }
@@ -505,28 +503,54 @@ public class PlataformaStreaming {
         return (this.clienteAtual instanceof ClienteEspecialista);
     }
 
-    // Na mudança de Regular para Especialista, todos as series começam a ja ter
-    // sido avaliadas
 
-    public Cliente getQtdAvaliacoes() {
+    // public int getQtdAvaliacoes() {
 
-        int contador = 0;
+    //     int contador = 0;
 
-        for (Key<String, Integer> chave : Avaliacoes.keySet()) {
+    //     for (Key<String, Integer> chave : Avaliacoes.keySet()) {
+    //         if (chave.getKey1().equals(this.clienteAtual.getNomeDeUsuario())) {
+    //             contador++;
+    //         }
+    //     }
+        
+    //     return contador;
+    // }
+
+
+    public Cliente setClienteEspecialista() {
+
+        //int contador = getQtdAvaliacoes();
+
+        List<LocalDate> datasAvaliacoes = new ArrayList<LocalDate>();
+
+
+        for(Key<String, Integer> chave : Avaliacoes.keySet()) {
             if (chave.getKey1().equals(this.clienteAtual.getNomeDeUsuario())) {
-                contador++;
-
-            }
+                datasAvaliacoes.add(Avaliacoes.get(chave).getData());
+                System.out.println("Data " + Avaliacoes.get(chave).getData());
+            }   
         }
 
-        if (contador >= 0) {
-            String usuario = clienteAtual.getNomeDeUsuario();
-            clientes.remove(usuario);
-            ClienteEspecialista novo = new ClienteEspecialista(clienteAtual.getNomeCompleto(),
-                    clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha());
-            this.clienteAtual = novo;
-            adicionarCliente(novo);
-            System.out.println(this.clienteAtual.getListaJaVista());
+        System.out.println(datasAvaliacoes);
+
+        if (datasAvaliacoes.size() >= 5) {
+
+            LocalDate quintaDataMaisRecente = datasAvaliacoes.get(datasAvaliacoes.size() -5);
+            LocalDate dataMaisRecente = datasAvaliacoes.get(datasAvaliacoes.size() - 1);
+
+            long diasEntre = ChronoUnit.DAYS.between(quintaDataMaisRecente, dataMaisRecente);
+
+            if (diasEntre <= 30) {
+                
+                String usuario = clienteAtual.getNomeDeUsuario();
+                clientes.remove(usuario);
+                ClienteEspecialista novo = new ClienteEspecialista(clienteAtual.getNomeCompleto(), clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha());
+                this.clienteAtual = novo;
+                adicionarCliente(novo);
+            }
+
+            
         }
 
         return this.clienteAtual;
