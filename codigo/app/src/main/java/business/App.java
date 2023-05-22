@@ -194,6 +194,7 @@ public final class App {
                                         }
 
                                         clienteLogado.adicionarSerieVista(s);
+                                        plat.escreveArqAudiencia("A", s, nota);
 
                                     } else {
                                         System.out.println("Você já avaliou " + nomeS + "!");
@@ -201,6 +202,7 @@ public final class App {
                                     break;
                                 case 2:
                                     clienteLogado.adicionarSerieVista(s);
+                                    plat.escreveArqAudiencia("A", s);
                                     break;
                             }
                             break;
