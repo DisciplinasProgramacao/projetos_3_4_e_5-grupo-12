@@ -548,6 +548,13 @@ public class PlataformaStreaming {
                 ClienteEspecialista novo = new ClienteEspecialista(clienteAtual.getNomeCompleto(), clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha());
                 this.clienteAtual = novo;
                 adicionarCliente(novo);
+            } else {
+
+                String usuario = clienteAtual.getNomeDeUsuario();
+                clientes.remove(usuario);
+                ClienteRegular novo = new ClienteRegular(clienteAtual.getNomeCompleto(), clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha());
+                this.clienteAtual = novo;
+                adicionarCliente(novo);
             }
 
             
