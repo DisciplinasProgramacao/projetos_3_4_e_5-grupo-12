@@ -128,90 +128,133 @@ public final class App {
 
                     switch (op2) {
                         case 1:
+                            entrada.nextLine();
+                            System.out.println("Digite o nome da serie que você deseja adicionar:");
+                            String nomeSerieAVer = entrada.nextLine();
+                            Serie serieAVer = plat.filtrarSeriePorNome(nomeSerieAVer);
+                            if (serieAVer != null) {
+                                clienteLogado.adicionarNaLista(serieAVer);
+                                System.out.println("A serie " + serieAVer.getNome() + " foi adicionada com sucesso a sua lista!");
+                                System.out.println();
+                            } else {
+                                System.out.println("Serie nao encontrada");
+                                System.out.println();
+                            }    
                             break;
-
                         case 2:
-
                             entrada.nextLine();
                             System.out.println("Digite o nome da Serie que você deseja adicionar:");
                             String nomeS = entrada.nextLine();
                             Serie s = plat.filtrarSeriePorNome(nomeS);
-                            clienteLogado.adicionarSerieVista(s);
 
-                            System.out.println("Você gostaria de avaliar essa serie:");
-                            System.out.println("1 - SIM");
-                            System.out.println("2 - Não");
-                            op3 = entrada.nextInt();
-
+                            if (s != null) {
+                                System.out.println("Você gostaria de avaliar essa serie:");
+                                System.out.println("1 - Sim");
+                                System.out.println("2 - Não");
+                                op3 = entrada.nextInt();
+                                switch (op3) {
+                                    case 1:
+                                        float nota;
+                                        if (plat.checkAvaliacaoSerie(nomeS)) {
+                                            clienteLogado = plat.setClienteEspecialista();
+                                            if (plat.eEspecialista()) {
+    
+                                                System.out.println("Qual a sua nota para essa serie:");
+                                                nota = entrada.nextFloat();
+                                                entrada.nextLine();
+    
+                                                System.out.println("Gostaria de deixar um comentário?");                       
+                                                System.out.println("1- Sim");
+                                                System.out.println("2- Não");
+                                                int resposta = entrada.nextInt();
+    
+                                                if (resposta == 1) {
+                                                    System.out.println("Qual é seu comentário para essa serie:");
+                                                    entrada.nextLine();
+                                                    String comentario = entrada.nextLine();
+    
+                                                    plat.setNota(clienteLogado.getNomeDeUsuario(), s.getId(), nota,
+                                                            comentario);
+                                                } else {
+                                                    plat.setNota(clienteLogado.getNomeDeUsuario(), s.getId(), nota);
+                                                }
+    
+                                            } else {
+    
+                                                System.out.println("Qual a sua nota para essa serie (0 a 5):");
+                                                entrada.nextLine();
+                                                nota = entrada.nextFloat();
+                                                while (!((nota >= 0) && (nota <= 5))) {
+                                                    System.out.println("Digite somente valores entre 0 e 5!");
+                                                    nota = entrada.nextFloat();
+                                                }
+    
+                                                float teste = plat
+                                                        .setNota(clienteLogado.getNomeDeUsuario(), s.getId(), nota)
+                                                        .getNota();
+                                                System.out.println("Nota média: " + teste);
+                                            }
+    
+                                            clienteLogado.adicionarSerieVista(s);
+    
+                                        } else {
+                                            System.out.println("Você já avaliou " + nomeS + "!");
+                                            clienteLogado.adicionarSerieVista(s);
+                                            
+                                        }
+                                        System.out.println("A serie " + s.getNome() + " foi adicionada com sucesso!");
+                                        System.out.println();
+                                        break;
+                                    case 2:
+                                        clienteLogado.adicionarSerieVista(s);
+                                        System.out.println("A serie " + s.getNome() + " foi adicionada com sucesso!");
+                                        System.out.println();
+                                        break;
+                                }
+                            } else {
+                                System.out.println("Serie nao encontrada");
+                                System.out.println();
+                            }
                             
 
-                            switch (op3) {
-                                case 1:
-                                    float nota;
-
-                                    
-                                    if (plat.checkAvaliacaoSerie(nomeS)) {
-
-                                        clienteLogado = plat.setClienteEspecialista();
-
-                                        if (plat.eEspecialista()) {
-
-                                            System.out.println("Qual a sua nota para essa serie:");
-                                            nota = entrada.nextFloat();
-                                            entrada.nextLine();
-
-                                            System.out.println("Gostaria de deixar um comentário?");                       
-                                            System.out.println("1- Sim");
-                                            System.out.println("2- Não");
-                                            int resposta = entrada.nextInt();
-
-                                            if (resposta == 1) {
-                                                System.out.println("Qual é seu comentário para essa serie:");
-                                                entrada.nextLine();
-                                                String comentario = entrada.nextLine();
-
-                                                plat.setNota(clienteLogado.getNomeDeUsuario(), s.getId(), nota,
-                                                        comentario);
-                                            } else {
-                                                plat.setNota(clienteLogado.getNomeDeUsuario(), s.getId(), nota);
-                                            }
-
-                                        } else {
-
-
-                                            System.out.println("Qual a sua nota para essa serie (0 a 5):");
-                                            entrada.nextLine();
-                                            nota = entrada.nextFloat();
-                                            while (!((nota >= 0) && (nota <= 5))) {
-                                                System.out.println("Digite somente valores entre 0 e 5!");
-                                                nota = entrada.nextFloat();
-                                            }
-
-                                            float teste = plat
-                                                    .setNota(clienteLogado.getNomeDeUsuario(), s.getId(), nota)
-                                                    .getNota();
-                                            System.out.println("Nota média: " + teste);
-                                        }
-
-                                        clienteLogado.adicionarSerieVista(s);
-
-                                    } else {
-                                        System.out.println("Você já avaliou " + nomeS + "!");
-                                    }
-                                    break;
-                                case 2:
-                                    clienteLogado.adicionarSerieVista(s);
-                                    break;
-                            }
+                           
                             break;
 
                         case 3:
+                            List<Serie> listaJaVista = clienteLogado.getListaJaVista();
+                            System.out.println("Mostrando sua lista de series ja vistas");
+                            for (int i=0; i<listaJaVista.size(); i++) {
+                                System.out.println("Nome: " + listaJaVista.get(i).getNome() + " | Genero: " + listaJaVista.get(i).getGenero() + " | Numero de episodios: " + listaJaVista.get(i).getQuantidadeEpisodios());
+                            }
+                            // System.out.println(listaParaVer);
+                             System.out.println();
+
                             break;
 
                         case 4:
+                            List<Serie> listaParaVer = clienteLogado.getListaParaVer();
+                            System.out.println("Mostrando sua lista de series para ver:");
+                            for (int i=0; i<listaParaVer.size(); i++) {
+                                System.out.println("Nome: " + listaParaVer.get(i).getNome() + " | Genero: " + listaParaVer.get(i).getGenero() + " | Numero de episodios: " + listaParaVer.get(i).getQuantidadeEpisodios());
+                            }
+                            // System.out.println(listaParaVer);
+                            System.out.println();
                             break;
 
                         case 5:
+                            entrada.nextLine();
+                            System.out.println("Digite o nome do filme que você deseja adicionar:");
+                            String nomeFilmeAVer = entrada.nextLine();
+                            Filme filmeAVer = plat.filtrarFilmePorNome(nomeFilmeAVer);
+                            if (filmeAVer != null) {
+                                clienteLogado.adicionarFilmeParaVer(filmeAVer);
+                                System.out.println("O filme " + filmeAVer.getNome() + " foi adicionado com sucesso a sua lista!");
+                                System.out.println();
+                            } else {
+                                System.out.println("Filme nao encontrado");
+                                System.out.println();
+                            }    
+
                             break;
 
                         case 6:
@@ -219,10 +262,10 @@ public final class App {
                             entrada.nextLine();
                             nomeS = entrada.nextLine();
                             Filme f = plat.filtrarFilmePorNome(nomeS);
-                            clienteLogado.adicionarFilmeVisto(f);
-
+                            
+                            if (f!=null) {
                             System.out.println("Você gostaria de avaliar esse filme:");
-                            System.out.println("1 - SIM");
+                            System.out.println("1 - Sim");
                             System.out.println("2 - Não");
                             op3 = entrada.nextInt();
                             switch (op3) {
@@ -273,18 +316,46 @@ public final class App {
 
                                     } else {
                                         System.out.println("Você já avaliou" + nomeS + "!");
+                                        clienteLogado.adicionarFilmeVisto(f);
+                                        
                                     }
+                                    System.out.println("O filme " + f.getNome() + " foi adicionado com sucesso!");
+                                    System.out.println();
                                     break;
                                 case 2:
                                     clienteLogado.adicionarFilmeVisto(f);
-                                    break;
+                                    System.out.println("O filme " + f.getNome() + " foi adicionado com sucesso!");
+                                    System.out.println();
+                                    
+                                break;
                             }
+
+                            } else {
+                                System.out.println("Filme nao encontrado");
+                                System.out.println();
+                            }
+
                             break;
 
                         case 7:
+                            List<Filme> filmesJaVistos = clienteLogado.getFilmesJaVistos();
+                            System.out.println("Mostrando sua lista de filmes ja vistos");
+                            for (int i=0; i<filmesJaVistos.size(); i++) {
+                                System.out.println("Nome: " + filmesJaVistos.get(i).getNome() + " | Genero: " + filmesJaVistos.get(i).getGenero());
+                            }
+                            // System.out.println(listaParaVer);
+                            System.out.println();
                             break;
 
                         case 8:
+                            List<Filme> filmesParaVer = clienteLogado.getFilmesParaVer();
+                            System.out.println("Mostrando sua lista de filmes para ver:");
+                            for (int i=0; i<filmesParaVer.size(); i++) {
+                                System.out.println("Nome: " + filmesParaVer.get(i).getNome() + " | Genero: " + filmesParaVer.get(i).getGenero());
+                                }
+                            // System.out.println(listaParaVer);
+                            System.out.println();
+                        
                             break;
                         case 9:
                             menu(plat);

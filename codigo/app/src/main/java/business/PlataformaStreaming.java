@@ -423,7 +423,13 @@ public class PlataformaStreaming {
             }
         }
 
-        return listaNova.get(0);
+        if (!listaNova.isEmpty()) {
+            return listaNova.get(0);
+        } else {
+            return null;
+        }
+
+        // return listaNova.get(0);
     }
 
     /**
@@ -441,7 +447,13 @@ public class PlataformaStreaming {
             }
         }
 
-        return listaNova.get(0);
+        if (!listaNova.isEmpty()) {
+            return listaNova.get(0);
+        } else {
+            return null;
+        }
+        
+
     }
 
     public Avaliacao setNota(String nomeUsuario, int id_Midia, float nota) {
@@ -518,7 +530,7 @@ public class PlataformaStreaming {
     // }
 
 
-    public Cliente setClienteEspecialista() {
+    public Cliente setClienteEspecialista() throws Exception{
 
         //int contador = getQtdAvaliacoes();
 
