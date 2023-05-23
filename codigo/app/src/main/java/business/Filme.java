@@ -65,4 +65,16 @@ public class Filme extends Midia implements ISalvavel {
 
         return ("\n" + id + ";" + nome + ";" + dataL + ";" + duracao);
     }
+
+    @Override
+    public String toString() {
+        return "'filme'{" +
+                " nome='" + getNome() + "'" +
+                ", id='" + getId() + "'" +
+                ", genero='" + getGenero() + "'" +
+                ", idioma='" + getIdioma() + "'" +
+                ", duracao='" + getDuracao() + "'" +
+                ", audiencia='" + getAudiencia() + "'" +
+                "}";
+    }
 }

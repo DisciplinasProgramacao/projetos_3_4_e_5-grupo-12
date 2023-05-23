@@ -65,7 +65,7 @@ public class Serie extends Midia implements ISalvavel {
      */
     @Override
     public String toString() {
-        return "{" +
+        return "'serie'{" +
                 " nome='" + getNome() + "'" +
                 ", id='" + getId() + "'" +
                 ", genero='" + getGenero() + "'" +

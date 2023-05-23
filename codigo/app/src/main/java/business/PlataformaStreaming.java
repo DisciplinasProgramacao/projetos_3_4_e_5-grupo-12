@@ -251,7 +251,7 @@ public class PlataformaStreaming {
                 clienteAtual.adicionarListaParaVer(temp);
             } else {
                 int id = Integer.parseInt(str.nextToken());
-                Serie temp = (Serie) midias.get(id);
+                Midia temp = midias.get(id);
                 if (str.hasMoreTokens()) {
                     nota = Float.parseFloat(str.nextToken());
                     Key<String, Integer> key = new Key<String, Integer>(login, id);
@@ -480,10 +480,10 @@ public class PlataformaStreaming {
     }
 
 
-    public boolean eEspecialista() {
+    // public boolean eEspecialista() {
 
-        return (this.clienteAtual instanceof ClienteEspecialista);
-    }
+    //     return (this.clienteAtual instanceof ClienteEspecialista);
+    // }
 
 
     // public int getQtdAvaliacoes() {
@@ -547,23 +547,6 @@ public class PlataformaStreaming {
         return this.clienteAtual;
     }
 
-/**
- * Retrieves the name of a media item based on its ID.
- * 
- * @param id The ID of the media item to retrieve.
- * @return The name of the media item with the specified ID, or an empty string if not found.
- */
-    public String getMidia(int id) {
-
-        String nome = "";
-        for (Midia m : this.midias.values()) {
-            if (m.getId() == id) {
-                nome = m.getNome();
-
-            }
-        }
-        return nome;
-    }
 
 }
 

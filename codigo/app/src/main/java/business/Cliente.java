@@ -10,6 +10,7 @@ public class Cliente implements ISalvavel {
     private String nomeCompleto;
     private List<Midia> listaParaVer = new LinkedList<>();
     private List<Midia> listaJaVistas = new LinkedList<>();
+    private IComentarista meuTipo = null;
     /**
      * Cria um novo objeto Cliente com nome completo, nome de usuário e senha.
      * 
@@ -23,6 +24,18 @@ public class Cliente implements ISalvavel {
         setSenha(senha);
         this.nomeDeUsuario = getNomeDeUsuario();
         this.senha = getSenha();
+    }
+
+    public void setMeuTipo(IComentarista meuTipo) {
+        this.meuTipo = meuTipo;
+    }
+
+    public void fazerComentario(String comentario) {
+        if (meuTipo != null) {
+            meuTipo.comentar(comentario);
+        } else {
+            System.out.println("Desculpe, apenas clientes especialistas podem comentar.");
+        }
     }
 
     /**

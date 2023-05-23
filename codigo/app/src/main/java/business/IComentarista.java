@@ -1,0 +1,7 @@
+package business;
+
+public interface IComentarista {
+
+    public void comentar(String comentario);
+
+}
