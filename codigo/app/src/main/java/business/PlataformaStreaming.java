@@ -16,9 +16,8 @@ public class PlataformaStreaming {
     private static final String arqClientes = "POO_Espectadores.csv";
     private static final String arqAudiencia = "POO_Audiencia.csv";
     private String nome;
-    private HashMap<Integer, Serie> series = new HashMap<>();
+    private HashMap<Integer, Midia> midias = new HashMap<>();
     private HashMap<String, Cliente> clientes = new HashMap<String, Cliente>();
-    private HashMap<Integer, Filme> filmes = new HashMap<>();
     private static HashMap<Key<String, Integer>, Avaliacao> Avaliacoes = new HashMap<>(); // (id cliente / id Serie)
     private Cliente clienteAtual;
 
@@ -49,8 +48,8 @@ public class PlataformaStreaming {
      * 
      * @return retorna as series cadastradas na plataforma
      */
-    public HashMap<Integer, Serie> getSeries() {
-        return series;
+    public HashMap<Integer, Midia> getMidias() {
+        return midias;
     }
 
     /**
@@ -58,26 +57,8 @@ public class PlataformaStreaming {
      * 
      * @param series mapa de todas as series que a plataforma ira conter
      */
-    public void setSeries(HashMap<Integer, Serie> series) {
-        this.series = series;
-    }
-
-    /**
-     * Método para cadastrar os filmes da plataforma
-     * 
-     * @param filmes mapa de todos os filmes que a plataforma irá conter
-     */
-    public void setFilmes(HashMap<Integer, Filme> filmes) {
-        this.filmes = filmes;
-    }
-
-    /**
-     * Método para pegar os filmes cadastrados
-     * 
-     * @return retorna os filmes cadastrados na plataforma
-     */
-    public HashMap<Integer, Filme> getFilmes() {
-        return filmes;
+    public void setMidia(HashMap<Integer, Midia> midias) {
+        this.midias = midias;
     }
 
     /**
@@ -87,15 +68,6 @@ public class PlataformaStreaming {
      */
     public HashMap<String, Cliente> getClientes() {
         return clientes;
-    }
-
-    /**
-     * Método para cadastrar os clientes da plataforma
-     * 
-     * @param clientes mapa de todos os clientes que a plataforma irá conter
-     */
-    public void setClientes(HashMap<String, Cliente> clientes) {
-        this.clientes = clientes;
     }
 
     /**
@@ -112,29 +84,24 @@ public class PlataformaStreaming {
      * 
      * @param serie Esse é a serie que será recebido
      */
-    public void adicionarSerie(Serie serie) {
-        series.put(serie.getId(), serie);
+    public void adicionarMidia(Midia midia) {
+        midias.put(midia.getId(), midia);
 
     }
 
-    /**
-     * Método para adicionar um filme na lista de filmes
-     * 
-     * @param filme Esse é o filme que será recebido
-     */
-    public void adicionarFilme(Filme filme) {
-        filmes.put(filme.getId(), filme);
-
-    }
 
     /**
      * Método para adicionar um cliente na lista de clientes
      * 
      * @param c Esse é o cliente que será recebido
+     * @throws Exception
      */
-    public void adicionarCliente(Cliente c) {
+
+     //REVISAR ESSE TROWS
+    public void adicionarCliente(Cliente c) throws Exception {
 
         this.clientes.put(c.getNomeDeUsuario(), c);
+        escreveArqCliente(c);
     }
 
     /**
@@ -143,8 +110,8 @@ public class PlataformaStreaming {
      * @param genero Esse é o genero que foi escolhido para ser filtrado
      * @return retorna a lista filtrada do cliente atual
      */
-    public List<Serie> filtarPorGenero(String genero) {
-        return clienteAtual.filtrarPorGenero(genero);
+    public List<Midia> filtarPorGenero(String genero) {
+        return clienteAtual.filtrarMidiaPorGenero(genero);
     }
 
     /**
@@ -154,7 +121,7 @@ public class PlataformaStreaming {
      *                       filtrada
      * @return retorna a lista filtrada do cliente atual
      */
-    public List<Serie> filtrarPorQtdEpisodios(int quantEpisodios) {
+    public List<Midia> filtrarPorQtdEpisodios(int quantEpisodios) {
         return clienteAtual.filtrarPorQtdEpisodios(quantEpisodios);
     }
 
@@ -164,8 +131,8 @@ public class PlataformaStreaming {
      * @param idioma Esse é o idioma escolhido para ser filtrado
      * @return retorna a lista filtrada do cliente atual
      */
-    public List<Serie> filtrarPorIdioma(String idioma) {
-        return clienteAtual.filtrarPorIdioma(idioma);
+    public List<Midia> filtrarPorIdioma(String idioma) {
+        return clienteAtual.filtrarMidiaPorIdioma(idioma);
     }
 
     /**
@@ -173,8 +140,8 @@ public class PlataformaStreaming {
      * 
      * @param serie Essa é a serie especificada
      */
-    public void registrarAudiencia(Serie serie) {
-        clienteAtual.registrarAudiencia(serie);
+    public void registrarAudiencia(Midia midia) {
+        clienteAtual.registrarAudiencia(midia);
     }
 
     /**
@@ -199,8 +166,8 @@ public class PlataformaStreaming {
      * @return Retorna um mapa com as series do arquivo
      * @throws Exception
      */
-    public HashMap<String, Cliente> carregarClientes() throws Exception {
-        HashMap<String, Cliente> mapClientes = new HashMap<String, Cliente>();
+    public void carregarClientes() throws Exception {
+        
         BufferedReader reader = new BufferedReader(new FileReader("POO_Espectadores.csv"));
         String linha;
         reader.readLine();
@@ -209,10 +176,9 @@ public class PlataformaStreaming {
             StringTokenizer str = new StringTokenizer(linha, ";");
 
             Cliente cliente = new Cliente(str.nextToken(), str.nextToken(), str.nextToken());
-            mapClientes.put(cliente.getNomeDeUsuario(), cliente);
+            clientes.put(cliente.getNomeDeUsuario(), cliente);
         }
         reader.close();
-        return mapClientes;
     }
 
     /**
@@ -221,8 +187,8 @@ public class PlataformaStreaming {
      * @return Retorna um mapa com as series do arquivo
      * @throws Exception
      */
-    public HashMap<Integer, Serie> carregarSeries() throws Exception {
-        HashMap<Integer, Serie> mapSeries = new HashMap<Integer, Serie>();
+    public void carregarSeries() throws Exception {
+
         BufferedReader reader = new BufferedReader(new FileReader("POO_Series.csv"));
         String linha;
         reader.readLine();
@@ -231,10 +197,9 @@ public class PlataformaStreaming {
             StringTokenizer str = new StringTokenizer(linha.trim(), ";");
             int id = Integer.parseInt(str.nextToken());
             Serie serie = new Serie(id, str.nextToken(), str.nextToken());
-            mapSeries.put(serie.getId(), serie);
+            midias.put(serie.getId(), serie);
         }
         reader.close();
-        return mapSeries;
     }
 
     /**
@@ -242,8 +207,8 @@ public class PlataformaStreaming {
      * @return esse método carrega os filems do arquivo de filmes
      * @throws Exception
      */
-    public HashMap<Integer, Filme> carregarFilmes() throws Exception {
-        HashMap<Integer, Filme> mapFilmes = new HashMap<Integer, Filme>();
+    public void carregarFilmes() throws Exception {
+        
         BufferedReader reader = new BufferedReader(new FileReader("POO_Filmes.csv"));
         String linha;
 
@@ -254,11 +219,10 @@ public class PlataformaStreaming {
             StringTokenizer str = new StringTokenizer(linha, ";");
             int id = Integer.parseInt(str.nextToken());
             Filme filme = new Filme(id, str.nextToken(), str.nextToken(), Integer.parseInt(str.nextToken()));
-            mapFilmes.put(filme.getId(), filme);
+            midias.put(filme.getId(), filme);
         }
 
         reader.close();
-        return mapFilmes;
     }
 
     /**
@@ -266,6 +230,8 @@ public class PlataformaStreaming {
      * 
      * @throws Exception
      */
+
+     //revisar typecasting
     public void carregarAudiencia() throws Exception {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -281,11 +247,11 @@ public class PlataformaStreaming {
             this.clienteAtual = clientes.get(login);
 
             if (str.nextToken().equals("F")) {
-                Serie temp = series.get(Integer.parseInt(str.nextToken()));
-                clienteAtual.adicionarNaLista(temp);
+                Midia temp = midias.get(Integer.parseInt(str.nextToken()));
+                clienteAtual.adicionarListaParaVer(temp);
             } else {
                 int id = Integer.parseInt(str.nextToken());
-                Serie temp = series.get(id);
+                Serie temp = (Serie) midias.get(id);
                 if (str.hasMoreTokens()) {
                     nota = Float.parseFloat(str.nextToken());
                     Key<String, Integer> key = new Key<String, Integer>(login, id);
@@ -300,7 +266,7 @@ public class PlataformaStreaming {
                     }
                 }
 
-                clienteAtual.adicionarSerieVista(temp);
+                clienteAtual.adicionarMidiaVista(temp);
             }
         }
         reader.close();
@@ -369,8 +335,8 @@ public class PlataformaStreaming {
      */
     public boolean clienteExistente(Cliente cliente) throws Exception {
         boolean flag = false;
-        HashMap<String, Cliente> mapClientes = carregarClientes();
-        if (mapClientes.containsKey(cliente.getNomeDeUsuario())) {
+
+        if (clientes.containsKey(cliente.getNomeDeUsuario())) {
             flag = true;
         }
         return flag;
@@ -438,33 +404,9 @@ public class PlataformaStreaming {
      * @param nome Esse é o nome enviado
      * @return Retorna a serie com o mesmo nome que o enviado
      */
-    public Serie filtrarSeriePorNome(String nome) {
-        List<Serie> listaNova = new LinkedList<>();
-        for (Serie s : this.series.values()) {
-            if (s.getNome().equals(nome)) {
-                listaNova.add(s);
-            }
-        }
-
-        if (!listaNova.isEmpty()) {
-            return listaNova.get(0);
-        } else {
-            return null;
-        }
-
-        // return listaNova.get(0);
-    }
-
-    /**
-     * Esse metodo acha o filme com o nome enviado
-     * 
-     * @param nome Esse é o nome enviado
-     * @return Retorna o filme com o mesmo nome que o enviado
-     */
-    public Filme filtrarFilmePorNome(String nome) {
-
-        List<Filme> listaNova = new LinkedList<>();
-        for (Filme s : this.filmes.values()) {
+    public Midia filtrarMidiaPorNome(String nome) {
+        List<Midia> listaNova = new LinkedList<>();
+        for (Midia s : this.midias.values()) {
             if (s.getNome().equals(nome)) {
                 listaNova.add(s);
             }
@@ -476,6 +418,7 @@ public class PlataformaStreaming {
             return null;
         }
     }
+
 
 /**
  * Define uma nota para uma avaliação de uma mídia, associada a um usuário e uma identificação de mídia.
@@ -517,14 +460,14 @@ public class PlataformaStreaming {
  * @param nomeM o nome do filme a ser verificado
  * @return true se o cliente pode avaliar o filme, false caso contrário
  */
-    public boolean checkAvaliacaoFilme(String nomeM) {
+    public boolean checkAvaliacaoMidia(String nomeM) {
 
         boolean permitido = false;
 
-        Filme f = filtrarFilmePorNome(nomeM);
+        Midia m = filtrarMidiaPorNome(nomeM);
 
-        if (this.clienteAtual.getFilmesJaVistos().contains(f)) {
-            int idMidia = f.getId();
+        if (this.clienteAtual.getListaJaVista().contains(m)) {
+            int idMidia = m.getId();
             String nomeUsuario = this.clienteAtual.getNomeDeUsuario();
             Key<String, Integer> key = new Key<String, Integer>(nomeUsuario, idMidia);
 
@@ -536,29 +479,6 @@ public class PlataformaStreaming {
         return permitido;
     }
 
-/**
- * Verifica se um cliente pode avaliar uma série.
- *
- * @param nomeM o nome da série a ser verificada
- * @return true se o cliente pode avaliar a série, false caso contrário
- */
-    public boolean checkAvaliacaoSerie(String nomeM) {
-
-        boolean permitido = false;
-
-        Serie s = filtrarSeriePorNome(nomeM);
-        if (this.clienteAtual.getListaJaVista().contains(s)) {
-            int idMidia = s.getId();
-            String nomeUsuario = this.clienteAtual.getNomeDeUsuario();
-            Key<String, Integer> key = new Key<String, Integer>(nomeUsuario, idMidia);
-
-            if (!Avaliacoes.containsKey(key)) {
-                permitido = true;
-            }
-        }
-
-        return permitido;
-    }
 
     public boolean eEspecialista() {
 
@@ -580,7 +500,8 @@ public class PlataformaStreaming {
     // }
 
 
-    public Cliente setClienteEspecialista() {
+    //REVISAR
+    public Cliente setClienteEspecialista() throws Exception {
 
         //int contador = getQtdAvaliacoes();
 
@@ -609,6 +530,7 @@ public class PlataformaStreaming {
                 clientes.remove(usuario);
                 ClienteEspecialista novo = new ClienteEspecialista(clienteAtual.getNomeCompleto(), clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha());
                 this.clienteAtual = novo;
+           
                 adicionarCliente(novo);
             } else {
 
@@ -634,9 +556,9 @@ public class PlataformaStreaming {
     public String getMidia(int id) {
 
         String nome = "";
-        for (Serie s : this.series.values()) {
-            if (s.getId() == id) {
-                nome = s.getNome();
+        for (Midia m : this.midias.values()) {
+            if (m.getId() == id) {
+                nome = m.getNome();
 
             }
         }
@@ -644,3 +566,6 @@ public class PlataformaStreaming {
     }
 
 }
+
+
+

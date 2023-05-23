@@ -16,14 +16,9 @@ public final class App {
     public static void menu(PlataformaStreaming plat) {
 
         try {
-            HashMap<String, Cliente> mapClientes = plat.carregarClientes();
-            HashMap<Integer, Serie> mapSeries = plat.carregarSeries();
-            HashMap<Integer, Filme> mapFilmes = plat.carregarFilmes();
-            
-
-            plat.setClientes(mapClientes);
-            plat.setSeries(mapSeries);
-            plat.setFilmes(mapFilmes);
+            plat.carregarClientes();
+            plat.carregarSeries();
+            plat.carregarFilmes();
             plat.carregarAudiencia();
 
             int op;
@@ -46,8 +41,6 @@ public final class App {
                     case 1:
                         System.out.println("Opção 1 selecionada.");
                         clienteCad = cadastrarCliente(plat);
-                        mapClientes.put(clienteCad.getNomeDeUsuario(), clienteCad);
-                        plat.escreveArqCliente(clienteCad);
                         System.out.println();
                         break;
 
@@ -131,9 +124,10 @@ public final class App {
                             entrada.nextLine();
                             System.out.println("Digite o nome da serie que você deseja adicionar:");
                             String nomeSerieAVer = entrada.nextLine();
-                            Serie serieAVer = plat.filtrarSeriePorNome(nomeSerieAVer);
+                            plat.registrarAudiencia(null);
+                            Serie serieAVer = (Serie)plat.filtrarMidiaPorNome(nomeSerieAVer);
                             if (serieAVer != null) {
-                                clienteLogado.adicionarNaLista(serieAVer);
+                                clienteLogado.adicionarListaParaVer(serieAVer);
                                 System.out.println("A serie " + serieAVer.getNome() + " foi adicionada com sucesso a sua lista!");
                                 System.out.println();
                             } else {
@@ -145,7 +139,7 @@ public final class App {
                             entrada.nextLine();
                             System.out.println("Digite o nome da Serie que você deseja adicionar:");
                             String nomeS = entrada.nextLine();
-                            Serie s = plat.filtrarSeriePorNome(nomeS);
+                            Serie s = (Serie)plat.filtrarMidiaPorNome(nomeS);
 
                             if (s != null) {
                                 System.out.println("Você gostaria de avaliar essa serie:");
@@ -155,7 +149,7 @@ public final class App {
                                 switch (op3) {
                                     case 1:
                                         float nota;
-                                        if (plat.checkAvaliacaoSerie(nomeS)) {
+                                        if (plat.checkAvaliacaoMidia(nomeS)) {
                                             clienteLogado = plat.setClienteEspecialista();
                                             if (plat.eEspecialista()) {
     
@@ -195,18 +189,18 @@ public final class App {
                                                 System.out.println("Nota média: " + teste);
                                             }
     
-                                            clienteLogado.adicionarSerieVista(s);
+                                            clienteLogado.adicionarMidiaVista(s);
     
                                         } else {
                                             System.out.println("Você já avaliou " + nomeS + "!");
-                                            clienteLogado.adicionarSerieVista(s);
+                                            clienteLogado.adicionarMidiaVista(s);
                                             
                                         }
                                         System.out.println("A serie " + s.getNome() + " foi adicionada com sucesso!");
                                         System.out.println();
                                         break;
                                     case 2:
-                                        clienteLogado.adicionarSerieVista(s);
+                                        clienteLogado.adicionarMidiaVista(s);
                                         System.out.println("A serie " + s.getNome() + " foi adicionada com sucesso!");
                                         System.out.println();
                                         break;
@@ -221,7 +215,7 @@ public final class App {
                             break;
 
                         case 3:
-                            List<Serie> listaJaVista = clienteLogado.getListaJaVista();
+                            List<Midia> listaJaVista = clienteLogado.getListaJaVista();
                             System.out.println("Mostrando sua lista de series ja vistas");
                             for (int i=0; i<listaJaVista.size(); i++) {
                                 System.out.println("Nome: " + listaJaVista.get(i).getNome() + " | Genero: " + listaJaVista.get(i).getGenero() + " | Numero de episodios: " + listaJaVista.get(i).getQuantidadeEpisodios());
@@ -232,7 +226,7 @@ public final class App {
                             break;
 
                         case 4:
-                            List<Serie> listaParaVer = clienteLogado.getListaParaVer();
+                            List<Midia> listaParaVer = clienteLogado.getListaParaVer();
                             System.out.println("Mostrando sua lista de series para ver:");
                             for (int i=0; i<listaParaVer.size(); i++) {
                                 System.out.println("Nome: " + listaParaVer.get(i).getNome() + " | Genero: " + listaParaVer.get(i).getGenero() + " | Numero de episodios: " + listaParaVer.get(i).getQuantidadeEpisodios());
@@ -245,9 +239,9 @@ public final class App {
                             entrada.nextLine();
                             System.out.println("Digite o nome do filme que você deseja adicionar:");
                             String nomeFilmeAVer = entrada.nextLine();
-                            Filme filmeAVer = plat.filtrarFilmePorNome(nomeFilmeAVer);
+                            Filme filmeAVer = (Filme)plat.filtrarMidiaPorNome(nomeFilmeAVer);
                             if (filmeAVer != null) {
-                                clienteLogado.adicionarFilmeParaVer(filmeAVer);
+                                clienteLogado.adicionarListaParaVer(filmeAVer);
                                 System.out.println("O filme " + filmeAVer.getNome() + " foi adicionado com sucesso a sua lista!");
                                 System.out.println();
                             } else {
@@ -261,7 +255,7 @@ public final class App {
                             System.out.println("Digite o nome do filme que você deseja adicionar:");
                             entrada.nextLine();
                             nomeS = entrada.nextLine();
-                            Filme f = plat.filtrarFilmePorNome(nomeS);
+                            Filme f = (Filme)plat.filtrarMidiaPorNome(nomeS);
                             
                             if (f!=null) {
                             System.out.println("Você gostaria de avaliar esse filme:");
@@ -272,7 +266,7 @@ public final class App {
                                 case 1:
                                     float nota;
 
-                                    if (plat.checkAvaliacaoFilme(nomeS)) {
+                                    if (plat.checkAvaliacaoMidia(nomeS)) {
 
                                         clienteLogado = plat.setClienteEspecialista();
 
@@ -312,18 +306,18 @@ public final class App {
                                             System.out.println(n);
                                         }
 
-                                        clienteLogado.adicionarFilmeVisto(f);
+                                        clienteLogado.adicionarMidiaVista(f);
 
                                     } else {
                                         System.out.println("Você já avaliou" + nomeS + "!");
-                                        clienteLogado.adicionarFilmeVisto(f);
+                                        clienteLogado.adicionarMidiaVista(f);
                                         
                                     }
                                     System.out.println("O filme " + f.getNome() + " foi adicionado com sucesso!");
                                     System.out.println();
                                     break;
                                 case 2:
-                                    clienteLogado.adicionarFilmeVisto(f);
+                                    clienteLogado.adicionarMidiaVista(f);
                                     System.out.println("O filme " + f.getNome() + " foi adicionado com sucesso!");
                                     System.out.println();
                                     
@@ -338,7 +332,7 @@ public final class App {
                             break;
 
                         case 7:
-                            List<Filme> filmesJaVistos = clienteLogado.getFilmesJaVistos();
+                            List<Midia> filmesJaVistos = clienteLogado.getListaJaVista();
                             System.out.println("Mostrando sua lista de filmes ja vistos");
                             for (int i=0; i<filmesJaVistos.size(); i++) {
                                 System.out.println("Nome: " + filmesJaVistos.get(i).getNome() + " | Genero: " + filmesJaVistos.get(i).getGenero());
@@ -348,7 +342,7 @@ public final class App {
                             break;
 
                         case 8:
-                            List<Filme> filmesParaVer = clienteLogado.getFilmesParaVer();
+                            List<Midia> filmesParaVer = clienteLogado.getListaParaVer();
                             System.out.println("Mostrando sua lista de filmes para ver:");
                             for (int i=0; i<filmesParaVer.size(); i++) {
                                 System.out.println("Nome: " + filmesParaVer.get(i).getNome() + " | Genero: " + filmesParaVer.get(i).getGenero());
@@ -392,7 +386,7 @@ public final class App {
 
     }
 
-    private static Cliente cadastrarCliente(PlataformaStreaming plat) throws ClienteInvalidoException {
+    private static Cliente cadastrarCliente(PlataformaStreaming plat) throws Exception {
         String nomeCompleto, nome, senha;
         entrada.nextLine();
 
@@ -448,7 +442,7 @@ public final class App {
         }
 
         Serie serieCad = new Serie(genero, nome, idioma, qtdEpisodios);
-        plat.adicionarSerie(serieCad);
+        plat.adicionarMidia(serieCad);
         return serieCad;
     }
 
@@ -481,7 +475,7 @@ public final class App {
         }
 
         Filme filmeCad = new Filme(genero, nome, idioma, duracao);
-        plat.adicionarFilme(filmeCad);
+        plat.adicionarMidia(filmeCad);
 
         return filmeCad;
     }
