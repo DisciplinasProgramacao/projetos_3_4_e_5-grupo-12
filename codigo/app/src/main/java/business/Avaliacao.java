@@ -46,19 +46,38 @@ public class Avaliacao {
         this.nota = contNota / contNumeroNotas;
     }
 
+/**
+ * Retorna a nota atribuída à avaliação.
+ *
+ * @return a nota atribuída à avaliação
+ */
     public float getNota() {
         return this.nota;
     }
 
-
+/**
+ * Retorna o comentário da avaliação.
+ *
+ * @return o comentário da avaliação
+ */
     public String getComentario() {
         return this.comentario;
     }
 
+/**
+ * Define o comentário da avaliação.
+ *
+ * @param comentario o novo comentário da avaliação
+ */
     public void setComentario(String comentario) {
         this.comentario = comentario;
     }
 
+/**
+ * Retorna a data da avaliação.
+ *
+ * @return a data da avaliação
+ */
     public LocalDate getData(){
         return this.data;
     }
