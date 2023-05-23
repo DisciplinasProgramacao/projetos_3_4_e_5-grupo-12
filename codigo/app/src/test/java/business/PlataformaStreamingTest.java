@@ -102,22 +102,27 @@ public class PlataformaStreamingTest {
     @Test
     void FiltrarSeriePorNomeTest() {
         p.adicionarCliente(c1);
+        p.adicionarSerie(PapaLeguas);
+        p.adicionarSerie(NanaABanana);
+        p.adicionarSerie(Polyforme);
         c1.adicionarNaLista(NanaABanana);
         c1.adicionarNaLista(Polyforme);
         c1.adicionarNaLista(PapaLeguas);
         c1.adicionarNaLista(PapaLeguas);
         p.login("George", "123pogchamp456");
-        assertEquals(2,p.filtrarSeriePorNome("Papaleguas"));
+        assertEquals("{ nome='Papaleguas', id='3', genero='comedia', idioma='alemao', quantidadeEpisodios='12', audiencia='0'}",p.filtrarSeriePorNome("Papaleguas"));
     }
 
     @Test
     void FiltrarFilmePorNomeTest() {
         p.adicionarCliente(c1);
+        p.adicionarFilme(DemandaDosConselheiros);
+        p.adicionarFilme(SinestesiaDoOdio);
         c1.adicionarFilmeParaVer(DemandaDosConselheiros);
         c1.adicionarFilmeParaVer(DemandaDosConselheiros);
         c1.adicionarFilmeParaVer(SinestesiaDoOdio);
         c1.adicionarFilmeParaVer(DemandaDosConselheiros);
         p.login("George", "123pogchamp456");
-        assertEquals(3,p.filtrarSeriePorNome("Demanda Dos Conselheiros"));
+        assertEquals("{ nome='Demanda Dos Conselheiros', id='4', genero='Sem genero', idioma='portugues', audiencia='0'}",p.filtrarFilmePorNome("Demanda Dos Conselheiros"));
     }
 }

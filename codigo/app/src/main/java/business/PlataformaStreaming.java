@@ -409,6 +409,12 @@ public class PlataformaStreaming {
         }
     }
 
+/**
+ * Escreve os dados de audiência no arquivo, contendo o tipo (visualização ou recomendação) e a série cadastrada.
+ *
+ * @param tipo o tipo de audiência (visualização ou recomendação)
+ * @param serieCad a série cadastrada
+ */
     public void escreveArqAudiencia(String tipo, Serie serieCad) {
 
         try {
@@ -471,6 +477,14 @@ public class PlataformaStreaming {
         }
     }
 
+/**
+ * Define uma nota para uma avaliação de uma mídia, associada a um usuário e uma identificação de mídia.
+ *
+ * @param nomeUsuario o nome do usuário associado à avaliação
+ * @param id_Midia a identificação da mídia associada à avaliação
+ * @param nota a nota atribuída à mídia (valor entre 0.0 e 10.0)
+ * @return a avaliação criada e armazenada no mapa de avaliações
+ */
     public Avaliacao setNota(String nomeUsuario, int id_Midia, float nota) {
 
         Avaliacao avaliacao = new Avaliacao(nota);
@@ -480,6 +494,15 @@ public class PlataformaStreaming {
         return avaliacao;
     }
 
+/**
+ * Define uma nota e um comentário para uma avaliação de uma mídia, associada a um usuário e uma identificação de mídia.
+ *
+ * @param nomeUsuario o nome do usuário associado à avaliação
+ * @param id_Midia a identificação da mídia associada à avaliação
+ * @param nota a nota atribuída à mídia (valor entre 0.0 e 10.0)
+ * @param comentario o comentário da avaliação
+ * @return a avaliação criada e armazenada no mapa de avaliações
+ */
     public Avaliacao setNota(String nomeUsuario, int id_Midia, float nota, String comentario) {
 
         Avaliacao avaliacao = new Avaliacao(nota, comentario);
@@ -488,6 +511,12 @@ public class PlataformaStreaming {
         return avaliacao;
     }
 
+/**
+ * Verifica se um cliente pode avaliar um filme.
+ *
+ * @param nomeM o nome do filme a ser verificado
+ * @return true se o cliente pode avaliar o filme, false caso contrário
+ */
     public boolean checkAvaliacaoFilme(String nomeM) {
 
         boolean permitido = false;
@@ -507,6 +536,12 @@ public class PlataformaStreaming {
         return permitido;
     }
 
+/**
+ * Verifica se um cliente pode avaliar uma série.
+ *
+ * @param nomeM o nome da série a ser verificada
+ * @return true se o cliente pode avaliar a série, false caso contrário
+ */
     public boolean checkAvaliacaoSerie(String nomeM) {
 
         boolean permitido = false;
@@ -590,6 +625,12 @@ public class PlataformaStreaming {
         return this.clienteAtual;
     }
 
+/**
+ * Retrieves the name of a media item based on its ID.
+ * 
+ * @param id The ID of the media item to retrieve.
+ * @return The name of the media item with the specified ID, or an empty string if not found.
+ */
     public String getMidia(int id) {
 
         String nome = "";
