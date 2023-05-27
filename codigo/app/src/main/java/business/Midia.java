@@ -2,9 +2,10 @@ package business;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.Random;
 
-public abstract class Midia {
+public abstract class Midia implements ISalvavel {
 
     private float nota;
     private static int cont = 1;
@@ -16,6 +17,9 @@ public abstract class Midia {
     private int audiencia = 0;
     private static final String[] generos = new String[] { "comedia", "terror", "romance" };
     private static final String[] idiomas = new String[] { "portugues", "ingles", "espanhol" };
+    private static HashMap<String, Avaliacao> avaliacoes = new HashMap<>(); // (id cliente / id Serie)
+
+
     DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     LocalDate dataAtual = LocalDate.now();
 
@@ -25,8 +29,10 @@ public abstract class Midia {
      * @param genero o gênero da mídia.
      * @param nome   o nome da mídia.
      * @param idioma o idioma da mídia.
+     * @throws SerieInvalidaException
+     * @throws MidiaInvalidaException
      */
-    public Midia(String genero, String nome, String idioma) {
+    public Midia(String genero, String nome, String idioma) throws MidiaInvalidaException {
 
         this.id = Midia.cont++;
         boolean generoValido = false;
@@ -37,7 +43,7 @@ public abstract class Midia {
         }
 
         if (generoValido) {
-            this.genero = genero;
+            setGenero(genero);
         } else {
             this.genero = "Sem genero";
         }
@@ -105,9 +111,16 @@ public abstract class Midia {
      * Define um novo gênero para este objeto.
      * 
      * @param genero o novo valor do gênero a ser definido.
+     * @throws MidiaInvalidaException
      */
-    public void setGenero(String genero) {
-        this.genero = genero;
+    //perguntar como faz a excecao aqui
+    public void setGenero(String genero) throws MidiaInvalidaException {
+        boolean teste = false;
+        for(String g : generos) {
+            if(g.equals(genero)){
+                this.genero = genero;
+            }
+        }
     }
 
     /**
@@ -124,11 +137,19 @@ public abstract class Midia {
      * comprimento maior que zero.
      * 
      * @param idioma o novo valor do idioma a ser definido.
+     * @throws SerieInvalidaException
      */
-    public void setIdioma(String idioma) {
-        if (idioma.length() > 0) {
 
-            this.idioma = idioma;
+    //  if (!idioma.equals("ingles") && !idioma.equals("portugues") && !idioma.equals("espanhol")) {
+    //     System.out.println("O idioma deve ser 'portugues', 'ingles' ou 'espanhol'");
+    //     throw new SerieInvalidaException();
+    // }
+    public void setIdioma(String idioma) throws MidiaInvalidaException {
+
+        for(String i : idiomas) {
+            if(i.equals(genero)){
+                this.idioma = idioma;
+            }
         }
     }
 
@@ -209,5 +230,16 @@ public abstract class Midia {
      */
     public void registrarAudiencia() {
         this.audiencia++;
+    }
+
+    public void setComentario(String comentario, String nomeUsuario) {
+
+       avaliacoes.get(nomeUsuario).setComentario(comentario);
+    }
+
+    public void addAvaliacao(Float nota, String nomeUsuario) {
+
+        Avaliacao avaliacao = new Avaliacao(nota);
+        avaliacoes.put(nomeUsuario, avaliacao);
     }
 }

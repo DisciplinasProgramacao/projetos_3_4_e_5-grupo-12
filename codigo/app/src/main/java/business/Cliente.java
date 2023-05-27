@@ -17,24 +17,41 @@ public class Cliente implements ISalvavel {
      * @param nomeCompleto  o nome completo do Cliente
      * @param nomeDeUsuario o nome de usuário do Cliente
      * @param senha         a senha do Cliente
+     * @throws ClienteInvalidoException
      */
-    public Cliente(String nomeCompleto, String nomeDeUsuario, String senha) {
-        this.nomeCompleto = nomeCompleto;
+    public Cliente(String nomeCompleto, String nomeDeUsuario, String senha) throws ClienteInvalidoException {
+        setNomeCompleto(nomeCompleto);
         setNomeDeUsuario(nomeDeUsuario);
         setSenha(senha);
-        this.nomeDeUsuario = getNomeDeUsuario();
-        this.senha = getSenha();
     }
 
-    public void setMeuTipo(IComentarista meuTipo) {
+    public void setMeuTipo(IComentarista meuTipo) throws ClienteInvalidoException {
         this.meuTipo = meuTipo;
     }
+    public IComentarista getMeuTipo() {
+        return this.meuTipo;
+    }
 
-    public void fazerComentario(String comentario) {
+    public void adicionarAvaliacao(float nota, Midia midia){
+
+        midia.addAvaliacao(nota, getNomeDeUsuario());
+    }
+
+
+    //REVISAR
+    public void fazerComentario(String comentario, Midia midia) {
         if (meuTipo != null) {
-            meuTipo.comentar(comentario);
+            meuTipo.comentar(comentario, midia, getNomeDeUsuario());
         } else {
             System.out.println("Desculpe, apenas clientes especialistas podem comentar.");
+        }
+    }
+
+    public void setNomeCompleto(String nomeCompleto) throws ClienteInvalidoException {
+        if (!nomeCompleto.equals("")) {
+            this.nomeCompleto = nomeCompleto;
+        } else {
+            throw new ClienteInvalidoException("O nome não pode ser vazio!");
         }
     }
 
@@ -60,10 +77,13 @@ public class Cliente implements ISalvavel {
      * Define o nome de usuário do cliente.
      *
      * @param nomeDeUsuario o novo nome de usuário do cliente.
+     * @throws ClienteInvalidoException
      */
-    public void setNomeDeUsuario(String nomeDeUsuario) {
-        if (nomeDeUsuario != "") {
+    public void setNomeDeUsuario(String nomeDeUsuario) throws ClienteInvalidoException {
+        if (nomeDeUsuario.length()>0) {
             this.nomeDeUsuario = nomeDeUsuario;
+        } else {
+            throw new ClienteInvalidoException("O nome de usuario deve ter pelo menos 5 caracteres");
         }
     }
 
@@ -80,11 +100,14 @@ public class Cliente implements ISalvavel {
      * Define a senha do cliente.
      *
      * @param senha a nova senha do cliente.
+     * @throws ClienteInvalidoException
      */
-    public void setSenha(String senha) {
-        if (senha != "") {
+    public void setSenha(String senha) throws ClienteInvalidoException {
+        if (checkString(senha) || senha.length() > 6) 
             this.senha = senha;
-        }
+        else
+        throw new ClienteInvalidoException("A senha deve possuir pelo menos 6 caracteres, entre letras maiusculas, minusculas e numeros.");
+
     }
 
     /**
@@ -309,4 +332,23 @@ public class Cliente implements ISalvavel {
         return ("\n" + nome + ";" + login + ";" + senha);
     }
 
+    private boolean checkString(String str) {
+        char ch;
+        boolean letraMaiuscula = false;
+        boolean letraMinuscula = false;
+        boolean num = false;
+        for (int i = 0; i < str.length(); i++) {
+            ch = str.charAt(i);
+            if (Character.isDigit(ch)) {
+                num = true;
+            } else if (Character.isUpperCase(ch)) {
+                letraMaiuscula = true;
+            } else if (Character.isLowerCase(ch)) {
+                letraMinuscula = true;
+            }
+            if (num && letraMaiuscula && letraMinuscula)
+                return true;
+        }
+        return false;
+    }
 }

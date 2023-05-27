@@ -2,8 +2,8 @@ package business;
 
 public class SerieInvalidaException extends Exception {
 
-    public SerieInvalidaException() {
-        super();
+    public SerieInvalidaException(String message) {
+        super(message);
     }
 
     @Override

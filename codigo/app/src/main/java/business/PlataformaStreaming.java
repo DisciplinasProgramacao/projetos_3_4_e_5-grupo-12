@@ -18,7 +18,6 @@ public class PlataformaStreaming {
     private String nome;
     private HashMap<Integer, Midia> midias = new HashMap<>();
     private HashMap<String, Cliente> clientes = new HashMap<String, Cliente>();
-    private static HashMap<Key<String, Integer>, Avaliacao> Avaliacoes = new HashMap<>(); // (id cliente / id Serie)
     private Cliente clienteAtual;
 
     /**
@@ -42,6 +41,7 @@ public class PlataformaStreaming {
     public void setNome(String nome) {
         this.nome = nome;
     }
+
 
     /**
      * Método para pegar as series cadastradas
@@ -84,9 +84,51 @@ public class PlataformaStreaming {
      * 
      * @param serie Esse é a serie que será recebido
      */
-    public void adicionarMidia(Midia midia) {
-        midias.put(midia.getId(), midia);
 
+    //REVISAR -- contains key
+    public void adicionarMidia(Midia midia) {
+        if(!midias.containsValue(midia)) {
+            System.out.println(midia.getId());
+            midias.put(midia.getId(), midia);
+            escreveArqMidia(midia);
+        }
+    }
+
+    public void adicionarSerie(String nome, String idioma, String genero, int qtdEpisodios) throws SerieInvalidaException, MidiaInvalidaException {
+        
+        Serie serieCad = new Serie(genero, nome, idioma, qtdEpisodios);
+        adicionarMidia(serieCad);
+    }
+
+    public void adicionarFilme(String nome, String idioma, String genero, int duracao) throws  MidiaInvalidaException, FilmeInvalidoException {
+        Filme filmeCad = new Filme(genero, nome, idioma, duracao);
+        adicionarMidia(filmeCad);
+    }
+
+
+    //adicionar exeption
+    public void adicionarMidiaParaAssistir(String nomeMidia) {
+
+        Midia midia = filtrarMidiaPorNome(nomeMidia);
+        if(midia != null) {
+            this.clienteAtual.adicionarListaParaVer(midia);
+        }
+    }
+
+    public void adicionarMidiaAssistida(String nomeMidia) {
+        Midia midia = filtrarMidiaPorNome(nomeMidia);
+        clienteAtual.adicionarMidiaVista(midia);
+    }
+
+
+    public String getListaJaVista() {
+
+        return this.clienteAtual.getListaJaVista().toString();
+    }
+
+    public String getListaParaAssistir() {
+
+        return this.clienteAtual.getListaParaVer().toString();
     }
 
 
@@ -98,10 +140,15 @@ public class PlataformaStreaming {
      */
 
      //REVISAR ESSE TROWS
-    public void adicionarCliente(Cliente c) throws Exception {
+    public void adicionarCliente(String nomeCompleto, String nomeDeUsuario, String senha) throws Exception  {
 
-        this.clientes.put(c.getNomeDeUsuario(), c);
-        escreveArqCliente(c);
+        Cliente c = new Cliente(nomeCompleto, nomeDeUsuario, senha);
+        
+        if(!clientes.containsValue(c)){
+            escreveArqCliente(c);
+            this.clientes.put(c.getNomeDeUsuario(), c);     
+            
+        }
     }
 
     /**
@@ -151,13 +198,20 @@ public class PlataformaStreaming {
      * @param nomeUsuario esse é o nome de login do usuario
      * @param senha       essa é a senha do usuario
      * @return retorna o cliente logado como cliente atual
+     * @throws ClienteInvalidoException
      */
-    public Cliente login(String nomeUsuario, String senha) {
+    public boolean login(String nomeUsuario, String senha) throws ClienteInvalidoException {
+
+        boolean logado = true;
+
         clienteAtual = clientes.get(nomeUsuario);
         if (!senha.equals(clienteAtual.getSenha())) {
+            logado = false;
             this.clienteAtual = null;
-        }
-        return clienteAtual;
+            throw new ClienteInvalidoException("Senha incorreta!");
+        } 
+
+        return logado;
     }
 
     /**
@@ -290,24 +344,32 @@ public class PlataformaStreaming {
         }
     }
 
-    /**
-     * Esse metodo escreve um filme no arquivo de filmes
-     * 
-     * @param filmeCad Esse é o filme a ser escrito
-     */
-    public void escreveArqFilme(Filme filmeCad) {
-        escreveArquivo(filmeCad, arqFilmes);
-
+    public void escreveArqMidia(ISalvavel midia) {
+        if(midia instanceof Filme) {
+            escreveArquivo(midia, arqFilmes);
+        } else if (midia instanceof Serie) {
+            escreveArquivo(midia, arqSeries);
+        }
     }
 
-    /**
-     * Esse metodo escreve uma serie no arquivo de serie
-     * 
-     * @param serieCad Esse é a serie a ser escrita
-     */
-    public void escreveArqSerie(Serie serieCad) {
-        escreveArquivo(serieCad, arqSeries);
-    }
+    // /**
+    //  * Esse metodo escreve um filme no arquivo de filmes
+    //  * 
+    //  * @param filmeCad Esse é o filme a ser escrito
+    //  */
+    // public void escreveArqFilme(Filme filmeCad) {
+    //     escreveArquivo(filmeCad, arqFilmes);
+
+    // }
+
+    // /**
+    //  * Esse metodo escreve uma serie no arquivo de serie
+    //  * 
+    //  * @param serieCad Esse é a serie a ser escrita
+    //  */
+    // public void escreveArqSerie(Serie serieCad) {
+    //     escreveArquivo(serieCad, arqSeries);
+    // }
 
     /**
      * Esse metodo escreve um cliente no arquivo de cliente, se o nome de usuario
@@ -321,7 +383,7 @@ public class PlataformaStreaming {
         boolean clienteExistente = clienteExistente(clienteCad);
         if (!clienteExistente) {
             escreveArquivo(clienteCad, arqClientes);
-            System.out.println("Cliente cadastrado com sucesso");
+            System.out.println("Cliente cadastrado com sucesso!");
         } else {
             throw new NomeUsuarioException();
         }
@@ -335,8 +397,9 @@ public class PlataformaStreaming {
      */
     public boolean clienteExistente(Cliente cliente) throws Exception {
         boolean flag = false;
-
-        if (clientes.containsKey(cliente.getNomeDeUsuario())) {
+        
+        if (clientes.containsKey(cliente.getNomeDeUsuario())) { //vou comparar com o antigo pera ai
+            System.out.println("passou aqui");
             flag = true;
         }
         return flag;
@@ -420,39 +483,12 @@ public class PlataformaStreaming {
     }
 
 
-/**
- * Define uma nota para uma avaliação de uma mídia, associada a um usuário e uma identificação de mídia.
- *
- * @param nomeUsuario o nome do usuário associado à avaliação
- * @param id_Midia a identificação da mídia associada à avaliação
- * @param nota a nota atribuída à mídia (valor entre 0.0 e 10.0)
- * @return a avaliação criada e armazenada no mapa de avaliações
- */
-    public Avaliacao setNota(String nomeUsuario, int id_Midia, float nota) {
+    public void adicionarAvaliacao(float nota, String nomeMidia) {
 
-        Avaliacao avaliacao = new Avaliacao(nota);
-        Key<String, Integer> key = new Key<String, Integer>(nomeUsuario, id_Midia);
-        Avaliacoes.put(key, avaliacao);
-
-        return avaliacao;
+        Midia midia = filtrarMidiaPorNome(nomeMidia);
+        clienteAtual.adicionarAvaliacao(nota, midia);
     }
 
-/**
- * Define uma nota e um comentário para uma avaliação de uma mídia, associada a um usuário e uma identificação de mídia.
- *
- * @param nomeUsuario o nome do usuário associado à avaliação
- * @param id_Midia a identificação da mídia associada à avaliação
- * @param nota a nota atribuída à mídia (valor entre 0.0 e 10.0)
- * @param comentario o comentário da avaliação
- * @return a avaliação criada e armazenada no mapa de avaliações
- */
-    public Avaliacao setNota(String nomeUsuario, int id_Midia, float nota, String comentario) {
-
-        Avaliacao avaliacao = new Avaliacao(nota, comentario);
-        Key<String, Integer> key = new Key<String, Integer>(nomeUsuario, id_Midia);
-        Avaliacoes.put(key, avaliacao);
-        return avaliacao;
-    }
 
 /**
  * Verifica se um cliente pode avaliar um filme.
@@ -479,13 +515,6 @@ public class PlataformaStreaming {
         return permitido;
     }
 
-
-    // public boolean eEspecialista() {
-
-    //     return (this.clienteAtual instanceof ClienteEspecialista);
-    // }
-
-
     // public int getQtdAvaliacoes() {
 
     //     int contador = 0;
@@ -498,6 +527,16 @@ public class PlataformaStreaming {
         
     //     return contador;
     // }
+
+    public boolean eEspecialista() {
+        return (clienteAtual.getMeuTipo() != null);
+    }
+
+
+    public void comentar(String comentario, String nomeMidia) {
+        Midia midia = filtrarMidiaPorNome(nomeMidia);
+        clienteAtual.fazerComentario(comentario, midia);
+    }
 
 
     //REVISAR
@@ -547,6 +586,7 @@ public class PlataformaStreaming {
         return this.clienteAtual;
     }
 
+  
 
 }
 

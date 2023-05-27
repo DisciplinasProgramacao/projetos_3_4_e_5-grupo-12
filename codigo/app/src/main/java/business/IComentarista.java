@@ -2,6 +2,6 @@ package business;
 
 public interface IComentarista {
 
-    public void comentar(String comentario);
+    public void comentar(String comentario, Midia midia, String nomeUsuario);
 
 }

@@ -1,6 +1,6 @@
 package business;
 
-public class Filme extends Midia implements ISalvavel {
+public class Filme extends Midia {
 
     private int duracao;
 
@@ -11,8 +11,11 @@ public class Filme extends Midia implements ISalvavel {
      * @param nome    Esse é o nome do filme
      * @param idioma  Esse é o idioma do filme como portugues ou ingles
      * @param duracao Essa é a duração em minutos do filme
+     * @throws SerieInvalidaException
+     * @throws FilmeInvalidoException
+     * @throws MidiaInvalidaException
      */
-    public Filme(String genero, String nome, String idioma, int duracao) {
+    public Filme(String genero, String nome, String idioma, int duracao) throws FilmeInvalidoException, MidiaInvalidaException {
         super(genero, nome, idioma);
         setDuracao(duracao);
 
@@ -39,16 +42,19 @@ public class Filme extends Midia implements ISalvavel {
     public int getDuracao() {
         return duracao;
     }
-
+    
     /**
      * Metodo para por a duração do filme
      * 
      * @param duracao essa é a duração do filme em minutos, sendo que ela deve ter
      *                mais de 1 minuto
+     * @throws FilmeInvalidoException
      */
-    public void setDuracao(int duracao) {
+    public void setDuracao(int duracao) throws FilmeInvalidoException {
         if (duracao > 0) {
             this.duracao = duracao;
+        } else {
+            throw new FilmeInvalidoException("O filme deve possuir pelo menos 1 minuto");
         }
     }
 
