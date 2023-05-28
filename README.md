@@ -21,8 +21,8 @@ Nesse projeto temos o objetivo de aprender java ao fazer uma plataforma de strea
 - cuidado com try/catch gigantes.
 
 1. Aderência às classes do diagrama: 1,2/2 pontos
-  - Diagrama sem relacionamento entre as classes
-  - Métodos filtrar da Plataforma não estão no diagrama
+    - Diagrama sem relacionamento entre as classes
+    - Métodos filtrar da Plataforma não estão no diagrama
 
 2. Requisitos de corretamente implementados: 6,8/12 pontos
   - Carga de dados					1,8/2 pontos
