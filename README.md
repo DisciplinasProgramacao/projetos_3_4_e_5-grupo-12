@@ -25,23 +25,23 @@ Nesse projeto temos o objetivo de aprender java ao fazer uma plataforma de strea
     - Métodos filtrar da Plataforma não estão no diagrama
 
 2. Requisitos de corretamente implementados: 6,8/12 pontos
-  - Carga de dados					1,8/2 pontos
-  - Cadastro + salvar dados			2/2 pontos
-  - Robustez básica					1/1 ponto
-  - Clientes							0,5/2 pontos
-	Listas, audiência sem repet
-  - Séries							0,25/1 ponto
-	- audiência
-  - Filme/Herança de mídia			0,25/1 ponto
-  - Buscas 							1/3 pontos
-	- nome, gênero, idioma
+    - Carga de dados					1,8/2 pontos
+    - Cadastro + salvar dados			2/2 pontos
+    - Robustez básica					1/1 ponto
+    - Clientes							0,5/2 pontos
+	    - Listas, audiência sem repet
+    - Séries							0,25/1 ponto
+	    - audiência
+    - Filme/Herança de mídia			0,25/1 ponto
+    - Buscas 							1/3 pontos
+    	- nome, gênero, idioma
 
 3. Documentação de código: 4/4 pontos
 
 4. Implementação na aula inicial: 1,2/2 pontos (cliente e série testados)
-  - Registrar audiência do cliente: é só chamar o método da série
-  - Série só pode guardar audiência pelo método
-  - Testes não cobriram sets (que nem deviam existir)
+    - Registrar audiência do cliente: é só chamar o método da série
+    - Série só pode guardar audiência pelo método
+    - Testes não cobriram sets (que nem deviam existir)
 
 ----
 
