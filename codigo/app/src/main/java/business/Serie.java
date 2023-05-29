@@ -1,12 +1,13 @@
 package business;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 public class Serie extends Midia {
 
     private int quantidadeEpisodios;
-
-    static final String[] generos = new String[] { "comedia", "terror", "romance" };
+    private Random random = new Random();
 
     /**
      * Esse é o construtor da classe serie para usar quando cadastrado manualmente
@@ -30,13 +31,11 @@ public class Serie extends Midia {
      * @param nome           Esse é o nome da serie
      * @param dataLancamento Esse é a data de lançamento da serie
      * @throws SerieInvalidaException
+     * @throws MidiaInvalidaException
      */
-    public Serie(int id, String nome, String dataLancamento) throws SerieInvalidaException {
-        super(id, nome);
-        Random random = new Random();
-        super.setDataLancamento(dataLancamento);
+    public Serie(int id, String nome, LocalDate dataLancamento) throws SerieInvalidaException, MidiaInvalidaException {
+        super(id, nome, dataLancamento);
         setQuantidadeEpisodios(random.nextInt(99) + 1);
-
     }
 
     /**
@@ -87,11 +86,12 @@ public class Serie extends Midia {
      * @return uma String contendo o id, nome e data de lançamento do objeto
      */
     @Override
-    public String getDadosString() {
+    public String getDados() {
         int id = getId();
         String nome = getNome();
-        String dataL = getDataLancamento();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String data = getDataLancamento().format(formatter);
 
-        return ("\n" + id + ";" + nome + ";" + dataL);
+        return ("\n" + id + ";" + nome + ";" + data);
     }
 }

@@ -4,10 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class PlataformaStreaming {
@@ -27,44 +25,20 @@ public class PlataformaStreaming {
      * @throws Exception
      */
     public PlataformaStreaming(String nome) throws Exception {
-        this.nome = nome;
-
+        
+        setNome(nome);
         carregarMidia(arqSeries);
         carregarMidia(arqFilmes);
         carregarClientes();
         carregarAudiencia();
     }
 
-    /**
-     * Método para pegar o nome da plataforma
-     * 
-     * @return retorna o nome da plataforma
-     */
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-
-    /**
-     * Método para pegar as series cadastradas
-     * 
-     * @return retorna as series cadastradas na plataforma
-     */
-    public HashMap<Integer, Midia> getMidias() {
-        return midias;
-    }
-
-    /**
-     * Método para cadastrar as series da plataforma
-     * 
-     * @param series mapa de todas as series que a plataforma ira conter
-     */
-    public void setMidia(HashMap<Integer, Midia> midias) {
-        this.midias = midias;
+    public void setNome(String nome) throws Exception {
+        if(nome.length() >= 0){
+            this.nome = nome;
+        } else {
+            throw new Exception("O nome não pode ser vazio!");
+        }  
     }
 
     /**
@@ -89,14 +63,15 @@ public class PlataformaStreaming {
      * Método para adicionar uma serie na lista de series
      * 
      * @param serie Esse é a serie que será recebido
+     * @throws Exception
      */
 
-    //REVISAR -- contains key
-    public void adicionarMidia(Midia midia) {
-        if(!midias.containsValue(midia)) {
-            System.out.println(midia.getId());
+    public void adicionarMidia(Midia midia) throws MidiaInvalidaException {
+        if(!midias.containsKey(midia.getId())) {
             midias.put(midia.getId(), midia);
             escreveArqMidia(midia);
+        } else {
+            throw new MidiaInvalidaException("Essa midia já existe!");
         }
     }
 
@@ -112,22 +87,22 @@ public class PlataformaStreaming {
     }
 
 
-    //adicionar exeption
-    public void adicionarMidiaParaAssistir(String nomeMidia) {
 
+    public void adicionarMidiaParaAssistir(String nomeMidia) throws Exception {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
-        if(midia != null) {
+        if (midia != null) {
             this.clienteAtual.adicionarListaParaVer(midia);
             escreveArqAudiencia("F", midia, -1);
+        } else {
+            throw new Exception("Nenhuma midia encontrada com esse nome!");
         }
     }
+    
 
-    public void adicionarMidiaAssistida(String nomeMidia) {
+    public void adicionarMidiaAssistida(String nomeMidia) throws Exception {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
         String nomeUsuario = this.clienteAtual.getNomeDeUsuario();
         Float nota = null;
-
-        String data = LocalDate.now().toString();
     
         if(midia != null) {
             nota = midia.getNotaAvaliacao(nomeUsuario);
@@ -142,14 +117,11 @@ public class PlataformaStreaming {
         }
     }
 
-
     public String getListaJaVista() {
-
         return this.clienteAtual.getListaJaVista().toString();
     }
 
     public String getListaParaAssistir() {
-
         return this.clienteAtual.getListaParaVer().toString();
     }
 
@@ -162,17 +134,17 @@ public class PlataformaStreaming {
      */
 
      //REVISAR ESSE TROWS
-    public void adicionarCliente(String nomeCompleto, String nomeDeUsuario, String senha) throws Exception  {
-
+     public void adicionarCliente(String nomeCompleto, String nomeDeUsuario, String senha) throws ClienteInvalidoException, Exception {
         Cliente c = new Cliente(nomeCompleto, nomeDeUsuario, senha);
-        
-        if(!clientes.containsValue(c)){
+    
+        if (!clientes.containsKey(c.getNomeDeUsuario())) {
             escreveArqCliente(c);
-            this.clientes.put(c.getNomeDeUsuario(), c);     
-            
+            this.clientes.put(c.getNomeDeUsuario(), c);
+        } else {
+            throw new ClienteInvalidoException("Esse cliente já existe!");
         }
     }
-
+    
     /**
      * Metodo para filtrar uma serie pelo seu genero
      * 
@@ -270,7 +242,9 @@ public class PlataformaStreaming {
             StringTokenizer str = new StringTokenizer(linha, ";");
             int id = Integer.parseInt(str.nextToken());
             String nome = str.nextToken();
-            String dataLancamento = str.nextToken();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate dataLancamento = LocalDate.parse(str.nextToken(), formatter);
+
             if(tipoArquivo.equals(arqFilmes)){
                 int n = Integer.parseInt(str.nextToken());
                 midia = new Filme(id, nome, dataLancamento, n);
@@ -312,10 +286,8 @@ public class PlataformaStreaming {
                 if (str.hasMoreTokens()) {
                     String valor = str.nextToken();
                     if (valor.contains("-")) {
-                        // valor é uma data
                         clienteAtual.adicionarDataAssistida(valor);
                     } else {
-                        // valor é uma nota
                         nota = Float.parseFloat(valor);
                         clienteAtual.adicionarAvaliacao(nota, midia);
                     }
@@ -342,7 +314,7 @@ public class PlataformaStreaming {
 
         try {
             FileWriter arquivo = new FileWriter(nomeArquivo, true);
-            arquivo.write(objeto.getDadosString());
+            arquivo.write(objeto.getDados());
             arquivo.close();
         } catch (IOException e) {
             System.out.println("Ocorreu um erro ao salvar os dados no arquivo.");
@@ -407,53 +379,20 @@ public class PlataformaStreaming {
      * @param nome Esse é o nome enviado
      * @return Retorna a serie com o mesmo nome que o enviado
      */
-    public Midia filtrarMidiaPorNome(String nome) {
-        List<Midia> listaNova = new LinkedList<>();
-        for (Midia s : this.midias.values()) {
-            if (s.getNome().equals(nome)) {
-                listaNova.add(s);
-            }
-        }
-
-        if (!listaNova.isEmpty()) {
-            return listaNova.get(0);
-        } else {
-            return null;
-        }
+    public Midia filtrarMidiaPorNome(String nome) throws Exception {
+        return this.midias.values().stream()
+                .filter(s -> s.getNome().equals(nome))
+                .findFirst()
+                .orElseThrow(() -> new Exception("Nenhuma midia encontrada com esse nome!"));
     }
 
 
-    public void adicionarAvaliacao(float nota, String nomeMidia) {
+    public void adicionarAvaliacao(float nota, String nomeMidia) throws Exception {
 
         Midia midia = filtrarMidiaPorNome(nomeMidia);
         clienteAtual.adicionarAvaliacao(nota, midia);
     }
 
-
-/**
- * Verifica se um cliente pode avaliar um filme.
- *
- * @param nomeM o nome do filme a ser verificado
- * @return true se o cliente pode avaliar o filme, false caso contrário
- */
-    public boolean checkAvaliacaoMidia(String nomeM) {
-
-        boolean permitido = false;
-
-        Midia m = filtrarMidiaPorNome(nomeM);
-
-        if (this.clienteAtual.getListaJaVista().contains(m)) {
-            int idMidia = m.getId();
-            String nomeUsuario = this.clienteAtual.getNomeDeUsuario();
-            Key<String, Integer> key = new Key<String, Integer>(nomeUsuario, idMidia);
-
-            if (!Avaliacoes.containsKey(key)) {
-                permitido = true;
-            }
-        }
-
-        return permitido;
-    }
 
 
     public boolean eEspecialista() {
@@ -461,44 +400,30 @@ public class PlataformaStreaming {
     }
 
 
-    public void comentar(String comentario, String nomeMidia) {
+    public void comentar(String comentario, String nomeMidia) throws Exception {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
         clienteAtual.fazerComentario(comentario, midia);
     }
 
-    //REVISAR
-
-    public void listaDataAudiencia() throws Exception {
-        
-        
-    }
-
 
     public void setClienteEspecialista() throws Exception {
-
         System.out.println(this.clienteAtual.getListaDataAssistida());
-        
+    
         if (this.clienteAtual.getListaJaVista().size() >= 5) {
             List<String> datasAssistidas = clienteAtual.getListaDataAssistida();
             LocalDate mesPassado = LocalDate.now().minusMonths(1);
-            int contador = 0;
-            for (String data : datasAssistidas) {
-                LocalDate dataAssistida = LocalDate.parse(data);
-                if ((dataAssistida.getMonthValue() == mesPassado.getMonthValue() &&
-                     dataAssistida.getYear() == mesPassado.getYear()) ||
-                    (dataAssistida.getMonthValue() == LocalDate.now().getMonthValue() &&
-                     dataAssistida.getYear() == LocalDate.now().getYear())) {
-                    contador++;
-                }
-            }
+            long contador = datasAssistidas.stream()
+                    .map(LocalDate::parse)
+                    .filter(dataAssistida -> (dataAssistida.getMonthValue() == mesPassado.getMonthValue() &&
+                            dataAssistida.getYear() == mesPassado.getYear()) ||
+                            (dataAssistida.getMonthValue() == LocalDate.now().getMonthValue() &&
+                                    dataAssistida.getYear() == LocalDate.now().getYear()))
+                    .count();
             if (contador >= 5) {
                 clienteAtual.setMeuTipo(new ClienteEspecialista(clienteAtual.getNomeCompleto(), clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha()));
             }
         }
-
-        //System.out.println(this.clienteAtual.getListaDataAssistida());
     }
+    
 }
-
-
 

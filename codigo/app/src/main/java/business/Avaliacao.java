@@ -1,47 +1,31 @@
 package business;
-import java.time.LocalDate;
 
 public class Avaliacao {
 
-    private static float contNota = 0;
-    private static int contNumeroNotas = 0;
     private float nota;
     private String comentario;
-    LocalDate data;
 
-    Avaliacao(float nota) {
-        data = LocalDate.now();
+    Avaliacao(float nota) throws Exception {
         setNota(nota);
-
     }
 
-    Avaliacao(float nota, String comentario) {
-        data = LocalDate.now();
+    Avaliacao(float nota, String comentario) throws Exception {
         setNota(nota);
-        this.comentario = comentario;
-
-    }
-
-    Avaliacao(float nota, LocalDate data) {
-        this.data = data;
-        setNota(nota);
-
-    }
-
-    Avaliacao(float nota, String comentario, LocalDate data) {
-        this.data = data;
-        setNota(nota);
-        this.comentario = comentario;
-
+        setComentario(comentario);
     }
 
     /**
      * Define uma nova nota para este objeto e atualiza a média das notas.
      *
      * @param nota o novo valor da nota a ser definida.
+     * @throws Exception
      */
-    public void setNota(float nota) {
-        this.nota = nota;
+    public void setNota(float nota) throws Exception {
+        if((nota>=1) && (nota<=5)){
+            this.nota = nota;
+        } else {
+            throw new Exception("Digite somente valores entre de 1 a 5!");
+        }  
     }
 
 /**
@@ -54,29 +38,21 @@ public class Avaliacao {
     }
 
 /**
- * Retorna o comentário da avaliação.
- *
- * @return o comentário da avaliação
- */
-    public String getComentario() {
-        return this.comentario;
-    }
-
-/**
  * Define o comentário da avaliação.
  *
  * @param comentario o novo comentário da avaliação
+ * @throws Exception
  */
-    public void setComentario(String comentario) {
-        this.comentario = comentario;
+    public void setComentario(String comentario) throws Exception {
+        if(comentario.length()>0) {
+            this.comentario = comentario;
+        } else {
+            throw new Exception("Comentario não pode ser vazio!");
+        }
+       
     }
 
-/**
- * Retorna a data da avaliação.
- *
- * @return a data da avaliação
- */
-    public LocalDate getData(){
-        return this.data;
+    public String getComentario(){
+        return this.comentario;
     }
 }
