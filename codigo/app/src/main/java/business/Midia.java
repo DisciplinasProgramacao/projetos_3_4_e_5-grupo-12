@@ -7,21 +7,29 @@ import java.util.Random;
 
 public abstract class Midia implements ISalvavel {
 
-    private float nota;
-    private static int cont = 1;
+    private float notaMedia;
     private int id;
     private String nome;
     private String genero;
     private String idioma;
     private String dataLancamento;
+    private LocalDate dataAssistida;
     private int audiencia = 0;
     private static final String[] generos = new String[] { "comedia", "terror", "romance" };
     private static final String[] idiomas = new String[] { "portugues", "ingles", "espanhol" };
     private static HashMap<String, Avaliacao> avaliacoes = new HashMap<>(); // (id cliente / id Serie)
-
+    private static Random random = new Random();
 
     DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     LocalDate dataAtual = LocalDate.now();
+
+    public LocalDate getDataAssistida() {
+        return this.dataAssistida;
+    }
+
+    public void setDataAssistida(LocalDate dataAssistida) {
+        this.dataAssistida = dataAssistida;
+    }
 
     /**
      * Construtor da classe Midia.
@@ -34,24 +42,39 @@ public abstract class Midia implements ISalvavel {
      */
     public Midia(String genero, String nome, String idioma) throws MidiaInvalidaException {
 
-        this.id = Midia.cont++;
-        boolean generoValido = false;
-        for (int i = 0; i < generos.length; i++) {
-            if (genero.equals(generos[i])) {
-                generoValido = true;
-            }
-        }
-
-        if (generoValido) {
-            setGenero(genero);
-        } else {
-            this.genero = "Sem genero";
-        }
-
+        this.id = random.nextInt(Integer.MAX_VALUE);
+        setGenero(genero);
         setNome(nome);
         setIdioma(idioma);
         setDataLancamento(dataAtual.format(formatoData).toString());
     }
+
+
+    public Avaliacao getAvaliacoes(String nomeUsuario) {
+        return avaliacoes.get(nomeUsuario);
+    }
+
+    public Float getNotaAvaliacao(String nomeUsuario) {
+        Avaliacao avaliacao = avaliacoes.get(nomeUsuario);
+        if (avaliacao != null) {
+            return avaliacao.getNota();
+        } else {
+            return -1F;
+        }
+    }
+
+    public LocalDate getDataAvaliacao(String nomeUsuario) {
+
+
+
+        Avaliacao avaliacao = avaliacoes.get(nomeUsuario);
+        if(avaliacao != null) {
+            return avaliacao.getData();
+        } else {
+            return LocalDate.now();
+        }
+    }
+
 
     /**
      * Construtor da classe Midia que recebe um id e um nome para criar um objeto
@@ -65,7 +88,6 @@ public abstract class Midia implements ISalvavel {
     public Midia(int id, String nome) {
         Random random = new Random();
         this.id = id;
-        cont = id;
         setNome(nome);
         this.genero = generos[random.nextInt(2)];
         this.idioma = idiomas[random.nextInt(2)];
@@ -76,8 +98,8 @@ public abstract class Midia implements ISalvavel {
      *
      * @return a nota associada a este objeto.
      */
-    public float getNota() {
-        return nota;
+    public float getNotaMedia() {
+        return this.notaMedia;
     }
 
     /**
@@ -115,11 +137,18 @@ public abstract class Midia implements ISalvavel {
      */
     //perguntar como faz a excecao aqui
     public void setGenero(String genero) throws MidiaInvalidaException {
-        boolean teste = false;
+        boolean generoValido = false;
+
         for(String g : generos) {
             if(g.equals(genero)){
                 this.genero = genero;
-            }
+                generoValido = true;
+                break;
+            } 
+        }
+
+        if (!generoValido) {
+            throw new MidiaInvalidaException("Gênero inválido: " + genero);
         }
     }
 
@@ -145,11 +174,16 @@ public abstract class Midia implements ISalvavel {
     //     throw new SerieInvalidaException();
     // }
     public void setIdioma(String idioma) throws MidiaInvalidaException {
-
+        boolean idiomaValido = false;
         for(String i : idiomas) {
-            if(i.equals(genero)){
+            if(i.equals(idioma)){
                 this.idioma = idioma;
-            }
+                idiomaValido = true;
+                break;
+            } 
+        }
+        if (!idiomaValido) {
+            throw new MidiaInvalidaException("Idioma inválido: " + idioma);
         }
     }
 
@@ -237,9 +271,19 @@ public abstract class Midia implements ISalvavel {
        avaliacoes.get(nomeUsuario).setComentario(comentario);
     }
 
-    public void addAvaliacao(Float nota, String nomeUsuario) {
 
-        Avaliacao avaliacao = new Avaliacao(nota);
+    //mudar pra cliente
+    public void adicionarAvaliacao(Float nota, String nomeUsuario) {
+
+        Avaliacao avaliacao = new Avaliacao(nota); // tirar isso e colocar em clietne
         avaliacoes.put(nomeUsuario, avaliacao);
+    }
+
+    
+    public String getDadosString(String nomeUsuario, String tipo) {
+        int id = getId();
+        LocalDate data = getAvaliacoes(nomeUsuario).getData();
+
+        return ("\n" + nomeUsuario + ";" + tipo + ";" + id + ";" + data);
     }
 }

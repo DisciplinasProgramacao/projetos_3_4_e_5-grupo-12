@@ -24,9 +24,15 @@ public class PlataformaStreaming {
      * Constutor da plataforma de Streamming
      * 
      * @param nome esse é o nome da plataforma de Streamming
+     * @throws Exception
      */
-    public PlataformaStreaming(String nome) {
+    public PlataformaStreaming(String nome) throws Exception {
         this.nome = nome;
+
+        carregarMidia(arqSeries);
+        carregarMidia(arqFilmes);
+        carregarClientes();
+        carregarAudiencia();
     }
 
     /**
@@ -112,12 +118,28 @@ public class PlataformaStreaming {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
         if(midia != null) {
             this.clienteAtual.adicionarListaParaVer(midia);
+            escreveArqAudiencia("F", midia, -1);
         }
     }
 
     public void adicionarMidiaAssistida(String nomeMidia) {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
-        clienteAtual.adicionarMidiaVista(midia);
+        String nomeUsuario = this.clienteAtual.getNomeDeUsuario();
+        Float nota = null;
+
+        String data = LocalDate.now().toString();
+    
+        if(midia != null) {
+            nota = midia.getNotaAvaliacao(nomeUsuario);
+            if(nota != null) {
+                clienteAtual.adicionarMidiaVista(midia);
+                escreveArqAudiencia("A", midia, nota);
+            } else {
+                clienteAtual.adicionarMidiaVista(midia);
+                nota = midia.getNotaAvaliacao(nomeUsuario);
+                escreveArqAudiencia("A", midia, -1);
+            }
+        }
     }
 
 
@@ -220,50 +242,25 @@ public class PlataformaStreaming {
      * @return Retorna um mapa com as series do arquivo
      * @throws Exception
      */
-    public void carregarClientes() throws Exception {
+    private void carregarClientes() throws Exception {
         
-        BufferedReader reader = new BufferedReader(new FileReader("POO_Espectadores.csv"));
+        BufferedReader reader = new BufferedReader(new FileReader(arqClientes));
         String linha;
         reader.readLine();
 
         while ((linha = reader.readLine()) != null) {
             StringTokenizer str = new StringTokenizer(linha, ";");
-
             Cliente cliente = new Cliente(str.nextToken(), str.nextToken(), str.nextToken());
             clientes.put(cliente.getNomeDeUsuario(), cliente);
         }
         reader.close();
     }
 
-    /**
-     * Esse método carrega as series do arquivo de serie
-     * 
-     * @return Retorna um mapa com as series do arquivo
-     * @throws Exception
-     */
-    public void carregarSeries() throws Exception {
+    private void carregarMidia(String tipoArquivo) throws Exception {
 
-        BufferedReader reader = new BufferedReader(new FileReader("POO_Series.csv"));
-        String linha;
-        reader.readLine();
-
-        while ((linha = reader.readLine()) != null) {
-            StringTokenizer str = new StringTokenizer(linha.trim(), ";");
-            int id = Integer.parseInt(str.nextToken());
-            Serie serie = new Serie(id, str.nextToken(), str.nextToken());
-            midias.put(serie.getId(), serie);
-        }
-        reader.close();
-    }
-
-    /**
-     * 
-     * @return esse método carrega os filems do arquivo de filmes
-     * @throws Exception
-     */
-    public void carregarFilmes() throws Exception {
+        Midia midia;
         
-        BufferedReader reader = new BufferedReader(new FileReader("POO_Filmes.csv"));
+        BufferedReader reader = new BufferedReader(new FileReader(tipoArquivo));
         String linha;
 
         reader.readLine();
@@ -272,8 +269,16 @@ public class PlataformaStreaming {
 
             StringTokenizer str = new StringTokenizer(linha, ";");
             int id = Integer.parseInt(str.nextToken());
-            Filme filme = new Filme(id, str.nextToken(), str.nextToken(), Integer.parseInt(str.nextToken()));
-            midias.put(filme.getId(), filme);
+            String nome = str.nextToken();
+            String dataLancamento = str.nextToken();
+            if(tipoArquivo.equals(arqFilmes)){
+                int n = Integer.parseInt(str.nextToken());
+                midia = new Filme(id, nome, dataLancamento, n);
+            } else {
+                midia = new Serie(id, nome, dataLancamento);
+            }
+
+            midias.put(midia.getId(), midia);
         }
 
         reader.close();
@@ -286,45 +291,46 @@ public class PlataformaStreaming {
      */
 
      //revisar typecasting
-    public void carregarAudiencia() throws Exception {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
+     private void carregarAudiencia() throws Exception {
         float nota;
         BufferedReader reader = new BufferedReader(new FileReader(arqAudiencia));
         String linha;
         reader.readLine();
+        
 
         while ((linha = reader.readLine()) != null) {
             StringTokenizer str = new StringTokenizer(linha, ";");
             String login = str.nextToken();
-
+            String tipo = str.nextToken();
+            int idMidia = Integer.parseInt(str.nextToken());
+            Midia midia = midias.get(idMidia);
             this.clienteAtual = clientes.get(login);
-
-            if (str.nextToken().equals("F")) {
-                Midia temp = midias.get(Integer.parseInt(str.nextToken()));
-                clienteAtual.adicionarListaParaVer(temp);
+    
+            if (tipo.equals("F")) {
+                clienteAtual.adicionarListaParaVer(midia);
             } else {
-                int id = Integer.parseInt(str.nextToken());
-                Midia temp = midias.get(id);
                 if (str.hasMoreTokens()) {
-                    nota = Float.parseFloat(str.nextToken());
-                    Key<String, Integer> key = new Key<String, Integer>(login, id);
-                    if (str.hasMoreTokens()) {
-                        String dataS = str.nextToken();
-                        LocalDate data = LocalDate.parse(dataS, formatter);
-                        Avaliacao av = new Avaliacao(nota, data);
-                        Avaliacoes.put(key, av);
+                    String valor = str.nextToken();
+                    if (valor.contains("-")) {
+                        // valor é uma data
+                        clienteAtual.adicionarDataAssistida(valor);
                     } else {
-                        Avaliacao av = new Avaliacao(nota);
-                        Avaliacoes.put(key, av);
+                        // valor é uma nota
+                        nota = Float.parseFloat(valor);
+                        clienteAtual.adicionarAvaliacao(nota, midia);
                     }
                 }
-
-                clienteAtual.adicionarMidiaVista(temp);
+                if (str.hasMoreTokens()) {
+                    String data = str.nextToken();
+                    clienteAtual.adicionarDataAssistida(data);
+                }
+                clienteAtual.adicionarMidiaVista(midia);
             }
         }
+    
         reader.close();
     }
+    
 
     /**
      * esse metodo escreve o objeto no arquivo escolhido
@@ -332,7 +338,7 @@ public class PlataformaStreaming {
      * @param objeto      Esse é o objeto a ser escrito
      * @param nomeArquivo Esse é o arquivo em que sera escrito o objeto
      */
-    public void escreveArquivo(ISalvavel objeto, String nomeArquivo) {
+    private void escreveArquivo(ISalvavel objeto, String nomeArquivo) {
 
         try {
             FileWriter arquivo = new FileWriter(nomeArquivo, true);
@@ -344,7 +350,7 @@ public class PlataformaStreaming {
         }
     }
 
-    public void escreveArqMidia(ISalvavel midia) {
+    private void escreveArqMidia(ISalvavel midia) {
         if(midia instanceof Filme) {
             escreveArquivo(midia, arqFilmes);
         } else if (midia instanceof Serie) {
@@ -352,24 +358,6 @@ public class PlataformaStreaming {
         }
     }
 
-    // /**
-    //  * Esse metodo escreve um filme no arquivo de filmes
-    //  * 
-    //  * @param filmeCad Esse é o filme a ser escrito
-    //  */
-    // public void escreveArqFilme(Filme filmeCad) {
-    //     escreveArquivo(filmeCad, arqFilmes);
-
-    // }
-
-    // /**
-    //  * Esse metodo escreve uma serie no arquivo de serie
-    //  * 
-    //  * @param serieCad Esse é a serie a ser escrita
-    //  */
-    // public void escreveArqSerie(Serie serieCad) {
-    //     escreveArquivo(serieCad, arqSeries);
-    // }
 
     /**
      * Esse metodo escreve um cliente no arquivo de cliente, se o nome de usuario
@@ -379,40 +367,10 @@ public class PlataformaStreaming {
      * @throws Exception excecao a ser lancada caso o nome de usuario esteja
      *                   indisponivel ou haja algum erro
      */
-    public void escreveArqCliente(Cliente clienteCad) throws Exception {
-        boolean clienteExistente = clienteExistente(clienteCad);
-        if (!clienteExistente) {
-            escreveArquivo(clienteCad, arqClientes);
-            System.out.println("Cliente cadastrado com sucesso!");
-        } else {
-            throw new NomeUsuarioException();
-        }
+    private void escreveArqCliente(Cliente clienteCad) throws Exception {
+        escreveArquivo(clienteCad, arqClientes);
     }
 
-    /**
-     * Esse metodo verifica se o nome de usuario escolhido ja esta cadastrado
-     * 
-     * @param cliente é o cliente cujo nome de usuario sera verificado
-     * @throws Exception exceção a ser lançada caso haja algum erro
-     */
-    public boolean clienteExistente(Cliente cliente) throws Exception {
-        boolean flag = false;
-        
-        if (clientes.containsKey(cliente.getNomeDeUsuario())) { //vou comparar com o antigo pera ai
-            System.out.println("passou aqui");
-            flag = true;
-        }
-        return flag;
-    }
-
-    // /**
-    // * Esse metodo escreve a audiencia no arquivo de audiencia
-    // * @param clienteCad esse é o cliente que esta sendo posto como audiencia
-    // */
-    // public void escreveArqAudiencia(Cliente clienteCad) {
-    // escreveArquivo(clienteCad, arqAudiencia);
-
-    // }
 
     /**
      * Esse metodo escreve a audiencia no arquivo de audiencia
@@ -421,39 +379,21 @@ public class PlataformaStreaming {
      *                 assistira
      * @param serieCad Essa é a serie que tera a audiencia
      */
-    public void escreveArqAudiencia(String tipo, Serie serieCad, float nota) {
+    private void escreveArqAudiencia(String tipo, Midia midiaCad, float nota) {
 
         try {
             FileWriter arquivo = new FileWriter(arqAudiencia, true);
-            int id = serieCad.getId();
+            int id = midiaCad.getId();
             String login = clienteAtual.getNomeDeUsuario();
 
-            Key<String, Integer> chave = new Key<>(login, id);
-            LocalDate data = Avaliacoes.get(chave).getData();
-            arquivo.write("\n" + login + ";" + tipo + ";" + id + ";" + nota + ";" + data);
-            arquivo.close();
-        } catch (IOException e) {
-            System.out.println("Ocorreu um erro ao salvar os dados no arquivo.");
-            e.printStackTrace();
-        }
-    }
+            LocalDate data = LocalDate.now();
 
-/**
- * Escreve os dados de audiência no arquivo, contendo o tipo (visualização ou recomendação) e a série cadastrada.
- *
- * @param tipo o tipo de audiência (visualização ou recomendação)
- * @param serieCad a série cadastrada
- */
-    public void escreveArqAudiencia(String tipo, Serie serieCad) {
+            if(nota != -1){
+                arquivo.write("\n" + login + ";" + tipo + ";" + id + ";" + nota + ";" + data);
+            } else {
+                arquivo.write("\n" + login + ";" + tipo + ";" + id + ";" + data);
+            }
 
-        try {
-            FileWriter arquivo = new FileWriter(arqAudiencia, true);
-            int id = serieCad.getId();
-            String login = clienteAtual.getNomeDeUsuario();
-
-            //Key<String, Integer> chave = new Key<>(login, id);
-            //LocalDate data = Avaliacoes.get(chave).getData();
-            arquivo.write(login + ";" + tipo + ";" + id + "\n");
             arquivo.close();
         } catch (IOException e) {
             System.out.println("Ocorreu um erro ao salvar os dados no arquivo.");
@@ -515,18 +455,6 @@ public class PlataformaStreaming {
         return permitido;
     }
 
-    // public int getQtdAvaliacoes() {
-
-    //     int contador = 0;
-
-    //     for (Key<String, Integer> chave : Avaliacoes.keySet()) {
-    //         if (chave.getKey1().equals(this.clienteAtual.getNomeDeUsuario())) {
-    //             contador++;
-    //         }
-    //     }
-        
-    //     return contador;
-    // }
 
     public boolean eEspecialista() {
         return (clienteAtual.getMeuTipo() != null);
@@ -538,56 +466,38 @@ public class PlataformaStreaming {
         clienteAtual.fazerComentario(comentario, midia);
     }
 
-
     //REVISAR
-    public Cliente setClienteEspecialista() throws Exception {
 
-        //int contador = getQtdAvaliacoes();
-
-        List<LocalDate> datasAvaliacoes = new ArrayList<LocalDate>();
-
-
-        for(Key<String, Integer> chave : Avaliacoes.keySet()) {
-            if (chave.getKey1().equals(this.clienteAtual.getNomeDeUsuario())) {
-                datasAvaliacoes.add(Avaliacoes.get(chave).getData());
-                System.out.println("Data " + Avaliacoes.get(chave).getData());
-            }   
-        }
-
-        System.out.println(datasAvaliacoes);
-
-        if (datasAvaliacoes.size() >= 5) {
-
-            LocalDate quintaDataMaisRecente = datasAvaliacoes.get(datasAvaliacoes.size() -5);
-            LocalDate dataMaisRecente = datasAvaliacoes.get(datasAvaliacoes.size() - 1);
-
-            long diasEntre = ChronoUnit.DAYS.between(quintaDataMaisRecente, dataMaisRecente);
-
-            if (diasEntre <= 30) {
-                
-                String usuario = clienteAtual.getNomeDeUsuario();
-                clientes.remove(usuario);
-                ClienteEspecialista novo = new ClienteEspecialista(clienteAtual.getNomeCompleto(), clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha());
-                this.clienteAtual = novo;
-           
-                adicionarCliente(novo);
-            } else {
-
-                String usuario = clienteAtual.getNomeDeUsuario();
-                clientes.remove(usuario);
-                ClienteRegular novo = new ClienteRegular(clienteAtual.getNomeCompleto(), clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha());
-                this.clienteAtual = novo;
-                adicionarCliente(novo);
-            }
-
-            
-        }
-
-        return this.clienteAtual;
+    public void listaDataAudiencia() throws Exception {
+        
+        
     }
 
-  
 
+    public void setClienteEspecialista() throws Exception {
+
+        System.out.println(this.clienteAtual.getListaDataAssistida());
+        
+        if (this.clienteAtual.getListaJaVista().size() >= 5) {
+            List<String> datasAssistidas = clienteAtual.getListaDataAssistida();
+            LocalDate mesPassado = LocalDate.now().minusMonths(1);
+            int contador = 0;
+            for (String data : datasAssistidas) {
+                LocalDate dataAssistida = LocalDate.parse(data);
+                if ((dataAssistida.getMonthValue() == mesPassado.getMonthValue() &&
+                     dataAssistida.getYear() == mesPassado.getYear()) ||
+                    (dataAssistida.getMonthValue() == LocalDate.now().getMonthValue() &&
+                     dataAssistida.getYear() == LocalDate.now().getYear())) {
+                    contador++;
+                }
+            }
+            if (contador >= 5) {
+                clienteAtual.setMeuTipo(new ClienteEspecialista(clienteAtual.getNomeCompleto(), clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha()));
+            }
+        }
+
+        //System.out.println(this.clienteAtual.getListaDataAssistida());
+    }
 }
 
 

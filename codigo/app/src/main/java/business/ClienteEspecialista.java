@@ -1,8 +1,8 @@
 package business;
 
-public class ClienteComentarista extends Cliente implements IComentarista {
+public class ClienteEspecialista extends Cliente implements IComentarista {
 
-    public ClienteComentarista(String nomeCompleto, String nomeDeUsuario, String senha) throws ClienteInvalidoException {
+    public ClienteEspecialista(String nomeCompleto, String nomeDeUsuario, String senha) throws ClienteInvalidoException {
         super(nomeCompleto, nomeDeUsuario, senha);
     }
 

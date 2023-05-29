@@ -1,5 +1,6 @@
 package business;
 
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ public class Cliente implements ISalvavel {
     private String nomeCompleto;
     private List<Midia> listaParaVer = new LinkedList<>();
     private List<Midia> listaJaVistas = new LinkedList<>();
+    private List<String> dataAssitida = new LinkedList<>();
     private IComentarista meuTipo = null;
     /**
      * Cria um novo objeto Cliente com nome completo, nome de usuário e senha.
@@ -34,7 +36,13 @@ public class Cliente implements ISalvavel {
 
     public void adicionarAvaliacao(float nota, Midia midia){
 
-        midia.addAvaliacao(nota, getNomeDeUsuario());
+        midia.adicionarAvaliacao(nota, getNomeDeUsuario());
+    }
+
+
+    public void adicionarAvaliacao(float nota, Midia midia, String data){
+
+        midia.adicionarAvaliacao(nota, getNomeDeUsuario());
     }
 
 
@@ -83,7 +91,7 @@ public class Cliente implements ISalvavel {
         if (nomeDeUsuario.length()>0) {
             this.nomeDeUsuario = nomeDeUsuario;
         } else {
-            throw new ClienteInvalidoException("O nome de usuario deve ter pelo menos 5 caracteres");
+            throw new ClienteInvalidoException("O nome de usuario não pode ser vazio!");
         }
     }
 
@@ -155,6 +163,9 @@ public class Cliente implements ISalvavel {
      * @param midia a série que foi vista pelo cliente.
      */
     public void adicionarMidiaVista(Midia midia) {
+
+        String data = LocalDate.now().toString();
+        adicionarDataAssistida(data);
         listaJaVistas.add(midia);
         midia.registrarAudiencia();
     }
@@ -350,5 +361,13 @@ public class Cliente implements ISalvavel {
                 return true;
         }
         return false;
+    }
+
+    public void adicionarDataAssistida(String data) {
+        this.dataAssitida.add(data);
+    }
+
+    public List<String> getListaDataAssistida() {
+        return this.dataAssitida;
     }
 }

@@ -9,18 +9,13 @@ public class App {
     public static void main(String[] args) throws Exception {
         PlataformaStreaming plat = new PlataformaStreaming("Netflix");
 
-        System.out.println("main");
-
         menu(plat);
-
     }
 
     public static void menu(PlataformaStreaming plat) throws Exception {
 
-        plat.carregarClientes();
-        plat.carregarSeries();
-        plat.carregarFilmes();
-        //plat.carregarAudiencia();
+
+        //mudar pro construtor da plataforma e deixar metodos privados - olhar ordem
 
         int op;
         Cliente clienteLogado = null;
@@ -219,8 +214,6 @@ public class App {
         System.out.println("Digite o nome da Midia que você deseja adicionar:");
         String nomeMidia = entrada.nextLine();
 
-        plat.adicionarMidiaAssistida(nomeMidia);
-
         submenu(plat, nomeMidia); // fazer verificacao se a serie existe
 
     }
@@ -239,6 +232,7 @@ public class App {
                 avaliarMidia(plat, nomeMidia);
                 break;
             case 2:
+                plat.adicionarMidiaAssistida(nomeMidia);
                 System.out.println("A midia foi adicionada com sucesso!");
                 System.out.println();
                 break;
@@ -255,7 +249,12 @@ public class App {
         entrada.nextLine();
 
         plat.adicionarAvaliacao(nota, nomeMidia);
-
+        try{
+            plat.setClienteEspecialista();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
         if(plat.eEspecialista()) {
             System.out.println("Gostaria de deixar um comentário?");
             System.out.println("1- Sim");
@@ -270,6 +269,8 @@ public class App {
                 plat.comentar(comentario, nomeMidia);  
             } 
         }
+
+        plat.adicionarMidiaAssistida(nomeMidia);
 
 
         
