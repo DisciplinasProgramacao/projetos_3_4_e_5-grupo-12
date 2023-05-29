@@ -2,8 +2,8 @@ package business;
 
 public class FilmeInvalidoException extends Exception {
 
-    public FilmeInvalidoException() {
-        super();
+    public FilmeInvalidoException(String message) {
+        super(message);
     }
 
     @Override

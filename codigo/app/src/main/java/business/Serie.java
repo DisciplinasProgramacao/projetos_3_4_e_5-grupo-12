@@ -2,7 +2,7 @@ package business;
 
 import java.util.Random;
 
-public class Serie extends Midia implements ISalvavel {
+public class Serie extends Midia {
 
     private int quantidadeEpisodios;
 
@@ -15,8 +15,10 @@ public class Serie extends Midia implements ISalvavel {
      * @param nome                Esse é o nome da serie
      * @param idioma              Esse é o idioma da serie como portugues ou ingles
      * @param quantidadeEpisodios Essa é a quantidade de episodios da serie
+     * @throws SerieInvalidaException
+     * @throws MidiaInvalidaException
      */
-    public Serie(String genero, String nome, String idioma, int quantidadeEpisodios) {
+    public Serie(String genero, String nome, String idioma, int quantidadeEpisodios) throws SerieInvalidaException, MidiaInvalidaException {
         super(genero, nome, idioma);
         setQuantidadeEpisodios(quantidadeEpisodios);
     }
@@ -27,8 +29,9 @@ public class Serie extends Midia implements ISalvavel {
      * @param id             Esse é o id da serie
      * @param nome           Esse é o nome da serie
      * @param dataLancamento Esse é a data de lançamento da serie
+     * @throws SerieInvalidaException
      */
-    public Serie(int id, String nome, String dataLancamento) {
+    public Serie(int id, String nome, String dataLancamento) throws SerieInvalidaException {
         super(id, nome);
         Random random = new Random();
         super.setDataLancamento(dataLancamento);
@@ -49,10 +52,13 @@ public class Serie extends Midia implements ISalvavel {
      * Metodo para por a quantida de episodios da serie
      * 
      * @param quantidadeEpisodios a quantidade de episódios a ser definida
+     * @throws SerieInvalidaException
      */
-    public void setQuantidadeEpisodios(int quantidadeEpisodios) {
+    public void setQuantidadeEpisodios(int quantidadeEpisodios) throws SerieInvalidaException {
         if (quantidadeEpisodios > 0) {
             this.quantidadeEpisodios = quantidadeEpisodios;
+        } else {
+            throw new SerieInvalidaException("A serie deve possuir pelo menos 1 episodio!");
         }
     }
 
@@ -65,7 +71,7 @@ public class Serie extends Midia implements ISalvavel {
      */
     @Override
     public String toString() {
-        return "{" +
+        return "'serie'{" +
                 " nome='" + getNome() + "'" +
                 ", id='" + getId() + "'" +
                 ", genero='" + getGenero() + "'" +

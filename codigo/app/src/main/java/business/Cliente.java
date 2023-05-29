@@ -1,5 +1,6 @@
 package business;
 
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,24 +9,58 @@ public class Cliente implements ISalvavel {
     private String nomeDeUsuario;
     private String senha;
     private String nomeCompleto;
-    private List<Serie> listaParaVer = new LinkedList<>();
-    private List<Serie> listaJaVistas = new LinkedList<>();
-    private List<Filme> filmesParaVer = new LinkedList<>();
-    private List<Filme> filmesJaVistos = new LinkedList<>();
-
+    private List<Midia> listaParaVer = new LinkedList<>();
+    private List<Midia> listaJaVistas = new LinkedList<>();
+    private List<String> dataAssitida = new LinkedList<>();
+    private IComentarista meuTipo = null;
     /**
      * Cria um novo objeto Cliente com nome completo, nome de usuário e senha.
      * 
      * @param nomeCompleto  o nome completo do Cliente
      * @param nomeDeUsuario o nome de usuário do Cliente
      * @param senha         a senha do Cliente
+     * @throws ClienteInvalidoException
      */
-    public Cliente(String nomeCompleto, String nomeDeUsuario, String senha) {
-        this.nomeCompleto = nomeCompleto;
+    public Cliente(String nomeCompleto, String nomeDeUsuario, String senha) throws ClienteInvalidoException {
+        setNomeCompleto(nomeCompleto);
         setNomeDeUsuario(nomeDeUsuario);
         setSenha(senha);
-        this.nomeDeUsuario = getNomeDeUsuario();
-        this.senha = getSenha();
+    }
+
+    public void setMeuTipo(IComentarista meuTipo) throws ClienteInvalidoException {
+        this.meuTipo = meuTipo;
+    }
+    public IComentarista getMeuTipo() {
+        return this.meuTipo;
+    }
+
+    public void adicionarAvaliacao(float nota, Midia midia){
+
+        midia.adicionarAvaliacao(nota, getNomeDeUsuario());
+    }
+
+
+    public void adicionarAvaliacao(float nota, Midia midia, String data){
+
+        midia.adicionarAvaliacao(nota, getNomeDeUsuario());
+    }
+
+
+    //REVISAR
+    public void fazerComentario(String comentario, Midia midia) {
+        if (meuTipo != null) {
+            meuTipo.comentar(comentario, midia, getNomeDeUsuario());
+        } else {
+            System.out.println("Desculpe, apenas clientes especialistas podem comentar.");
+        }
+    }
+
+    public void setNomeCompleto(String nomeCompleto) throws ClienteInvalidoException {
+        if (!nomeCompleto.equals("")) {
+            this.nomeCompleto = nomeCompleto;
+        } else {
+            throw new ClienteInvalidoException("O nome não pode ser vazio!");
+        }
     }
 
     /**
@@ -50,10 +85,13 @@ public class Cliente implements ISalvavel {
      * Define o nome de usuário do cliente.
      *
      * @param nomeDeUsuario o novo nome de usuário do cliente.
+     * @throws ClienteInvalidoException
      */
-    public void setNomeDeUsuario(String nomeDeUsuario) {
-        if (nomeDeUsuario != "") {
+    public void setNomeDeUsuario(String nomeDeUsuario) throws ClienteInvalidoException {
+        if (nomeDeUsuario.length()>0) {
             this.nomeDeUsuario = nomeDeUsuario;
+        } else {
+            throw new ClienteInvalidoException("O nome de usuario não pode ser vazio!");
         }
     }
 
@@ -70,11 +108,14 @@ public class Cliente implements ISalvavel {
      * Define a senha do cliente.
      *
      * @param senha a nova senha do cliente.
+     * @throws ClienteInvalidoException
      */
-    public void setSenha(String senha) {
-        if (senha != "") {
+    public void setSenha(String senha) throws ClienteInvalidoException {
+        if (checkString(senha) || senha.length() > 6) 
             this.senha = senha;
-        }
+        else
+        throw new ClienteInvalidoException("A senha deve possuir pelo menos 6 caracteres, entre letras maiusculas, minusculas e numeros.");
+
     }
 
     /**
@@ -82,7 +123,7 @@ public class Cliente implements ISalvavel {
      *
      * @return a lista de séries que o cliente deseja assistir.
      */
-    public List<Serie> getListaParaVer() {
+    public List<Midia> getListaParaVer() {
         return this.listaParaVer;
     }
 
@@ -91,26 +132,8 @@ public class Cliente implements ISalvavel {
      *
      * @return a lista de séries que o cliente já assistiu.
      */
-    public List<Serie> getListaJaVista() {
+    public List<Midia> getListaJaVista() {
         return this.listaJaVistas;
-    }
-
-    /**
-     * Retorna a lista de filmes que o cliente deseja assistir.
-     *
-     * @return a lista de filmes que o cliente deseja assistir.
-     */
-    public List<Filme> getFilmesParaVer() {
-        return this.filmesParaVer;
-    }
-
-    /**
-     * Retorna a lista de filmes que o cliente já assistiu.
-     *
-     * @return a lista de filmes que o cliente já assistiu.
-     */
-    public List<Filme> getFilmesJaVistos() {
-        return this.filmesJaVistos;
     }
 
     /**
@@ -118,30 +141,10 @@ public class Cliente implements ISalvavel {
      * 
      * @param serie Serie que se deseja adicionar na lista
      */
-    public void adicionarNaLista(Serie serie) {
-        if (!listaParaVer.contains(serie)) {
-            listaParaVer.add(serie);
+    public void adicionarListaParaVer(Midia midia) {
+        if (!listaParaVer.contains(midia)) {
+            listaParaVer.add(midia);
         }
-    }
-
-    /**
-     * Adiciona um filme em filmesParaVer
-     * 
-     * @param filme Filme que se deseja adicionar na lista
-     */
-    public void adicionarFilmeParaVer(Filme filme) {
-        if (!filmesParaVer.contains(filme)) {
-            filmesParaVer.add(filme);
-        }
-    }
-
-    /**
-     * Remove um filme de filmesParaVer
-     * 
-     * @param filme Filme que se deseja remover da lista
-     */
-    public void removerFilmeParaVer(Filme filme) {
-        filmesParaVer.remove(filme);
     }
 
     /**
@@ -149,19 +152,22 @@ public class Cliente implements ISalvavel {
      * 
      * @param serie Serie que se deseja remover da lista
      */
-    public void retirarDaLista(Serie serie) {
-        listaParaVer.remove(serie);
+    public void retirarDaLista(Midia midia) {
+        listaParaVer.remove(midia);
     }
 
     /**
      * Adiciona uma série à lista de séries já vistas pelo cliente e registra a
      * audiência da série.
      *
-     * @param serie a série que foi vista pelo cliente.
+     * @param midia a série que foi vista pelo cliente.
      */
-    public void adicionarSerieVista(Serie serie) {
-        listaJaVistas.add(serie);
-        serie.registrarAudiencia();
+    public void adicionarMidiaVista(Midia midia) {
+
+        String data = LocalDate.now().toString();
+        adicionarDataAssistida(data);
+        listaJaVistas.add(midia);
+        midia.registrarAudiencia();
     }
 
     /**
@@ -169,29 +175,8 @@ public class Cliente implements ISalvavel {
      *
      * @param serie a série que deve ser removida da lista.
      */
-    public void retirarSerieVista(Serie serie) {
-        listaJaVistas.remove(serie);
-    }
-
-    /**
-     * Adiciona um filme à lista de filmes já vistos pelo cliente e registra sua
-     * audiência.
-     *
-     * @param filme o filme que deve ser adicionado à lista.
-     */
-    public void adicionarFilmeVisto(Filme filme) {
-        filmesJaVistos.add(filme);
-        filme.registrarAudiencia();
-    }
-
-    /**
-     * Método que remove um filme da lista de filmes já vistos pelo cliente.
-     *
-     * @param filme O objeto do tipo Filme que representa o filme a ser removido da
-     *              lista de filmes já vistos.
-     */
-    public void retirarFilmeVisto(Filme filme) {
-        filmesJaVistos.remove(filme);
+    public void retirarMidiaVista(Midia midia) {
+        listaJaVistas.remove(midia);
     }
 
     /**
@@ -202,21 +187,9 @@ public class Cliente implements ISalvavel {
      *              lista de séries já vistas.
      * @param nota  Um inteiro que representa a nota que será atribuída à série.
      */
-    public void adicionarSerieVista(Serie serie, Integer nota) {
-        listaJaVistas.add(serie);
-        serie.registrarAudiencia();
-    }
-
-    /**
-     * Adiciona um filme na lista de filmes já vistos pelo cliente, registrando a
-     * nota dada pelo cliente e a audiência do filme.
-     *
-     * @param filme o objeto Filme a ser adicionado na lista de filmes já vistos
-     * @param nota  a nota dada pelo cliente ao filme
-     */
-    public void adicionarFilmeVisto(Filme filme, Integer nota) {
-        filmesJaVistos.add(filme);
-        filme.registrarAudiencia();
+    public void adicionarMidiaVista(Midia midia, Integer nota) {
+        listaJaVistas.add(midia);
+        midia.registrarAudiencia();
     }
 
     /**
@@ -225,58 +198,10 @@ public class Cliente implements ISalvavel {
      * @param genero Filtro que será utilizado no método
      * @return Uma lista com o resultado do filtro realizado
      */
-    public List<Filme> filtrarFilmePorGenero(String genero) {
+    public List<Midia> filtrarMidiaPorGenero(String genero) {
 
-        List<Filme> listaMesmoGen = new LinkedList<Filme>();
+        List<Midia> listaMesmoGen = new LinkedList<Midia>();
 
-        for (int i = 0; i < filmesParaVer.size(); i++) {
-            if (this.filmesParaVer.get(i).getGenero().equals(genero)) {
-                listaMesmoGen.add(filmesParaVer.get(i));
-            }
-        }
-        for (int i = 0; i < filmesJaVistos.size(); i++) {
-            if (this.filmesJaVistos.get(i).getGenero().equals(genero)) {
-                listaMesmoGen.add(filmesJaVistos.get(i));
-            }
-        }
-
-        return listaMesmoGen;
-    }
-
-    /**
-     * Filtra filmesParaVer e filmesJaVistos por idioma
-     * 
-     * @param idioma Filtro que será utilizado no método
-     * @return Uma lista com o resultado do filtro realizado
-     */
-    public List<Filme> filtrarFilmePorIdioma(String idioma) {
-
-        List<Filme> listaFiltrada = new LinkedList<>();
-
-        for (int i = 0; i < filmesParaVer.size(); i++) {
-            if (filmesParaVer.get(i).getIdioma().equals(idioma)) {
-                listaFiltrada.add(filmesParaVer.get(i));
-            }
-        }
-
-        for (int i = 0; i < filmesJaVistos.size(); i++) {
-            if (filmesJaVistos.get(i).getIdioma().equals(idioma)) {
-                listaFiltrada.add(filmesJaVistos.get(i));
-            }
-        }
-
-        return listaFiltrada;
-    }
-
-    /**
-     * Filtra a listaParaVer e a listaJaVista por gênero
-     * 
-     * @param genero Filtro que será utilizado no método
-     * @return Uma lista com o resultado do filtro realizado
-     */
-    public List<Serie> filtrarPorGenero(String genero) {
-
-        List<Serie> listaMesmoGen = new LinkedList<Serie>();
         for (int i = 0; i < listaParaVer.size(); i++) {
             if (this.listaParaVer.get(i).getGenero().equals(genero)) {
                 listaMesmoGen.add(listaParaVer.get(i));
@@ -292,14 +217,14 @@ public class Cliente implements ISalvavel {
     }
 
     /**
-     * Filtra a listaParaVer e a listaJaVista por idioma
+     * Filtra filmesParaVer e filmesJaVistos por idioma
      * 
      * @param idioma Filtro que será utilizado no método
      * @return Uma lista com o resultado do filtro realizado
      */
-    public List<Serie> filtrarPorIdioma(String idioma) {
+    public List<Midia> filtrarMidiaPorIdioma(String idioma) {
 
-        List<Serie> listaFiltrada = new LinkedList<>();
+        List<Midia> listaFiltrada = new LinkedList<>();
 
         for (int i = 0; i < listaParaVer.size(); i++) {
             if (listaParaVer.get(i).getIdioma().equals(idioma)) {
@@ -316,27 +241,44 @@ public class Cliente implements ISalvavel {
         return listaFiltrada;
     }
 
+
     /**
      * Filtra a listaParaVer e a listaJaVista por quantidade de episódios
      * 
      * @param quantEpisodios Filtro que será utilizado no método
      * @return Uma lista com o resultado do filtro realizado
      */
-    public List<Serie> filtrarPorQtdEpisodios(int quantEpisodios) {
+    public List<Midia> filtrarPorQtdEpisodios(int quantEpisodios) {
 
-        List<Serie> listaFiltrada = new LinkedList<>();
+        List<Midia> listaFiltrada = meuFiltro("serie");
 
         for (int i = 0; i < listaParaVer.size(); i++) {
-            if (listaParaVer.get(i).getQuantidadeEpisodios() == quantEpisodios) {
-                listaFiltrada.add(listaParaVer.get(i));
+           
+            Serie aux = ((Serie)listaParaVer.get(i));
+           
+            if (aux.getQuantidadeEpisodios() == quantEpisodios) {
+                listaFiltrada.add(aux);
             }
         }
 
         for (int i = 0; i < listaJaVistas.size(); i++) {
-            if (listaJaVistas.get(i).getQuantidadeEpisodios() == quantEpisodios) {
-                listaFiltrada.add(listaJaVistas.get(i));
+
+            Serie aux = ((Serie)listaJaVistas.get(i));
+
+            if(aux.getQuantidadeEpisodios() == quantEpisodios) {
+                listaFiltrada.add(aux);
             }
+        
         }
+
+        return listaFiltrada;
+    }
+
+    public List<Midia> meuFiltro(String filtro) {
+
+        List<Midia> listaFiltrada = new LinkedList<>();
+        listaFiltrada =  listaParaVer.stream()
+                                            .filter((m) -> m.toString().contains(filtro)).toList();
 
         return listaFiltrada;
     }
@@ -347,26 +289,26 @@ public class Cliente implements ISalvavel {
      * 
      * @param serie Série em que o cliente assitiu
      */
-    public void registrarAudiencia(Serie serie) {
+    public void registrarAudiencia(Midia midia) {
         if (listaJaVistas.size() == 0) {
-            serie.registrarAudiencia();
-            listaJaVistas.add(serie);
+            midia.registrarAudiencia();
+            listaJaVistas.add(midia);
             for (int j = 0; j < listaParaVer.size(); j++) {
 
-                if ((listaParaVer.get(0).equals(serie))) {
+                if ((listaParaVer.get(0).equals(midia))) {
                     listaParaVer.remove(listaParaVer.get(0));
                 }
             }
         } else {
             for (int i = 0; i < listaJaVistas.size(); i++) {
 
-                if (!(listaJaVistas.get(i).equals(serie))) {
-                    serie.registrarAudiencia();
-                    listaJaVistas.add(serie);
+                if (!(listaJaVistas.get(i).equals(midia))) {
+                    midia.registrarAudiencia();
+                    listaJaVistas.add(midia);
 
                     for (int j = 0; j < listaParaVer.size(); j++) {
 
-                        if ((listaParaVer.get(i).equals(serie))) {
+                        if ((listaParaVer.get(i).equals(midia))) {
                             listaParaVer.remove(listaParaVer.get(i));
                         }
                     }
@@ -401,4 +343,31 @@ public class Cliente implements ISalvavel {
         return ("\n" + nome + ";" + login + ";" + senha);
     }
 
+    private boolean checkString(String str) {
+        char ch;
+        boolean letraMaiuscula = false;
+        boolean letraMinuscula = false;
+        boolean num = false;
+        for (int i = 0; i < str.length(); i++) {
+            ch = str.charAt(i);
+            if (Character.isDigit(ch)) {
+                num = true;
+            } else if (Character.isUpperCase(ch)) {
+                letraMaiuscula = true;
+            } else if (Character.isLowerCase(ch)) {
+                letraMinuscula = true;
+            }
+            if (num && letraMaiuscula && letraMinuscula)
+                return true;
+        }
+        return false;
+    }
+
+    public void adicionarDataAssistida(String data) {
+        this.dataAssitida.add(data);
+    }
+
+    public List<String> getListaDataAssistida() {
+        return this.dataAssitida;
+    }
 }

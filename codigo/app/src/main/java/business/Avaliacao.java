@@ -41,9 +41,7 @@ public class Avaliacao {
      * @param nota o novo valor da nota a ser definida.
      */
     public void setNota(float nota) {
-        contNumeroNotas++;
-        contNota += nota;
-        this.nota = contNota / contNumeroNotas;
+        this.nota = nota;
     }
 
 /**
