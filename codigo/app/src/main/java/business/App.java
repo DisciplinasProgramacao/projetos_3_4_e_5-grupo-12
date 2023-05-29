@@ -18,12 +18,7 @@ public class App {
         //mudar pro construtor da plataforma e deixar metodos privados - olhar ordem
 
         int op;
-        Cliente clienteLogado = null;
-        boolean logado = false;
         do {
-            Cliente clienteCad;
-            Filme filmeCad;
-            Serie serieCad;
             System.out.println("Selecione uma opção:");
             System.out.println("1 - Cadastrar um cliente");
             System.out.println("2 - Cadastrar uma série");
@@ -132,7 +127,7 @@ public class App {
         System.out.println("Filme cadastrado com sucesso!");
     }
 
-    private static void fazerLogin(PlataformaStreaming plat) throws ClienteInvalidoException {
+    private static void fazerLogin(PlataformaStreaming plat) throws Exception {
 
         System.out.println("Opção 4 selecionada.");
         entrada.nextLine();
@@ -151,7 +146,7 @@ public class App {
         }
     }
 
-    private static void menu2(PlataformaStreaming plat) {
+    private static void menu2(PlataformaStreaming plat) throws Exception {
 
         int op;
 
@@ -187,7 +182,7 @@ public class App {
         } while (op != 0);
     }
 
-    public static void adicionarMidiaParaAssistir(PlataformaStreaming plat) {
+    public static void adicionarMidiaParaAssistir(PlataformaStreaming plat) throws Exception {
 
         entrada.nextLine();
         System.out.println("Digite o nome da midia que você deseja adicionar:");
@@ -208,7 +203,7 @@ public class App {
         System.out.println(plat.getListaParaAssistir());
     }
 
-    public static void adicionarMidiaAssistida(PlataformaStreaming plat) {
+    public static void adicionarMidiaAssistida(PlataformaStreaming plat) throws Exception {
 
         entrada.nextLine();
         System.out.println("Digite o nome da Midia que você deseja adicionar:");
@@ -218,7 +213,7 @@ public class App {
 
     }
 
-    public static void submenu(PlataformaStreaming plat, String nomeMidia) {
+    public static void submenu(PlataformaStreaming plat, String nomeMidia) throws Exception {
 
         int op;
 
@@ -240,7 +235,7 @@ public class App {
 
     }
 
-    private static void avaliarMidia(PlataformaStreaming plat, String nomeMidia) {
+    private static void avaliarMidia(PlataformaStreaming plat, String nomeMidia) throws Exception {
 
         float nota;
         

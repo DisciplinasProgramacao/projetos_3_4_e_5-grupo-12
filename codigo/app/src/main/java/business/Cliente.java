@@ -3,6 +3,8 @@ package business;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Cliente implements ISalvavel {
 
@@ -34,20 +36,20 @@ public class Cliente implements ISalvavel {
         return this.meuTipo;
     }
 
-    public void adicionarAvaliacao(float nota, Midia midia){
+    public void adicionarAvaliacao(float nota, Midia midia) throws Exception{
 
         midia.adicionarAvaliacao(nota, getNomeDeUsuario());
     }
 
 
-    public void adicionarAvaliacao(float nota, Midia midia, String data){
+    public void adicionarAvaliacao(float nota, Midia midia, String data) throws Exception{
 
         midia.adicionarAvaliacao(nota, getNomeDeUsuario());
     }
 
 
     //REVISAR
-    public void fazerComentario(String comentario, Midia midia) {
+    public void fazerComentario(String comentario, Midia midia) throws Exception {
         if (meuTipo != null) {
             meuTipo.comentar(comentario, midia, getNomeDeUsuario());
         } else {
@@ -199,20 +201,10 @@ public class Cliente implements ISalvavel {
      * @return Uma lista com o resultado do filtro realizado
      */
     public List<Midia> filtrarMidiaPorGenero(String genero) {
-
-        List<Midia> listaMesmoGen = new LinkedList<Midia>();
-
-        for (int i = 0; i < listaParaVer.size(); i++) {
-            if (this.listaParaVer.get(i).getGenero().equals(genero)) {
-                listaMesmoGen.add(listaParaVer.get(i));
-            }
-        }
-        for (int i = 0; i < listaJaVistas.size(); i++) {
-            if (this.listaJaVistas.get(i).getGenero().equals(genero)) {
-                listaMesmoGen.add(listaJaVistas.get(i));
-            }
-        }
-
+        List<Midia> listaMesmoGen = Stream.concat(listaParaVer.stream(), listaJaVistas.stream())
+                .filter(m -> m.getGenero().equals(genero))
+                .collect(Collectors.toList());
+    
         return listaMesmoGen;
     }
 
@@ -223,24 +215,12 @@ public class Cliente implements ISalvavel {
      * @return Uma lista com o resultado do filtro realizado
      */
     public List<Midia> filtrarMidiaPorIdioma(String idioma) {
-
-        List<Midia> listaFiltrada = new LinkedList<>();
-
-        for (int i = 0; i < listaParaVer.size(); i++) {
-            if (listaParaVer.get(i).getIdioma().equals(idioma)) {
-                listaFiltrada.add(listaParaVer.get(i));
-            }
-        }
-
-        for (int i = 0; i < listaJaVistas.size(); i++) {
-            if (listaJaVistas.get(i).getIdioma().equals(idioma)) {
-                listaFiltrada.add(listaJaVistas.get(i));
-            }
-        }
-
+        List<Midia> listaFiltrada = Stream.concat(listaParaVer.stream(), listaJaVistas.stream())
+                .filter(m -> m.getIdioma().equals(idioma))
+                .collect(Collectors.toList());
+    
         return listaFiltrada;
     }
-
 
     /**
      * Filtra a listaParaVer e a listaJaVista por quantidade de episódios
@@ -249,37 +229,14 @@ public class Cliente implements ISalvavel {
      * @return Uma lista com o resultado do filtro realizado
      */
     public List<Midia> filtrarPorQtdEpisodios(int quantEpisodios) {
-
-        List<Midia> listaFiltrada = meuFiltro("serie");
-
-        for (int i = 0; i < listaParaVer.size(); i++) {
-           
-            Serie aux = ((Serie)listaParaVer.get(i));
-           
-            if (aux.getQuantidadeEpisodios() == quantEpisodios) {
-                listaFiltrada.add(aux);
-            }
-        }
-
-        for (int i = 0; i < listaJaVistas.size(); i++) {
-
-            Serie aux = ((Serie)listaJaVistas.get(i));
-
-            if(aux.getQuantidadeEpisodios() == quantEpisodios) {
-                listaFiltrada.add(aux);
-            }
-        
-        }
-
-        return listaFiltrada;
-    }
-
-    public List<Midia> meuFiltro(String filtro) {
-
         List<Midia> listaFiltrada = new LinkedList<>();
-        listaFiltrada =  listaParaVer.stream()
-                                            .filter((m) -> m.toString().contains(filtro)).toList();
-
+    
+        List<Midia> listaFiltradaPorEpisodios = Stream.concat(listaParaVer.stream(), listaJaVistas.stream())
+                .filter(m -> m instanceof Serie && ((Serie) m).getQuantidadeEpisodios() == quantEpisodios)
+                .collect(Collectors.toList());
+    
+        listaFiltrada.addAll(listaFiltradaPorEpisodios);
+    
         return listaFiltrada;
     }
 
@@ -336,7 +293,7 @@ public class Cliente implements ISalvavel {
      * @return uma String contendo o login, senha e nome
      */
     @Override
-    public String getDadosString() {
+    public String getDados() {
         String login = getNomeDeUsuario();
         String senha = getSenha();
         String nome = getNomeCompleto();

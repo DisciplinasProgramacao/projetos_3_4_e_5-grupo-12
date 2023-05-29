@@ -1,7 +1,6 @@
 package business;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -12,24 +11,12 @@ public abstract class Midia implements ISalvavel {
     private String nome;
     private String genero;
     private String idioma;
-    private String dataLancamento;
-    private LocalDate dataAssistida;
+    private LocalDate dataLancamento;
     private int audiencia = 0;
-    private static final String[] generos = new String[] { "comedia", "terror", "romance" };
+    private static final String[] generos = new String[] { "comedia", "terror", "romance", "acao", "anime", "aventura", "documentário", "drama", "policial", "suspense"};
     private static final String[] idiomas = new String[] { "portugues", "ingles", "espanhol" };
-    private static HashMap<String, Avaliacao> avaliacoes = new HashMap<>(); // (id cliente / id Serie)
+    private static HashMap<String, Avaliacao> avaliacoes = new HashMap<>();
     private static Random random = new Random();
-
-    DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    LocalDate dataAtual = LocalDate.now();
-
-    public LocalDate getDataAssistida() {
-        return this.dataAssistida;
-    }
-
-    public void setDataAssistida(LocalDate dataAssistida) {
-        this.dataAssistida = dataAssistida;
-    }
 
     /**
      * Construtor da classe Midia.
@@ -42,16 +29,29 @@ public abstract class Midia implements ISalvavel {
      */
     public Midia(String genero, String nome, String idioma) throws MidiaInvalidaException {
 
-        this.id = random.nextInt(Integer.MAX_VALUE);
+        setId(random.nextInt(Integer.MAX_VALUE));
         setGenero(genero);
         setNome(nome);
         setIdioma(idioma);
-        setDataLancamento(dataAtual.format(formatoData).toString());
+        setDataLancamento(LocalDate.now());
     }
 
-
-    public Avaliacao getAvaliacoes(String nomeUsuario) {
-        return avaliacoes.get(nomeUsuario);
+    /**
+     * Construtor da classe Midia que recebe um id e um nome para criar um objeto
+     * Midia.
+     * O genero e idioma são selecionados aleatoriamente entre as opções disponíveis
+     * na classe.
+     * 
+     * @param id   Identificador numérico único da Midia.
+     * @param nome Nome da Midia.
+     * @throws MidiaInvalidaException
+     */
+    public Midia(int id, String nome, LocalDate dataLancamento) throws MidiaInvalidaException {
+        setId(id);
+        setNome(nome);
+        setGenero(generos[random.nextInt(generos.length-1)]);
+        setIdioma(idiomas[random.nextInt(idiomas.length-1)]);
+        setDataLancamento(dataLancamento);
     }
 
     public Float getNotaAvaliacao(String nomeUsuario) {
@@ -63,43 +63,12 @@ public abstract class Midia implements ISalvavel {
         }
     }
 
-    public LocalDate getDataAvaliacao(String nomeUsuario) {
-
-
-
-        Avaliacao avaliacao = avaliacoes.get(nomeUsuario);
-        if(avaliacao != null) {
-            return avaliacao.getData();
+    public void setId(int id) throws MidiaInvalidaException {
+        if(id>0){
+            this.id = id;
         } else {
-            return LocalDate.now();
+            throw new MidiaInvalidaException("ID da midia inválida");
         }
-    }
-
-
-    /**
-     * Construtor da classe Midia que recebe um id e um nome para criar um objeto
-     * Midia.
-     * O genero e idioma são selecionados aleatoriamente entre as opções disponíveis
-     * na classe.
-     * 
-     * @param id   Identificador numérico único da Midia.
-     * @param nome Nome da Midia.
-     */
-    public Midia(int id, String nome) {
-        Random random = new Random();
-        this.id = id;
-        setNome(nome);
-        this.genero = generos[random.nextInt(2)];
-        this.idioma = idiomas[random.nextInt(2)];
-    }
-
-    /**
-     * Retorna a nota associada a este objeto.
-     *
-     * @return a nota associada a este objeto.
-     */
-    public float getNotaMedia() {
-        return this.notaMedia;
     }
 
     /**
@@ -109,15 +78,6 @@ public abstract class Midia implements ISalvavel {
      */
     public int getId() {
         return this.id;
-    }
-
-    /**
-     * Retorna o valor inteiro 0.
-     * 
-     * @return o valor inteiro 0.
-     */
-    public int getdata() {
-        return 0;
     }
 
     /**
@@ -168,11 +128,6 @@ public abstract class Midia implements ISalvavel {
      * @param idioma o novo valor do idioma a ser definido.
      * @throws SerieInvalidaException
      */
-
-    //  if (!idioma.equals("ingles") && !idioma.equals("portugues") && !idioma.equals("espanhol")) {
-    //     System.out.println("O idioma deve ser 'portugues', 'ingles' ou 'espanhol'");
-    //     throw new SerieInvalidaException();
-    // }
     public void setIdioma(String idioma) throws MidiaInvalidaException {
         boolean idiomaValido = false;
         for(String i : idiomas) {
@@ -197,20 +152,11 @@ public abstract class Midia implements ISalvavel {
     }
 
     /**
-     * Define um novo valor de audiência para este objeto.
-     * 
-     * @param audiencia o novo valor da audiência a ser definido.
-     */
-    public void setAudiencia(int audiencia) {
-        this.audiencia = audiencia;
-    }
-
-    /**
      * Retorna a data de lançamento associada a este objeto.
      * 
      * @return a data de lançamento associada a este objeto.
      */
-    public String getDataLancamento() {
+    public LocalDate getDataLancamento() {
         return this.dataLancamento;
     }
 
@@ -219,7 +165,7 @@ public abstract class Midia implements ISalvavel {
      * 
      * @param dataLancamento a nova data de lançamento a ser definida.
      */
-    public void setDataLancamento(String dataLancamento) {
+    public void setDataLancamento(LocalDate dataLancamento) {
         this.dataLancamento = dataLancamento;
     }
 
@@ -236,10 +182,13 @@ public abstract class Midia implements ISalvavel {
      * Define um novo nome para este objeto.
      * 
      * @param nome o novo nome a ser definido.
+     * @throws MidiaInvalidaException
      */
-    public void setNome(String nome) {
+    public void setNome(String nome) throws MidiaInvalidaException {
         if (nome.length() > 0) {
             this.nome = nome;
+        } else {
+            throw new MidiaInvalidaException("O nome da midia não pode ser vazio!");
         }
     }
 
@@ -266,24 +215,22 @@ public abstract class Midia implements ISalvavel {
         this.audiencia++;
     }
 
-    public void setComentario(String comentario, String nomeUsuario) {
+    public void setComentario(String comentario, String nomeUsuario) throws Exception {
 
        avaliacoes.get(nomeUsuario).setComentario(comentario);
     }
 
 
-    //mudar pra cliente
-    public void adicionarAvaliacao(Float nota, String nomeUsuario) {
+    //REVISAR
+    public void adicionarAvaliacao(Float nota, String nomeUsuario) throws Exception {
 
         Avaliacao avaliacao = new Avaliacao(nota); // tirar isso e colocar em clietne
         avaliacoes.put(nomeUsuario, avaliacao);
     }
 
     
-    public String getDadosString(String nomeUsuario, String tipo) {
+    public String getDados(String nomeUsuario, String tipo) {
         int id = getId();
-        LocalDate data = getAvaliacoes(nomeUsuario).getData();
-
-        return ("\n" + nomeUsuario + ";" + tipo + ";" + id + ";" + data);
+        return ("\n" + nomeUsuario + ";" + tipo + ";" + id);
     }
 }

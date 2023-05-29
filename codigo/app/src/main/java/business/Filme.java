@@ -1,5 +1,8 @@
 package business;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class Filme extends Midia {
 
     private int duracao;
@@ -28,10 +31,12 @@ public class Filme extends Midia {
      * @param nome           Esse é o nome do filme
      * @param dataLancamento Esse é a data de lançamento do filme
      * @param duracao        Essa é a duração em minutos do filme
+     * @throws MidiaInvalidaException
+     * @throws FilmeInvalidoException
      */
-    public Filme(int id, String nome, String dataLancamento, int duracao) {
-        super(id, nome);
-        super.setDataLancamento(dataLancamento);
+    public Filme(int id, String nome, LocalDate dataLancamento, int duracao) throws MidiaInvalidaException, FilmeInvalidoException {
+        super(id, nome, dataLancamento);
+        setDuracao(duracao);
     }
 
     /**
@@ -63,13 +68,14 @@ public class Filme extends Midia {
      * arquivo
      */
     @Override
-    public String getDadosString() {
+    public String getDados() {
         int id = getId();
         String nome = getNome();
-        String dataL = getDataLancamento();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String data = getDataLancamento().format(formatter);
         int duracao = getDuracao();
 
-        return ("\n" + id + ";" + nome + ";" + dataL + ";" + duracao);
+        return ("\n" + id + ";" + nome + ";" + data + ";" + duracao);
     }
 
     @Override

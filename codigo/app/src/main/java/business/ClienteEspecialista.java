@@ -7,7 +7,7 @@ public class ClienteEspecialista extends Cliente implements IComentarista {
     }
 
     @Override
-    public void comentar(String comentario, Midia midia, String nomeUsuario) {
+    public void comentar(String comentario, Midia midia, String nomeUsuario) throws Exception {
 
         midia.setComentario(comentario, nomeUsuario);
     }
