@@ -21,7 +21,7 @@ public class Cliente implements ISalvavel {
      * @param nomeCompleto  o nome completo do Cliente
      * @param nomeDeUsuario o nome de usuário do Cliente
      * @param senha         a senha do Cliente
-     * @throws ClienteInvalidoException
+     * @throws ClienteInvalidoException Exceção dos métodos set, caso algum valor for inválido
      */
     public Cliente(String nomeCompleto, String nomeDeUsuario, String senha) throws ClienteInvalidoException {
         setNomeCompleto(nomeCompleto);
@@ -29,13 +29,29 @@ public class Cliente implements ISalvavel {
         setSenha(senha);
     }
 
+    /**
+     * Método para transformar um cliente em especialista
+     * @param meuTipo Objeto IComentarista para alterar o valor do meuTipo
+     * @throws ClienteInvalidoException
+     */
     public void setMeuTipo(IComentarista meuTipo) throws ClienteInvalidoException {
         this.meuTipo = meuTipo;
     }
+
+    /**
+     * Método que retorna o valor do meuTipo
+     * @return retorna valor do objeto IComentarista
+     */
     public IComentarista getMeuTipo() {
         return this.meuTipo;
     }
 
+    /**
+     * Método que chama um método de uma mídia específica para criar uma avaliação
+     * @param nota Nota da avaliação que será criada
+     * @param midia Mídia que armazenará a avaliação
+     * @throws Exception Lança uma exceção qu
+     */
     public void adicionarAvaliacao(float nota, Midia midia) throws Exception{
 
         midia.adicionarAvaliacao(nota, getNomeDeUsuario());
