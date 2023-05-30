@@ -37,7 +37,7 @@ public class PlataformaStreaming {
     }
 
     public void setNome(String nome) throws InvalidAttributeValueException {
-        if (nome.length() >= 0) {
+        if (nome.length() > 0) {
             this.nome = nome;
         } else {
             throw new InvalidAttributeValueException("O nome não pode ser vazio!");
@@ -145,7 +145,7 @@ public class PlataformaStreaming {
 
     // REVISAR ESSE TROWS
     public void adicionarCliente(String nomeCompleto, String nomeDeUsuario, String senha)
-            throws ClienteInvalidoException, Exception {
+            throws ClienteInvalidoException, MidiaInvalidaException {
         Cliente c = new Cliente(nomeCompleto, nomeDeUsuario, senha);
 
         if (!clientes.containsKey(c.getNomeDeUsuario())) {
