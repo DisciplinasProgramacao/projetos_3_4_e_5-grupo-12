@@ -35,7 +35,7 @@ public class App {
                     cadastrarSerie(plat);
                     break;
                 case 3:
-                    cadastrarFilmSerie(plat);
+                    cadastrarFilme(plat);
                     break;
 
                 case 4:
@@ -73,11 +73,16 @@ public class App {
         System.out.println("Digite a sua senha: ");
         senha = entrada.nextLine();
 
-        plat.adicionarCliente(nomeCompleto, nomeDeUsuario, senha);
+        try {
+            plat.adicionarCliente(nomeCompleto, nomeDeUsuario, senha);
+        } catch (ClienteInvalidoException e) {
+            System.out.println(e.getMessage());
+        }
+        
     }
 
     // Da pra juntar parte do cadastrarSerie e cadastrar filme olhar depois
-    private static void cadastrarSerie(PlataformaStreaming plat) throws SerieInvalidaException, MidiaInvalidaException {
+    private static void cadastrarSerie(PlataformaStreaming plat) {
 
         System.out.println("Opção 2 selecionada.");
         System.out.println();
@@ -97,12 +102,14 @@ public class App {
         System.out.println("Digite a quantidade de episódios que a série possui");
         qtdEpisodios = entrada.nextInt();
 
-        plat.adicionarSerie(nome, idioma, genero, qtdEpisodios);
-
+        try {
+            plat.adicionarSerie(nome, idioma, genero, qtdEpisodios);
+        } catch (MidiaInvalidaException e) {
+            System.out.println(e.getMessage());
+        } 
     }
 
-    private static void cadastrarFilmSerie(PlataformaStreaming plat)
-            throws FilmeInvalidoException, SerieInvalidaException, MidiaInvalidaException {
+    private static void cadastrarFilme(PlataformaStreaming plat) {
 
         System.out.println("Opção 3 selecionada.");
         System.out.println();
@@ -122,12 +129,17 @@ public class App {
         System.out.println("Digite a duração do filme");
         duracao = entrada.nextInt();
 
-        plat.adicionarFilme(nome, idioma, genero, duracao);
+        try {
+            plat.adicionarFilme(nome, idioma, genero, duracao);
+        } catch (MidiaInvalidaException e){
+            System.out.println(e.getMessage());
+        }
+        
 
         System.out.println("Filme cadastrado com sucesso!");
     }
 
-    private static void fazerLogin(PlataformaStreaming plat) throws Exception {
+    private static void fazerLogin(PlataformaStreaming plat) {
 
         System.out.println("Opção 4 selecionada.");
         entrada.nextLine();
@@ -138,15 +150,18 @@ public class App {
         System.out.println("Insira a senha:");
         String senha = entrada.nextLine();
 
-        if (plat.login(nomeUsuario, senha)) {
-            System.out.println("Logado com sucesso");
-            menu2(plat);
-        } else {
-            System.out.println("Erro no login: senha incorreta");
+        try {
+            plat.login(nomeUsuario, senha);
+            System.out.println("Logado com sucesso");     
+        } catch (ClienteInvalidoException e) {
+            System.out.println(e.getMessage());
         }
+
+        menu2(plat);
+        
     }
 
-    private static void menu2(PlataformaStreaming plat) throws Exception {
+    private static void menu2(PlataformaStreaming plat) {
 
         int op;
 
@@ -182,13 +197,17 @@ public class App {
         } while (op != 0);
     }
 
-    public static void adicionarMidiaParaAssistir(PlataformaStreaming plat) throws Exception {
+    public static void adicionarMidiaParaAssistir(PlataformaStreaming plat) {
 
         entrada.nextLine();
         System.out.println("Digite o nome da midia que você deseja adicionar:");
         String nomeMidiaAVer = entrada.nextLine();
 
-        plat.adicionarMidiaParaAssistir(nomeMidiaAVer);
+        try {
+            plat.adicionarMidiaParaAssistir(nomeMidiaAVer);
+        } catch (MidiaInvalidaException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public static void verMidiasAssistidas(PlataformaStreaming plat) {
@@ -203,39 +222,59 @@ public class App {
         System.out.println(plat.getListaParaAssistir());
     }
 
-    public static void adicionarMidiaAssistida(PlataformaStreaming plat) throws Exception {
+    public static void adicionarMidiaAssistida(PlataformaStreaming plat) {
 
         entrada.nextLine();
         System.out.println("Digite o nome da Midia que você deseja adicionar:");
         String nomeMidia = entrada.nextLine();
+        
+        try {
+            plat.adicionarMidiaVista(nomeMidia);
+        } catch (MidiaInvalidaException e) {
+            System.out.println(e.getMessage());
+        }
+        
 
         submenu(plat, nomeMidia); // fazer verificacao se a serie existe
 
     }
 
-    public static void submenu(PlataformaStreaming plat, String nomeMidia) throws Exception {
+    public static void submenu(PlataformaStreaming plat, String nomeMidia) {
 
         int op;
 
         System.out.println("Você gostaria de avaliar essa serie:");
         System.out.println("1 - Sim");
         System.out.println("2 - Não");
+        try {
+            System.out.println("Nota media de " + nomeMidia + ": " + plat.getNotaMedia(nomeMidia));
+        } catch (MidiaInvalidaException e ) {
+            System.out.println(e.getMessage());
+        }
+
         op = entrada.nextInt();
         
         switch (op) {
             case 1:
                 avaliarMidia(plat, nomeMidia);
+                try {
+                    System.out.println(plat.getNotaMedia(nomeMidia));
+                } catch (MidiaInvalidaException e) {
+                    System.out.println(e.getMessage());
+                }
                 break;
             case 2:
-                plat.adicionarMidiaAssistida(nomeMidia);
-                System.out.println("A midia foi adicionada com sucesso!");
-                System.out.println();
+                try {
+                    plat.adicionarMidiaVista(nomeMidia);
+                } catch (MidiaInvalidaException e) {
+                    System.out.println(e.getMessage());
+                }
                 break;
         }
 
     }
 
-    private static void avaliarMidia(PlataformaStreaming plat, String nomeMidia) throws Exception {
+    private static void avaliarMidia(PlataformaStreaming plat, String nomeMidia) {
 
         float nota;
         
@@ -243,12 +282,18 @@ public class App {
         nota = entrada.nextFloat();
         entrada.nextLine();
 
-        plat.adicionarAvaliacao(nota, nomeMidia);
+        try {
+            plat.adicionarAvaliacao(nomeMidia, nota);
+        } catch (AvaliacaoInvalidaException | MidiaInvalidaException e) {
+            System.out.println(e.getMessage());
+        }
+        
         try{
             plat.setClienteEspecialista();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        
         
         if(plat.eEspecialista()) {
             System.out.println("Gostaria de deixar um comentário?");
@@ -261,13 +306,26 @@ public class App {
                 entrada.nextLine();
                 String comentario = entrada.nextLine();
 
-                plat.comentar(comentario, nomeMidia);  
+                try {
+                    plat.comentar(comentario, nomeMidia);
+                } catch (MidiaInvalidaException | ClienteInvalidoException | AvaliacaoInvalidaException e) {
+                    System.out.println(e.getMessage());
+                }
+                 
             } 
         }
 
-        plat.adicionarMidiaAssistida(nomeMidia);
+        try {
+            plat.adicionarMidiaVista(nomeMidia);
+        } catch (MidiaInvalidaException e) {
+            System.out.println(e.getMessage());
+        }
 
-
+        try {
+            plat.getAVALIACAO(nomeMidia);;
+        } catch (MidiaInvalidaException e) {
+            System.out.println(e.getMessage());
+        }
         
     }
 }

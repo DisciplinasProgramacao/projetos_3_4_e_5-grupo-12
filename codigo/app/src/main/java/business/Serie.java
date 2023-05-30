@@ -16,10 +16,9 @@ public class Serie extends Midia {
      * @param nome                Esse é o nome da serie
      * @param idioma              Esse é o idioma da serie como portugues ou ingles
      * @param quantidadeEpisodios Essa é a quantidade de episodios da serie
-     * @throws SerieInvalidaException
      * @throws MidiaInvalidaException
      */
-    public Serie(String genero, String nome, String idioma, int quantidadeEpisodios) throws SerieInvalidaException, MidiaInvalidaException {
+    public Serie(String genero, String nome, String idioma, int quantidadeEpisodios) throws MidiaInvalidaException{
         super(genero, nome, idioma);
         setQuantidadeEpisodios(quantidadeEpisodios);
     }
@@ -33,7 +32,7 @@ public class Serie extends Midia {
      * @throws SerieInvalidaException
      * @throws MidiaInvalidaException
      */
-    public Serie(int id, String nome, LocalDate dataLancamento) throws SerieInvalidaException, MidiaInvalidaException {
+    public Serie(int id, String nome, LocalDate dataLancamento) throws MidiaInvalidaException {
         super(id, nome, dataLancamento);
         setQuantidadeEpisodios(random.nextInt(99) + 1);
     }
@@ -53,11 +52,11 @@ public class Serie extends Midia {
      * @param quantidadeEpisodios a quantidade de episódios a ser definida
      * @throws SerieInvalidaException
      */
-    public void setQuantidadeEpisodios(int quantidadeEpisodios) throws SerieInvalidaException {
+    public void setQuantidadeEpisodios(int quantidadeEpisodios) throws MidiaInvalidaException {
         if (quantidadeEpisodios > 0) {
             this.quantidadeEpisodios = quantidadeEpisodios;
         } else {
-            throw new SerieInvalidaException("A serie deve possuir pelo menos 1 episodio!");
+            throw new MidiaInvalidaException("A serie deve possuir pelo menos 1 episodio!");
         }
     }
 

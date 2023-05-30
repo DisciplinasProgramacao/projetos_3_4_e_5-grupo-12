@@ -1,12 +1,13 @@
 package business;
 
+import java.nio.file.FileSystemAlreadyExistsException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Random;
 
 public abstract class Midia implements ISalvavel {
 
-    private float notaMedia;
+    private double notaMedia;
     private int id;
     private String nome;
     private String genero;
@@ -54,13 +55,8 @@ public abstract class Midia implements ISalvavel {
         setDataLancamento(dataLancamento);
     }
 
-    public Float getNotaAvaliacao(String nomeUsuario) {
-        Avaliacao avaliacao = avaliacoes.get(nomeUsuario);
-        if (avaliacao != null) {
-            return avaliacao.getNota();
-        } else {
-            return -1F;
-        }
+    public boolean getNotaAvaliacao(String nomeUsuario) {        
+        return (avaliacoes.containsKey(nomeUsuario));
     }
 
     public void setId(int id) throws MidiaInvalidaException {
@@ -215,17 +211,9 @@ public abstract class Midia implements ISalvavel {
         this.audiencia++;
     }
 
-    public void setComentario(String comentario, String nomeUsuario) throws Exception {
+    public void setComentario(String comentario, String nomeUsuario) throws AvaliacaoInvalidaException {
 
        avaliacoes.get(nomeUsuario).setComentario(comentario);
-    }
-
-
-    //REVISAR
-    public void adicionarAvaliacao(Float nota, String nomeUsuario) throws Exception {
-
-        Avaliacao avaliacao = new Avaliacao(nota); // tirar isso e colocar em clietne
-        avaliacoes.put(nomeUsuario, avaliacao);
     }
 
     
@@ -233,4 +221,24 @@ public abstract class Midia implements ISalvavel {
         int id = getId();
         return ("\n" + nomeUsuario + ";" + tipo + ";" + id);
     }
+
+    public void colocarAvaliacao(String nomeUsuario, Avaliacao avaliacao) throws MidiaInvalidaException {
+        avaliacoes.put(nome, avaliacao);
+    }
+
+    public void calcMedia() {
+        notaMedia = avaliacoes.values().stream()
+                .mapToDouble(Avaliacao::getNota)
+                .average()
+                .orElse(0.0);
+    }
+
+    public String getNotaMedia(){
+        return Double.toString(this.notaMedia);
+    }
+    
+    public String getAvaliacoes () {
+        return avaliacoes.toString();
+    }
+
 }

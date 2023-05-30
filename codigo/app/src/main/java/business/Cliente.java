@@ -52,20 +52,19 @@ public class Cliente implements ISalvavel {
      * @param midia Mídia que armazenará a avaliação
      * @throws Exception Lança uma exceção qu
      */
-    public void adicionarAvaliacao(float nota, Midia midia) throws Exception{
-
-        midia.adicionarAvaliacao(nota, getNomeDeUsuario());
+    public boolean criarAvaliacao(float nota, Midia midia) throws AvaliacaoInvalidaException, MidiaInvalidaException{
+        
+        String nomeUsuario = getNomeDeUsuario();
+        if (!midia.getNotaAvaliacao(nomeUsuario)) {
+            Avaliacao avaliacao = new Avaliacao(nota);
+            midia.colocarAvaliacao(nomeUsuario, avaliacao);
+            return true;
+        } else {
+            return false;
+        }
     }
-
-
-    public void adicionarAvaliacao(float nota, Midia midia, String data) throws Exception{
-
-        midia.adicionarAvaliacao(nota, getNomeDeUsuario());
-    }
-
-
     //REVISAR
-    public void fazerComentario(String comentario, Midia midia) throws Exception {
+    public void fazerComentario(String comentario, Midia midia) throws AvaliacaoInvalidaException, ClienteInvalidoException {
         if (meuTipo != null) {
             meuTipo.comentar(comentario, midia, getNomeDeUsuario());
         } else {
@@ -179,14 +178,23 @@ public class Cliente implements ISalvavel {
      * audiência da série.
      *
      * @param midia a série que foi vista pelo cliente.
+     * @throws Exception
      */
-    public void adicionarMidiaVista(Midia midia) {
-
+    public boolean adicionarMidiaVista(Midia midia) throws MidiaInvalidaException {
         String data = LocalDate.now().toString();
-        adicionarDataAssistida(data);
-        listaJaVistas.add(midia);
-        midia.registrarAudiencia();
+
+        if (!listaJaVistas.contains(midia)) {
+            adicionarDataAssistida(data);
+            listaJaVistas.add(midia);
+            midia.registrarAudiencia();
+            return true;
+        } else {
+            return false;
+        }
+
     }
+
+    
 
     /**
      * Remove uma série da lista de séries já vistas pelo cliente.
@@ -343,4 +351,7 @@ public class Cliente implements ISalvavel {
     public List<String> getListaDataAssistida() {
         return this.dataAssitida;
     }
+
+
+    
 }

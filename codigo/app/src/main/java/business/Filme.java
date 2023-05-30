@@ -18,7 +18,7 @@ public class Filme extends Midia {
      * @throws FilmeInvalidoException
      * @throws MidiaInvalidaException
      */
-    public Filme(String genero, String nome, String idioma, int duracao) throws FilmeInvalidoException, MidiaInvalidaException {
+    public Filme(String genero, String nome, String idioma, int duracao) throws MidiaInvalidaException {
         super(genero, nome, idioma);
         setDuracao(duracao);
 
@@ -34,7 +34,7 @@ public class Filme extends Midia {
      * @throws MidiaInvalidaException
      * @throws FilmeInvalidoException
      */
-    public Filme(int id, String nome, LocalDate dataLancamento, int duracao) throws MidiaInvalidaException, FilmeInvalidoException {
+    public Filme(int id, String nome, LocalDate dataLancamento, int duracao) throws MidiaInvalidaException {
         super(id, nome, dataLancamento);
         setDuracao(duracao);
     }
@@ -55,11 +55,11 @@ public class Filme extends Midia {
      *                mais de 1 minuto
      * @throws FilmeInvalidoException
      */
-    public void setDuracao(int duracao) throws FilmeInvalidoException {
+    public void setDuracao(int duracao) throws MidiaInvalidaException {
         if (duracao > 0) {
             this.duracao = duracao;
         } else {
-            throw new FilmeInvalidoException("O filme deve possuir pelo menos 1 minuto");
+            throw new MidiaInvalidaException("O filme deve possuir pelo menos 1 minuto");
         }
     }
 
