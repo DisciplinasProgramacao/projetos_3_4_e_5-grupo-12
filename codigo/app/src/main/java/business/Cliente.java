@@ -52,16 +52,17 @@ public class Cliente implements ISalvavel {
      * @param midia Mídia que armazenará a avaliação
      * @throws Exception Lança uma exceção qu
      */
-    public boolean criarAvaliacao(float nota, Midia midia) throws AvaliacaoInvalidaException, MidiaInvalidaException{
+    public boolean criarAvaliacao(float nota, Midia midia) throws AvaliacaoInvalidaException, MidiaInvalidaException {
+        boolean permitido = false;
         
-        String nomeUsuario = getNomeDeUsuario();
-        if (!midia.getNotaAvaliacao(nomeUsuario)) {
+        if(!(getListaJaVista().contains(midia))) {
+            permitido = true;
             Avaliacao avaliacao = new Avaliacao(nota);
-            midia.colocarAvaliacao(nomeUsuario, avaliacao);
-            return true;
-        } else {
-            return false;
-        }
+            midia.colocarAvaliacao(getNomeDeUsuario(), avaliacao);
+            adicionarDataAssistida(LocalDate.now().toString());
+            adicionarMidiaVista(midia, nota);
+        } 
+        return permitido;
     }
     //REVISAR
     public void fazerComentario(String comentario, Midia midia) throws AvaliacaoInvalidaException, ClienteInvalidoException {
@@ -181,10 +182,8 @@ public class Cliente implements ISalvavel {
      * @throws Exception
      */
     public boolean adicionarMidiaVista(Midia midia) throws MidiaInvalidaException {
-        String data = LocalDate.now().toString();
 
         if (!listaJaVistas.contains(midia)) {
-            adicionarDataAssistida(data);
             listaJaVistas.add(midia);
             midia.registrarAudiencia();
             return true;
@@ -213,7 +212,7 @@ public class Cliente implements ISalvavel {
      *              lista de séries já vistas.
      * @param nota  Um inteiro que representa a nota que será atribuída à série.
      */
-    public void adicionarMidiaVista(Midia midia, Integer nota) {
+    public void adicionarMidiaVista(Midia midia, float nota) {
         listaJaVistas.add(midia);
         midia.registrarAudiencia();
     }
