@@ -99,20 +99,30 @@ public class PlataformaStreaming {
 
     public void adicionarMidiaVista(String nomeMidia) throws MidiaInvalidaException {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
+        if(clienteAtual.getListaParaVer().contains(midia)){
+            clienteAtual.retirarDaLista(midia);
+        }
         if(clienteAtual.adicionarMidiaVista(midia)){
             escreveArqAudiencia("A", midia, -1F);
-        }
+        }  
     }
     
 
     public void adicionarAvaliacao(String nomeMidia, float nota) throws MidiaInvalidaException, AvaliacaoInvalidaException, ClienteInvalidoException {
+
         Midia midia = filtrarMidiaPorNome(nomeMidia);
         setClienteEspecialista();
-        if(clienteAtual.criarAvaliacao(nota, midia ) == true) {        
-            escreveArqAudiencia("A", midia, nota);
+
+        if(this.clienteAtual.getListaJaVista().contains(midia)) {
+            if(this.clienteAtual.criarAvaliacao(nota, midia ) == true) {        
+                escreveArqAudiencia("A", midia, nota);
+            } else {
+                throw new AvaliacaoInvalidaException("Você já avaliou essa midia!");
+            }
         } else {
-            throw new AvaliacaoInvalidaException("Você já avaliou essa midia!");
+            throw new MidiaInvalidaException("Você ainda não assistiu a essa midia!");
         }
+   
     }
 
     public String getListaJaVista() {
@@ -285,10 +295,10 @@ public class PlataformaStreaming {
                 StringTokenizer str = new StringTokenizer(linha, ";");
                 String login = str.nextToken();
                 String tipo = str.nextToken();
-                int idMidia = Integer.parseInt(str.nextToken());
+                int idMidia = Integer.parseInt(str.nextToken());         
                 Midia midia = midias.get(idMidia);
                 this.clienteAtual = clientes.get(login);
-    
+
                 if (tipo.equals("F")) {
                     clienteAtual.adicionarListaParaVer(midia);
                 } else {
@@ -302,6 +312,9 @@ public class PlataformaStreaming {
                         }
                     }
                     clienteAtual.adicionarMidiaVista(midia);
+                    if(clienteAtual.getListaParaVer().contains(midia)){
+                        clienteAtual.retirarDaLista(midia);
+                    }
                 }
             }
     
@@ -423,14 +436,9 @@ public class PlataformaStreaming {
 
     public String getNotaMedia(String nomeMidia) throws MidiaInvalidaException{
         Midia midia = filtrarMidiaPorNome(nomeMidia);
+        System.out.println(midia.getAvaliacoes());
     
         return (Double.toString(midia.calcularNotaMedia()));
-    }
-
-    public void getAVALIACAO(String nomeMidia) throws MidiaInvalidaException {
-        Midia midia = filtrarMidiaPorNome(nomeMidia);
-        
-        System.out.println(midia.getAvaliacoes());
     }
 
 }

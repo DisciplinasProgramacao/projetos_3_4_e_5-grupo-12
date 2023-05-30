@@ -9,9 +9,13 @@ public class App {
     static Scanner entrada = new Scanner(System.in);
 
     public static void main(String[] args) throws Exception {
-        PlataformaStreaming plat = new PlataformaStreaming("Netflix");
 
-        menu(plat);
+        try {
+            PlataformaStreaming plat = new PlataformaStreaming("Netflix");
+            menu(plat);
+        } catch (ClienteInvalidoException | AvaliacaoInvalidaException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public static void menu(PlataformaStreaming plat) throws Exception {
