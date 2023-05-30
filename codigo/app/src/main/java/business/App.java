@@ -336,6 +336,7 @@ public class App {
         
             switch (op) {
                 case 1:
+                    plat.adicionarMidiaVista(nomeMidia);
                     avaliarMidia(plat, nomeMidia);
                     break;
                 case 2:
