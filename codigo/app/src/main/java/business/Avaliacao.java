@@ -11,7 +11,7 @@ public class Avaliacao {
      * @param nota nota da avaliação
      * @throws Exception Exceção do setNota, se a nota for inválida
      */
-    Avaliacao(float nota) throws Exception {
+    Avaliacao(float nota) throws AvaliacaoInvalidaException {
         setNota(nota);
     }
 
@@ -23,7 +23,7 @@ public class Avaliacao {
      * @throws Exception Exceção do setNota e setComentario, se algum valor for
      *                   inválido
      */
-    Avaliacao(float nota, String comentario) throws Exception {
+    Avaliacao(float nota, String comentario) throws AvaliacaoInvalidaException {
         setNota(nota);
         setComentario(comentario);
     }
@@ -34,11 +34,11 @@ public class Avaliacao {
      * @param nota o novo valor da nota a ser definida.
      * @throws Exception Cria e lança uma exceção se o valor for inválido
      */
-    public void setNota(float nota) throws Exception {
+    public void setNota(float nota) throws AvaliacaoInvalidaException {
         if ((nota >= 1) && (nota <= 5)) {
             this.nota = nota;
         } else {
-            throw new Exception("Digite somente valores entre de 1 a 5!");
+            throw new AvaliacaoInvalidaException("Digite somente valores entre de 1 a 5!");
         }
     }
 
@@ -57,11 +57,11 @@ public class Avaliacao {
      * @param comentario o novo comentário da avaliação
      * @throws Exception Cria e lança uma exceção se o valor for inválido
      */
-    public void setComentario(String comentario) throws Exception {
+    public void setComentario(String comentario) throws AvaliacaoInvalidaException {
         if (comentario.length() > 0) {
             this.comentario = comentario;
         } else {
-            throw new Exception("Comentario não pode ser vazio!");
+            throw new AvaliacaoInvalidaException("Comentario não pode ser vazio!");
         }
 
     }

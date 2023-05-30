@@ -1,6 +1,7 @@
 package business;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -25,7 +26,7 @@ public class PlataformaStreaming {
      * @throws Exception
      */
     public PlataformaStreaming(String nome) throws Exception {
-        
+
         setNome(nome);
         carregarMidia(arqSeries);
         carregarMidia(arqFilmes);
@@ -34,11 +35,11 @@ public class PlataformaStreaming {
     }
 
     public void setNome(String nome) throws Exception {
-        if(nome.length() >= 0){
+        if (nome.length() >= 0) {
             this.nome = nome;
         } else {
             throw new Exception("O nome não pode ser vazio!");
-        }  
+        }
     }
 
     /**
@@ -67,7 +68,7 @@ public class PlataformaStreaming {
      */
 
     public void adicionarMidia(Midia midia) throws MidiaInvalidaException {
-        if(!midias.containsKey(midia.getId())) {
+        if (!midias.containsKey(midia.getId())) {
             midias.put(midia.getId(), midia);
             escreveArqMidia(midia);
         } else {
@@ -75,47 +76,51 @@ public class PlataformaStreaming {
         }
     }
 
-    public void adicionarSerie(String nome, String idioma, String genero, int qtdEpisodios) throws SerieInvalidaException, MidiaInvalidaException {
-        
+    public void adicionarSerie(String nome, String idioma, String genero, int qtdEpisodios) throws MidiaInvalidaException {
+
         Serie serieCad = new Serie(genero, nome, idioma, qtdEpisodios);
         adicionarMidia(serieCad);
     }
 
-    public void adicionarFilme(String nome, String idioma, String genero, int duracao) throws  MidiaInvalidaException, FilmeInvalidoException {
+    public void adicionarFilme(String nome, String idioma, String genero, int duracao) throws MidiaInvalidaException{
         Filme filmeCad = new Filme(genero, nome, idioma, duracao);
         adicionarMidia(filmeCad);
     }
 
-
-
-    public void adicionarMidiaParaAssistir(String nomeMidia) throws Exception {
+    public void adicionarMidiaParaAssistir(String nomeMidia) throws MidiaInvalidaException {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
         if (midia != null) {
             this.clienteAtual.adicionarListaParaVer(midia);
             escreveArqAudiencia("F", midia, -1);
         } else {
-            throw new Exception("Nenhuma midia encontrada com esse nome!");
+            throw new MidiaInvalidaException("Nenhuma midia encontrada com esse nome!");
+        }
+    }
+
+    public void adicionarMidiaVista(String nomeMidia) throws MidiaInvalidaException {
+        Midia midia = filtrarMidiaPorNome(nomeMidia);
+        if(clienteAtual.adicionarMidiaVista(midia)){
+            escreveArqAudiencia("A", midia, -1F);
         }
     }
     
 
-    public void adicionarMidiaAssistida(String nomeMidia) throws Exception {
+    public void adicionarAvaliacao(String nomeMidia, float nota) throws MidiaInvalidaException, AvaliacaoInvalidaException {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
-        String nomeUsuario = this.clienteAtual.getNomeDeUsuario();
-        Float nota = null;
-    
-        if(midia != null) {
-            nota = midia.getNotaAvaliacao(nomeUsuario);
-            if(nota != null) {
-                clienteAtual.adicionarMidiaVista(midia);
-                escreveArqAudiencia("A", midia, nota);
-            } else {
-                clienteAtual.adicionarMidiaVista(midia);
-                nota = midia.getNotaAvaliacao(nomeUsuario);
-                escreveArqAudiencia("A", midia, -1);
-            }
+        
+        if(clienteAtual.criarAvaliacao(nota, midia)) {
+            escreveArqAudiencia("A", midia, nota);
+        } else {
+            System.out.println("Voce ja escreveu");
         }
     }
+
+    // public void adicionarAvaliacao(float nota, String nomeMidia) throws MidiaInvalidaException
+    // {
+
+    // Midia midia = filtrarMidiaPorNome(nomeMidia);
+    // clienteAtual.adicionarAvaliacao(nota, midia);
+    // }
 
     public String getListaJaVista() {
         return this.clienteAtual.getListaJaVista().toString();
@@ -125,18 +130,18 @@ public class PlataformaStreaming {
         return this.clienteAtual.getListaParaVer().toString();
     }
 
-
     /**
      * Método para adicionar um cliente na lista de clientes
      * 
      * @param c Esse é o cliente que será recebido
-     * @throws Exception
+     * @throws MidiaInvalidaException
      */
 
-     //REVISAR ESSE TROWS
-     public void adicionarCliente(String nomeCompleto, String nomeDeUsuario, String senha) throws ClienteInvalidoException, Exception {
+    // REVISAR ESSE TROWS
+    public void adicionarCliente(String nomeCompleto, String nomeDeUsuario, String senha)
+            throws ClienteInvalidoException, Exception {
         Cliente c = new Cliente(nomeCompleto, nomeDeUsuario, senha);
-    
+
         if (!clientes.containsKey(c.getNomeDeUsuario())) {
             escreveArqCliente(c);
             this.clientes.put(c.getNomeDeUsuario(), c);
@@ -144,7 +149,7 @@ public class PlataformaStreaming {
             throw new ClienteInvalidoException("Esse cliente já existe!");
         }
     }
-    
+
     /**
      * Metodo para filtrar uma serie pelo seu genero
      * 
@@ -203,7 +208,7 @@ public class PlataformaStreaming {
             logado = false;
             this.clienteAtual = null;
             throw new ClienteInvalidoException("Senha incorreta!");
-        } 
+        }
 
         return logado;
     }
@@ -212,97 +217,111 @@ public class PlataformaStreaming {
      * Esse método carrega os clientes do arquivo de clientes
      * 
      * @return Retorna um mapa com as series do arquivo
-     * @throws Exception
+     * @throws MidiaInvalidaException
      */
-    private void carregarClientes() throws Exception {
-        
-        BufferedReader reader = new BufferedReader(new FileReader(arqClientes));
-        String linha;
-        reader.readLine();
+    private void carregarClientes() throws ClienteInvalidoException {
 
-        while ((linha = reader.readLine()) != null) {
-            StringTokenizer str = new StringTokenizer(linha, ";");
-            Cliente cliente = new Cliente(str.nextToken(), str.nextToken(), str.nextToken());
-            clientes.put(cliente.getNomeDeUsuario(), cliente);
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(arqClientes));
+            String linha;
+            reader.readLine();
+    
+            while ((linha = reader.readLine()) != null) {
+                StringTokenizer str = new StringTokenizer(linha, ";");
+                Cliente cliente = new Cliente(str.nextToken(), str.nextToken(), str.nextToken());
+                clientes.put(cliente.getNomeDeUsuario(), cliente);
+            }
+            reader.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        reader.close();
+        
     }
 
-    private void carregarMidia(String tipoArquivo) throws Exception {
+    private void carregarMidia(String tipoArquivo) throws MidiaInvalidaException {
 
-        Midia midia;
-        
-        BufferedReader reader = new BufferedReader(new FileReader(tipoArquivo));
-        String linha;
+        try {
+            Midia midia;
 
-        reader.readLine();
-
-        while ((linha = reader.readLine()) != null) {
-
-            StringTokenizer str = new StringTokenizer(linha, ";");
-            int id = Integer.parseInt(str.nextToken());
-            String nome = str.nextToken();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate dataLancamento = LocalDate.parse(str.nextToken(), formatter);
-
-            if(tipoArquivo.equals(arqFilmes)){
-                int n = Integer.parseInt(str.nextToken());
-                midia = new Filme(id, nome, dataLancamento, n);
-            } else {
-                midia = new Serie(id, nome, dataLancamento);
+            BufferedReader reader = new BufferedReader(new FileReader(tipoArquivo));
+            String linha;
+    
+            reader.readLine();
+    
+            while ((linha = reader.readLine()) != null) {
+    
+                StringTokenizer str = new StringTokenizer(linha, ";");
+                int id = Integer.parseInt(str.nextToken());
+                String nome = str.nextToken();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDate dataLancamento = LocalDate.parse(str.nextToken(), formatter);
+    
+                if (tipoArquivo.equals(arqFilmes)) {
+                    int n = Integer.parseInt(str.nextToken());
+                    midia = new Filme(id, nome, dataLancamento, n);
+                } else {
+                    midia = new Serie(id, nome, dataLancamento);
+                }
+    
+                midias.put(midia.getId(), midia);
             }
-
-            midias.put(midia.getId(), midia);
-        }
-
-        reader.close();
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } 
     }
 
     /**
      * Esse metodo carrega as audiencias do arquivo de audiencia
      * 
-     * @throws Exception
+     * @throws MidiaInvalidaException
      */
 
-     //revisar typecasting
-     private void carregarAudiencia() throws Exception {
-        float nota;
-        BufferedReader reader = new BufferedReader(new FileReader(arqAudiencia));
-        String linha;
-        reader.readLine();
-        
+    // revisar typecasting
+    private void carregarAudiencia() throws AvaliacaoInvalidaException, MidiaInvalidaException {
 
-        while ((linha = reader.readLine()) != null) {
-            StringTokenizer str = new StringTokenizer(linha, ";");
-            String login = str.nextToken();
-            String tipo = str.nextToken();
-            int idMidia = Integer.parseInt(str.nextToken());
-            Midia midia = midias.get(idMidia);
-            this.clienteAtual = clientes.get(login);
+        try {
+            float nota;
+            BufferedReader reader = new BufferedReader(new FileReader(arqAudiencia));
+            String linha;
+            reader.readLine();
     
-            if (tipo.equals("F")) {
-                clienteAtual.adicionarListaParaVer(midia);
-            } else {
-                if (str.hasMoreTokens()) {
-                    String valor = str.nextToken();
-                    if (valor.contains("-")) {
-                        clienteAtual.adicionarDataAssistida(valor);
-                    } else {
-                        nota = Float.parseFloat(valor);
-                        clienteAtual.adicionarAvaliacao(nota, midia);
+            while ((linha = reader.readLine()) != null) {
+                StringTokenizer str = new StringTokenizer(linha, ";");
+                String login = str.nextToken();
+                String tipo = str.nextToken();
+                int idMidia = Integer.parseInt(str.nextToken());
+                Midia midia = midias.get(idMidia);
+                this.clienteAtual = clientes.get(login);
+    
+                if (tipo.equals("F")) {
+                    clienteAtual.adicionarListaParaVer(midia);
+                } else {
+                    if (str.hasMoreTokens()) {
+                        String valor = str.nextToken();
+                        if (valor.contains("-")) {
+                            clienteAtual.adicionarDataAssistida(valor);
+                        } else {
+                            nota = Float.parseFloat(valor);
+                            clienteAtual.criarAvaliacao(nota, midia);
+                        }
                     }
+                    if (str.hasMoreTokens()) {
+                        String data = str.nextToken();
+                        clienteAtual.adicionarDataAssistida(data);
+                    }
+                    clienteAtual.adicionarMidiaVista(midia);
                 }
-                if (str.hasMoreTokens()) {
-                    String data = str.nextToken();
-                    clienteAtual.adicionarDataAssistida(data);
-                }
-                clienteAtual.adicionarMidiaVista(midia);
             }
-        }
     
-        reader.close();
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } 
+        
     }
-    
 
     /**
      * esse metodo escreve o objeto no arquivo escolhido
@@ -317,32 +336,29 @@ public class PlataformaStreaming {
             arquivo.write(objeto.getDados());
             arquivo.close();
         } catch (IOException e) {
-            System.out.println("Ocorreu um erro ao salvar os dados no arquivo.");
             e.printStackTrace();
         }
     }
 
     private void escreveArqMidia(ISalvavel midia) {
-        if(midia instanceof Filme) {
+        if (midia instanceof Filme) {
             escreveArquivo(midia, arqFilmes);
         } else if (midia instanceof Serie) {
             escreveArquivo(midia, arqSeries);
         }
     }
 
-
     /**
      * Esse metodo escreve um cliente no arquivo de cliente, se o nome de usuario
      * dele ja nao estiver cadastrado
      * 
      * @param clienteCad Esse é o cliente a ser posto
-     * @throws Exception excecao a ser lancada caso o nome de usuario esteja
+     * @throws MidiaInvalidaException excecao a ser lancada caso o nome de usuario esteja
      *                   indisponivel ou haja algum erro
      */
-    private void escreveArqCliente(Cliente clienteCad) throws Exception {
+    private void escreveArqCliente(Cliente clienteCad) throws MidiaInvalidaException {
         escreveArquivo(clienteCad, arqClientes);
     }
-
 
     /**
      * Esse metodo escreve a audiencia no arquivo de audiencia
@@ -360,7 +376,7 @@ public class PlataformaStreaming {
 
             LocalDate data = LocalDate.now();
 
-            if(nota != -1){
+            if (nota != -1) {
                 arquivo.write("\n" + login + ";" + tipo + ";" + id + ";" + nota + ";" + data);
             } else {
                 arquivo.write("\n" + login + ";" + tipo + ";" + id + ";" + data);
@@ -379,36 +395,25 @@ public class PlataformaStreaming {
      * @param nome Esse é o nome enviado
      * @return Retorna a serie com o mesmo nome que o enviado
      */
-    public Midia filtrarMidiaPorNome(String nome) throws Exception {
+    public Midia filtrarMidiaPorNome(String nome) throws MidiaInvalidaException {
         return this.midias.values().stream()
                 .filter(s -> s.getNome().equals(nome))
                 .findFirst()
-                .orElseThrow(() -> new Exception("Nenhuma midia encontrada com esse nome!"));
+                .orElseThrow(() -> new MidiaInvalidaException("Nenhuma midia encontrada com esse nome!"));
     }
-
-
-    public void adicionarAvaliacao(float nota, String nomeMidia) throws Exception {
-
-        Midia midia = filtrarMidiaPorNome(nomeMidia);
-        clienteAtual.adicionarAvaliacao(nota, midia);
-    }
-
-
 
     public boolean eEspecialista() {
         return (clienteAtual.getMeuTipo() != null);
     }
 
-
-    public void comentar(String comentario, String nomeMidia) throws Exception {
+    public void comentar(String comentario, String nomeMidia) throws ClienteInvalidoException, AvaliacaoInvalidaException, MidiaInvalidaException {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
         clienteAtual.fazerComentario(comentario, midia);
     }
 
-
-    public void setClienteEspecialista() throws Exception {
+    public void setClienteEspecialista() throws ClienteInvalidoException {
         System.out.println(this.clienteAtual.getListaDataAssistida());
-    
+
         if (this.clienteAtual.getListaJaVista().size() >= 5) {
             List<String> datasAssistidas = clienteAtual.getListaDataAssistida();
             LocalDate mesPassado = LocalDate.now().minusMonths(1);
@@ -420,10 +425,23 @@ public class PlataformaStreaming {
                                     dataAssistida.getYear() == LocalDate.now().getYear()))
                     .count();
             if (contador >= 5) {
-                clienteAtual.setMeuTipo(new ClienteEspecialista(clienteAtual.getNomeCompleto(), clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha()));
+                clienteAtual.setMeuTipo(new ClienteEspecialista(clienteAtual.getNomeCompleto(),
+                        clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha()));
             }
         }
     }
-    
-}
 
+
+    public String getNotaMedia(String nomeMidia) throws MidiaInvalidaException{
+        Midia midia = filtrarMidiaPorNome(nomeMidia);
+    
+        return (midia.getNotaMedia());
+    }
+
+    public void getAVALIACAO(String nomeMidia) throws MidiaInvalidaException {
+        Midia midia = filtrarMidiaPorNome(nomeMidia);
+        
+        System.out.println(midia.getAvaliacoes());
+    }
+
+}
