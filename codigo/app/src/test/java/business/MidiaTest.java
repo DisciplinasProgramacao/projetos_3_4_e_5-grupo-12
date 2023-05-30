@@ -1,6 +1,8 @@
 package business;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
 
@@ -30,15 +32,49 @@ public class MidiaTest {
     void test() throws MidiaInvalidaException, AvaliacaoInvalidaException {
         s1.calcularNotaMedia(); // possivelmente na avaliaçao
         s1.colocarAvaliacao(null, null); // possivelmente na avaliaçao
-        s1.registrarAudiencia();
         s1.setComentario(null, null); // possivelmente na avaliaçao
-        s1.setDataLancamento(null);
-        s1.setGenero(null);
-        s1.setId(0);
-        s1.setIdioma(null);
-        s1.setNome(null);
-        s1.setQuantidadeEpisodios(0);
-        f1.setDuracao(0);
+    }
+
+    @Test
+    void testQuantidadeDeEpisodiosInvalido() {
+        assertThrows(MidiaInvalidaException.class, () -> {
+            s1.setQuantidadeEpisodios(-1);
+        });
+    }
+
+    @Test
+    void testDuracaoInvalida() {
+        assertThrows(MidiaInvalidaException.class, () -> {
+            f1.setDuracao(-1);
+        });
+    }
+
+    @Test
+    void testNomeInvalido() {
+        assertThrows(MidiaInvalidaException.class, () -> {
+            f1.setNome("");
+        });
+    }
+
+    @Test
+    void testIdInvalido() {
+        assertThrows(MidiaInvalidaException.class, () -> {
+            f1.setId(-5);
+        });
+    }
+
+    @Test
+    void testIdiomaInvalido() {
+        assertThrows(MidiaInvalidaException.class, () -> {
+            f1.setIdioma("Laranja");
+        });
+    }
+
+    @Test
+    void testGeneroInvalido() {
+        assertThrows(MidiaInvalidaException.class, () -> {
+            f1.setGenero("Laranja");
+        });
     }
 
     @Test
@@ -82,4 +118,12 @@ public class MidiaTest {
         f1.setDuracao(196);
         assertEquals(196, f1.getDuracao());
     }
+
+    @Test
+    void testRegistrarAudiencia(){
+        s1.registrarAudiencia();
+        s2.registrarAudiencia();
+        assertSame(s2.getAudiencia(),s1.getAudiencia());
+    }
+
 }
