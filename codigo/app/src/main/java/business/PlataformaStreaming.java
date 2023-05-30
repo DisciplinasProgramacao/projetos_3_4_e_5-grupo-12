@@ -434,11 +434,10 @@ public class PlataformaStreaming {
     }
 
 
-    public String getNotaMedia(String nomeMidia) throws MidiaInvalidaException{
+    public double getNotaMedia(String nomeMidia) throws MidiaInvalidaException{
         Midia midia = filtrarMidiaPorNome(nomeMidia);
-        System.out.println(midia.getAvaliacoes());
-    
-        return (Double.toString(midia.calcularNotaMedia()));
+
+        return midia.calcularNotaMedia();
     }
 
 }

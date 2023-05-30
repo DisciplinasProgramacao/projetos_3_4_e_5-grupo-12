@@ -1,9 +1,6 @@
 package business;
 
 import java.util.*;
-
-import org.w3c.dom.NamedNodeMap;
-
 public class App {
 
     static Scanner entrada = new Scanner(System.in);
@@ -222,7 +219,8 @@ public class App {
             entrada.nextLine();
             System.out.println("Digite o nome da midia que você deseja ver a nota:");
             String nomeMidia = entrada.nextLine();
-            System.out.println(plat.getNotaMedia(nomeMidia));;
+            System.out.printf("%.2f", plat.getNotaMedia(nomeMidia));;
+            System.out.println();
         } catch (MidiaInvalidaException e) {
             System.out.println(e.getMessage());
         }
