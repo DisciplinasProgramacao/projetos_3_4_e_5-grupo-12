@@ -1,7 +1,6 @@
 package business;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -32,34 +31,24 @@ class ClienteTest {
         c1.adicionarMidiaVista(f1, 0);// talvez fazer na avaliaçao
         c1.criarAvaliacao(0, f1); // talvez fazer na avaliaçao
         c1.fazerComentario(null, s1); // talvez fazer na avaliaçao
-        c1.setMeuTipo(null); // nao entendi como faz o teste corretamente
-        /*
-         * @Test
-         * void testSetmeuTipo() throws ClienteInvalidoException{
-         * 
-         * c1.setMeuTipo(new ClienteEspecialista(c1.getNomeCompleto(),
-         * c1.getNomeDeUsuario(), c1.getSenha()));
-         * assertEquals(ClienteEspecialista.class,c1.getClass() );
-         * }
-         */
     }
 
     @Test
-    void testNomeUsuarioVazio() throws ClienteInvalidoException {
+    void testNomeUsuarioVazio() {
         assertThrows(ClienteInvalidoException.class, () -> {
             c1.setNomeDeUsuario("");
         });
     }
 
     @Test
-    void testNomeCompletoVazio() throws ClienteInvalidoException {
+    void testNomeCompletoVazio() {
         assertThrows(ClienteInvalidoException.class, () -> {
             c1.setNomeCompleto("");
         });
     }
 
     @Test
-    void testSenhaInvalida() throws ClienteInvalidoException {
+    void testSenhaInvalida() {
         assertThrows(ClienteInvalidoException.class, () -> {
             c1.setSenha("123456");
         });
@@ -145,6 +134,20 @@ class ClienteTest {
     void testSetSenha() throws ClienteInvalidoException {
         c1.setSenha("AMil13111");
         assertEquals("AMil13111", c1.getSenha());
+    }
+
+    @Test
+    void testRegistrarAudiencia() {
+        c1.registrarAudiencia(f1);
+        c1.registrarAudiencia(f1);
+        c2.registrarAudiencia(f1);
+        assertEquals(2, f1.getAudiencia());
+    }
+
+    @Test
+    void testSetmeuTipo() throws ClienteInvalidoException {
+        c1.setMeuTipo(new ClienteEspecialista(c1.getNomeCompleto(),c1.getNomeDeUsuario(), c1.getSenha()));
+        assertEquals(ClienteEspecialista.class, c1.getMeuTipo().getClass());
     }
 
 }
