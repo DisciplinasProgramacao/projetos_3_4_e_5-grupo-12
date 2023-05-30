@@ -380,7 +380,7 @@ public class PlataformaStreaming {
 
             arquivo.close();
         } catch (IOException e) {
-            System.out.println("Ocorreu um erro ao salvar os dados no arquivo!");
+            System.out.println("Ocorreu um erro ao salvar os dados no arquivo.");
             e.printStackTrace();
         }
     }
