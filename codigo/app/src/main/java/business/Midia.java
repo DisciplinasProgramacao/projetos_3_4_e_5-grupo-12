@@ -55,8 +55,13 @@ public abstract class Midia implements ISalvavel {
         setDataLancamento(dataLancamento);
     }
 
-    public boolean getNotaAvaliacao(String nomeUsuario) {        
-        return (avaliacoes.containsKey(nomeUsuario));
+    public boolean getNotaAvaliacao(String nomeUsuario) {
+        System.out.println(avaliacoes.get(nomeUsuario));
+        if(avaliacoes.containsKey(nomeUsuario)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public void setId(int id) throws MidiaInvalidaException {
@@ -223,20 +228,16 @@ public abstract class Midia implements ISalvavel {
     }
 
     public void colocarAvaliacao(String nomeUsuario, Avaliacao avaliacao) throws MidiaInvalidaException {
-        avaliacoes.put(nome, avaliacao);
+        avaliacoes.put(nomeUsuario, avaliacao);
     }
 
-    public void calcMedia() {
-        notaMedia = avaliacoes.values().stream()
-                .mapToDouble(Avaliacao::getNota)
-                .average()
-                .orElse(0.0);
+    public double calcularNotaMedia() {
+        return avaliacoes.values().stream()
+            .mapToDouble(Avaliacao::getNota)
+            .average()
+            .orElse(0);
     }
 
-    public String getNotaMedia(){
-        return Double.toString(this.notaMedia);
-    }
-    
     public String getAvaliacoes () {
         return avaliacoes.toString();
     }

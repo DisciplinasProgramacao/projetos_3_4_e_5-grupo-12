@@ -105,10 +105,10 @@ public class PlataformaStreaming {
     }
     
 
-    public void adicionarAvaliacao(String nomeMidia, float nota) throws MidiaInvalidaException, AvaliacaoInvalidaException {
+    public void adicionarAvaliacao(String nomeMidia, float nota) throws MidiaInvalidaException, AvaliacaoInvalidaException, ClienteInvalidoException {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
-        
-        if(clienteAtual.criarAvaliacao(nota, midia)) {
+        setClienteEspecialista();
+        if(clienteAtual.criarAvaliacao(nota, midia ) == true) {        
             escreveArqAudiencia("A", midia, nota);
         } else {
             System.out.println("Voce ja escreveu");
@@ -308,10 +308,6 @@ public class PlataformaStreaming {
                             clienteAtual.criarAvaliacao(nota, midia);
                         }
                     }
-                    if (str.hasMoreTokens()) {
-                        String data = str.nextToken();
-                        clienteAtual.adicionarDataAssistida(data);
-                    }
                     clienteAtual.adicionarMidiaVista(midia);
                 }
             }
@@ -412,7 +408,6 @@ public class PlataformaStreaming {
     }
 
     public void setClienteEspecialista() throws ClienteInvalidoException {
-        System.out.println(this.clienteAtual.getListaDataAssistida());
 
         if (this.clienteAtual.getListaJaVista().size() >= 5) {
             List<String> datasAssistidas = clienteAtual.getListaDataAssistida();
@@ -429,13 +424,14 @@ public class PlataformaStreaming {
                         clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha()));
             }
         }
+        System.out.println(this.clienteAtual.getListaDataAssistida());
     }
 
 
     public String getNotaMedia(String nomeMidia) throws MidiaInvalidaException{
         Midia midia = filtrarMidiaPorNome(nomeMidia);
     
-        return (midia.getNotaMedia());
+        return (Double.toString(midia.calcularNotaMedia()));
     }
 
     public void getAVALIACAO(String nomeMidia) throws MidiaInvalidaException {

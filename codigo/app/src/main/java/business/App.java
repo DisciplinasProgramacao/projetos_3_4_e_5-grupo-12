@@ -166,6 +166,7 @@ public class App {
         int op;
 
         do {
+
             System.out.println("Bem vindo de volta!");
             System.out.println("O que deseja fazer?");
 
@@ -227,14 +228,7 @@ public class App {
         entrada.nextLine();
         System.out.println("Digite o nome da Midia que você deseja adicionar:");
         String nomeMidia = entrada.nextLine();
-        
-        try {
-            plat.adicionarMidiaVista(nomeMidia);
-        } catch (MidiaInvalidaException e) {
-            System.out.println(e.getMessage());
-        }
-        
-
+    
         submenu(plat, nomeMidia); // fazer verificacao se a serie existe
 
     }
@@ -257,11 +251,6 @@ public class App {
         switch (op) {
             case 1:
                 avaliarMidia(plat, nomeMidia);
-                try {
-                    System.out.println(plat.getNotaMedia(nomeMidia));
-                } catch (MidiaInvalidaException e) {
-                    System.out.println(e.getMessage());
-                }
                 break;
             case 2:
                 try {
@@ -284,13 +273,8 @@ public class App {
 
         try {
             plat.adicionarAvaliacao(nomeMidia, nota);
-        } catch (AvaliacaoInvalidaException | MidiaInvalidaException e) {
-            System.out.println(e.getMessage());
-        }
-        
-        try{
-            plat.setClienteEspecialista();
-        } catch (Exception e) {
+
+        } catch (AvaliacaoInvalidaException | MidiaInvalidaException | ClienteInvalidoException e) {
             System.out.println(e.getMessage());
         }
         
@@ -314,13 +298,7 @@ public class App {
                  
             } 
         }
-
-        try {
-            plat.adicionarMidiaVista(nomeMidia);
-        } catch (MidiaInvalidaException e) {
-            System.out.println(e.getMessage());
-        }
-
+        
         try {
             plat.getAVALIACAO(nomeMidia);;
         } catch (MidiaInvalidaException e) {
