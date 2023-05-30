@@ -99,7 +99,7 @@ public class PlataformaStreaming {
 
     public void adicionarMidiaVista(String nomeMidia) throws MidiaInvalidaException {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
-        if(clienteAtual.getListaParaVer().contains(midia)){
+        if(clienteAtual.querVer(midia)){
             clienteAtual.retirarDaLista(midia);
         }
         if(clienteAtual.adicionarMidiaVista(midia)){
@@ -113,7 +113,7 @@ public class PlataformaStreaming {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
         setClienteEspecialista();
 
-        if(this.clienteAtual.getListaJaVista().contains(midia)) {
+        if(!this.clienteAtual.jaViu(midia)) {
             if(this.clienteAtual.criarAvaliacao(nota, midia ) == true) {        
                 escreveArqAudiencia("A", midia, nota);
             } else {
@@ -125,9 +125,9 @@ public class PlataformaStreaming {
    
     }
 
-    public String getListaJaVista() {
-        return this.clienteAtual.getListaJaVista().toString();
-    }
+     public String getListaJaVista() {
+         return this.clienteAtual.getListaJaVista();
+     }
 
     public String getListaParaAssistir() {
         return this.clienteAtual.getListaParaVer().toString();
@@ -312,7 +312,7 @@ public class PlataformaStreaming {
                         }
                     }
                     clienteAtual.adicionarMidiaVista(midia);
-                    if(clienteAtual.getListaParaVer().contains(midia)){
+                    if(clienteAtual.querVer(midia)){
                         clienteAtual.retirarDaLista(midia);
                     }
                 }
@@ -415,7 +415,7 @@ public class PlataformaStreaming {
 
     public void setClienteEspecialista() throws ClienteInvalidoException {
 
-        if (this.clienteAtual.getListaJaVista().size() >= 5) {
+        if (this.clienteAtual.getTamanhoL() >= 5) {
             List<String> datasAssistidas = clienteAtual.getListaDataAssistida();
             LocalDate mesPassado = LocalDate.now().minusMonths(1);
             long contador = datasAssistidas.stream()
