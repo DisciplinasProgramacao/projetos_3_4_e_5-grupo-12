@@ -1,6 +1,5 @@
 package business;
 
-import java.nio.file.FileSystemAlreadyExistsException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Random;
@@ -14,7 +13,7 @@ public abstract class Midia implements ISalvavel {
     private String idioma;
     private LocalDate dataLancamento;
     private int audiencia = 0;
-    private static final String[] generos = new String[] { "comedia", "terror", "romance", "acao", "anime", "aventura", "documentário", "drama", "policial", "suspense"};
+    private static final String[] generos = new String[] { "comedia", "terror", "romance", "acao", "anime", "aventura", "documentario", "drama", "policial", "suspense"};
     private static final String[] idiomas = new String[] { "portugues", "ingles", "espanhol" };
     private static HashMap<String, Avaliacao> avaliacoes = new HashMap<>();
     private static Random random = new Random();
