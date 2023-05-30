@@ -14,7 +14,7 @@ public abstract class Midia implements ISalvavel {
     private int audiencia = 0;
     private static final String[] generos = new String[] { "comedia", "terror", "romance", "acao", "anime", "aventura", "documentario", "drama", "policial", "suspense"};
     private static final String[] idiomas = new String[] { "portugues", "ingles", "espanhol" };
-    private static HashMap<String, Avaliacao> avaliacoes = new HashMap<>();
+    private HashMap<String, Avaliacao> avaliacoes = new HashMap<>();
     private static Random random = new Random();
 
     /**
@@ -230,14 +230,20 @@ public abstract class Midia implements ISalvavel {
     }
 
     public double calcularNotaMedia() {
-        return avaliacoes.values().stream()
+        return this.avaliacoes.values().stream()
             .mapToDouble(Avaliacao::getNota)
             .average()
-            .orElse(0);
+            .getAsDouble();
     }
 
     public String getAvaliacoes () {
         return avaliacoes.toString();
+    }
+
+    @Override
+    public boolean equals(Object o){
+
+        return this.id == ((Midia)o).id;
     }
 
 }

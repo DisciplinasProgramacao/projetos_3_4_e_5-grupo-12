@@ -46,6 +46,16 @@ public class Cliente implements ISalvavel {
         return this.meuTipo;
     }
 
+    public boolean jaViu(Midia midia){
+
+        return listaJaVistas.contains(midia);
+    }
+
+    public boolean querVer(Midia midia){
+
+        return listaParaVer.contains(midia);
+    }
+
     /**
      * Método que chama um método de uma mídia específica para criar uma avaliação
      * @param nota Nota da avaliação que será criada
@@ -55,11 +65,11 @@ public class Cliente implements ISalvavel {
     public boolean criarAvaliacao(float nota, Midia midia) throws AvaliacaoInvalidaException, MidiaInvalidaException {
         boolean permitido = false;
 
-        if(getListaParaVer().contains(midia)){
+        if(querVer(midia)){
             retirarDaLista(midia);
         }
         
-        if(!(getListaJaVista().contains(midia))) {
+        if(!(this.listaJaVistas.contains(midia))) {
             permitido = true;
             Avaliacao avaliacao = new Avaliacao(nota);
             midia.colocarAvaliacao(getNomeDeUsuario(), avaliacao);
@@ -145,17 +155,12 @@ public class Cliente implements ISalvavel {
      *
      * @return a lista de séries que o cliente deseja assistir.
      */
-    public List<Midia> getListaParaVer() {
-        return this.listaParaVer;
+    public String getListaParaVer() {
+        return this.listaParaVer.toString();
     }
 
-    /**
-     * Retorna a lista de séries que o cliente já assistiu.
-     *
-     * @return a lista de séries que o cliente já assistiu.
-     */
-    public List<Midia> getListaJaVista() {
-        return this.listaJaVistas;
+    public int getTamanhoL(){
+        return this.listaJaVistas.size();
     }
 
     /**
@@ -222,6 +227,15 @@ public class Cliente implements ISalvavel {
                 .collect(Collectors.toList());
     
         return listaMesmoGen;
+    }
+
+    /**
+     * Retorna a lista de séries que o cliente já assistiu.
+     *
+     * @return a lista de séries que o cliente já assistiu.
+     */
+    public String getListaJaVista() {
+        return this.listaJaVistas.toString();
     }
 
     /**
