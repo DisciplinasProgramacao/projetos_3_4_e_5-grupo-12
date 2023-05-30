@@ -2,73 +2,119 @@ package business;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
 class ClienteTest {
-Cliente c1;
-Cliente c2;
-Serie NanaABanana;
-Serie Polyforme;
-Serie PapaLeguas;
+    Cliente c1;
+    Cliente c2;
+    Serie s1;
+    Serie s2;
+    Serie s3;
+    Filme f1;
+    Filme f2;
 
     @BeforeEach
-    void setUp() throws Exception {
-        c1 = new Cliente("Geoge o Curioso","George","123pogchamp456");
-        c2 = new Cliente("Paulo BEM Grande", "paulo","MalFeitoFeito");
-        NanaABanana = new Serie("comedia","Nana a Banana", "portugues",10);
-        Polyforme = new Serie("terror","Polyforme", "portugues",8);
-        PapaLeguas = new Serie("comedia","Papaleguas", "alemao",12);
-    }
-
-    @Test
-    void adicionarNaListaTest() {
-        c1.adicionarNaLista(NanaABanana);
-        c1.adicionarNaLista(NanaABanana);
-        assertEquals(1,c1.getListaParaVer().size());
-    }
-    
-    @Test
-    void retirarDaListaTest() {
-        c1.adicionarNaLista(NanaABanana);
-        c1.retirarDaLista(NanaABanana);
-        assertFalse(c1.getListaParaVer().contains(NanaABanana));
+    void setUp() throws ClienteInvalidoException, MidiaInvalidaException {
+        c1 = new Cliente("Geoge o Curioso", "George", "123pogchamp456");
+        c2 = new Cliente("Paulo BEM Grande", "paulo", "MalFeitoFeito");
+        s1 = new Serie("comedia", "Nana a Banana", "portugues", 10);
+        s2 = new Serie("terror", "Polyforme", "ingles", 8);
+        s3 = new Serie("documentario", "Papaleguas", "ingles", 12);
+        f1 = new Filme("aventura", "Demanda Dos Conselheiros", "portugues", 160);
+        f2 = new Filme("terror", "Sinestesia Do Ódio", "portugues", 180);
     }
 
     
+        // c1.adicionarMidiaVista(s1, null); //talvez fazer na avaliaçao
+        // c1.criarAvaliacao(0, s1); //talvez fazer na avaliaçao
+        // c1.fazerComentario(null, s1); //talvez fazer na avaliaçao
+        // c1.filtrarPorQtdEpisodios(0);
+        // c1.registrarAudiencia(s1);
+        // c1.retirarMidiaVista(s1);
+        // c1.setMeuTipo(null);
+        // c1.setNomeCompleto(null);
+        // c1.setNomeDeUsuario(null);
+        // c1.setSenha(null);
+  
+
+
     @Test
-    void filtrarPorGeneroTest() {
-        
-        c1.adicionarNaLista(NanaABanana);
-        c1.adicionarNaLista(Polyforme);
-        c1.adicionarNaLista(PapaLeguas);
-        assertEquals(2,c1.filtrarPorGenero("comedia").size());
+    void testNomeUsuarioVazio() throws ClienteInvalidoException {
+        assertThrows(ClienteInvalidoException.class, () -> {
+            c1.setNomeDeUsuario("");
+        });
     }
-    
+
     @Test
-    void filtrarPorIdiomaTest() {
-        c1.adicionarNaLista(NanaABanana);
-        c1.adicionarNaLista(Polyforme);
-        c1.adicionarNaLista(PapaLeguas);
-        assertEquals(2,c1.filtrarPorIdioma("portugues").size());
+    void testNomeCompletoVazio() throws ClienteInvalidoException {
+        assertThrows(ClienteInvalidoException.class, () -> {
+            c1.setNomeCompleto("");
+        });
     }
-    
+
     @Test
-    void filtrarPorQntEpisodiosTest() {
-        c1.adicionarNaLista(NanaABanana);
-        c1.adicionarNaLista(Polyforme);
-        c1.adicionarNaLista(PapaLeguas);
-        assertEquals(1,c1.filtrarPorQtdEpisodios(8).size());
+    void testSenhaInvalida() throws ClienteInvalidoException {
+        assertThrows(ClienteInvalidoException.class, () -> {
+            c1.setSenha("123456");
+        });
     }
-    
+
     @Test
-    void registrarAudienciaTest() {
-        c1.registrarAudiencia(NanaABanana);
-        c1.registrarAudiencia(NanaABanana);
-        c2.registrarAudiencia(NanaABanana);
-        assertEquals(2,NanaABanana.getAudiencia());
+    void testAdicionarListaParaVer() {
+        c1.adicionarListaParaVer(s1);
+        c1.adicionarListaParaVer(s1);
+        c1.adicionarListaParaVer(s2);
+        c1.adicionarListaParaVer(s3);
+        c1.adicionarListaParaVer(f1);
+        c1.adicionarListaParaVer(f2);
+        assertEquals(5,c1.getListaParaVer().size());
     }
-    
+
+    @Test
+    void testAdicionarMidiaVista() throws MidiaInvalidaException {
+        c1.adicionarMidiaVista(f1);
+        c1.adicionarMidiaVista(f2);
+        c1.adicionarMidiaVista(f2);
+        c1.adicionarMidiaVista(s1);
+        c1.adicionarMidiaVista(s2);
+        c1.adicionarMidiaVista(s3);
+        assertEquals(5,c1.getListaJaVista().size());
+    }
+
+    @Test
+    void testRetirarDaLista() throws MidiaInvalidaException {
+        c1.adicionarListaParaVer(s1);
+        c1.adicionarListaParaVer(s2);
+        c1.adicionarListaParaVer(s3);
+        c1.adicionarListaParaVer(f1);
+        c1.adicionarListaParaVer(f2);
+        c1.retirarDaLista(f1);
+        c1.retirarDaLista(f2);
+        assertEquals(3,c1.getListaParaVer().size());
+    }
+
+    @Test
+    void testFiltrarMidiaPorGenero() throws MidiaInvalidaException{
+        c1.adicionarMidiaVista(f1);
+        c1.adicionarMidiaVista(f2);
+        c1.adicionarMidiaVista(s1);
+        c1.adicionarMidiaVista(s2);
+        c1.adicionarMidiaVista(s3);
+        assertEquals(2,c1.filtrarMidiaPorGenero("terror").size());
+    }
+
+    @Test
+    void testFiltrarMidiaPorIdioma() throws MidiaInvalidaException{
+        c1.adicionarMidiaVista(f1);
+        c1.adicionarMidiaVista(f2);
+        c1.adicionarMidiaVista(s1);
+        c1.adicionarMidiaVista(s2);
+        c1.adicionarMidiaVista(s3);
+        assertEquals(3,c1.filtrarMidiaPorIdioma("portugues").size());
+    }
+
+
 }
