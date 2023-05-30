@@ -1,6 +1,8 @@
 package business;
 
-public class AvaliacaoInvalidaException extends Exception{
+import javax.management.InvalidAttributeValueException;
+
+public class AvaliacaoInvalidaException extends InvalidAttributeValueException{
 
     public AvaliacaoInvalidaException(String message) {
         super(message);
