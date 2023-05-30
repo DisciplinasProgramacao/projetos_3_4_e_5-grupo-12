@@ -12,10 +12,10 @@ import java.util.*;
 import javax.management.InvalidAttributeValueException;
 
 public class PlataformaStreaming {
-    private static final String arqFilmes = "POO_Filmes.csv";
-    private static final String arqSeries = "POO_Series.csv";
-    private static final String arqClientes = "POO_Espectadores.csv";
-    private static final String arqAudiencia = "POO_Audiencia.csv";
+    private static final String arqFilmes = "codigo/POO_Filmes.csv";
+    private static final String arqSeries = "codigo/POO_Series.csv";
+    private static final String arqClientes = "codigo/POO_Espectadores.csv";
+    private static final String arqAudiencia = "codigo/POO_Audiencia.csv";
     private String nome;
     private HashMap<Integer, Midia> midias = new HashMap<>();
     private HashMap<String, Cliente> clientes = new HashMap<String, Cliente>();
