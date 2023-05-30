@@ -6,7 +6,6 @@ import java.util.Random;
 
 public abstract class Midia implements ISalvavel {
 
-    private double notaMedia;
     private int id;
     private String nome;
     private String genero;

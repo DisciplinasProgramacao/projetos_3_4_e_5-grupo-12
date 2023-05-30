@@ -54,6 +54,10 @@ public class Cliente implements ISalvavel {
      */
     public boolean criarAvaliacao(float nota, Midia midia) throws AvaliacaoInvalidaException, MidiaInvalidaException {
         boolean permitido = false;
+
+        if(getListaParaVer().contains(midia)){
+            retirarDaLista(midia);
+        }
         
         if(!(getListaJaVista().contains(midia))) {
             permitido = true;
@@ -129,7 +133,7 @@ public class Cliente implements ISalvavel {
      * @throws ClienteInvalidoException
      */
     public void setSenha(String senha) throws ClienteInvalidoException {
-        if (checkString(senha) || senha.length() > 6) 
+        if (checkString(senha) && senha.length() > 6) 
             this.senha = senha;
         else
         throw new ClienteInvalidoException("A senha deve possuir pelo menos 6 caracteres, entre letras maiusculas, minusculas e numeros.");
