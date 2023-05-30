@@ -2,6 +2,7 @@ package business;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 public abstract class Midia implements ISalvavel {
@@ -233,7 +234,7 @@ public abstract class Midia implements ISalvavel {
         return this.avaliacoes.values().stream()
             .mapToDouble(Avaliacao::getNota)
             .average()
-            .getAsDouble();
+            .orElse(0.0);
     }
 
     public String getAvaliacoes () {
