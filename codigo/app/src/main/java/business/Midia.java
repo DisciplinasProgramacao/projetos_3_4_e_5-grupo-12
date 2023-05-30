@@ -241,10 +241,4 @@ public abstract class Midia implements ISalvavel {
         return avaliacoes.toString();
     }
 
-    @Override
-    public boolean equals(Object o){
-
-        return this.id == ((Midia)o).id;
-    }
-
 }

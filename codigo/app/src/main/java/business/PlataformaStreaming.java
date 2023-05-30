@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import javax.management.InvalidAttributeValueException;
+
 public class PlataformaStreaming {
     private static final String arqFilmes = "POO_Filmes.csv";
     private static final String arqSeries = "POO_Series.csv";
@@ -23,9 +25,9 @@ public class PlataformaStreaming {
      * Constutor da plataforma de Streamming
      * 
      * @param nome esse é o nome da plataforma de Streamming
-     * @throws Exception
+     * @throws Exception InvalidAtributeValue Excepion
      */
-    public PlataformaStreaming(String nome) throws Exception {
+    public PlataformaStreaming(String nome) throws InvalidAttributeValueException {
 
         setNome(nome);
         carregarMidia(arqSeries);
@@ -34,11 +36,11 @@ public class PlataformaStreaming {
         carregarAudiencia();
     }
 
-    public void setNome(String nome) throws Exception {
+    public void setNome(String nome) throws InvalidAttributeValueException {
         if (nome.length() >= 0) {
             this.nome = nome;
         } else {
-            throw new Exception("O nome não pode ser vazio!");
+            throw new InvalidAttributeValueException("O nome não pode ser vazio!");
         }
     }
 
@@ -64,7 +66,7 @@ public class PlataformaStreaming {
      * Método para adicionar uma serie na lista de series
      * 
      * @param serie Esse é a serie que será recebido
-     * @throws Exception
+     * @throws MidiaInvalidaException
      */
 
     public void adicionarMidia(Midia midia) throws MidiaInvalidaException {
@@ -102,27 +104,28 @@ public class PlataformaStreaming {
         if(clienteAtual.querVer(midia)){
             clienteAtual.retirarDaLista(midia);
         }
+
         if(clienteAtual.adicionarMidiaVista(midia)){
             escreveArqAudiencia("A", midia, -1F);
-        }  
+        } else {
+            throw new MidiaInvalidaException("Voce já assistiu essa midia");
+        }
     }
     
 
-    public void adicionarAvaliacao(String nomeMidia, float nota) throws MidiaInvalidaException, AvaliacaoInvalidaException, ClienteInvalidoException {
+    public void adicionarAvaliacao(String nomeMidia, float nota)
+            throws MidiaInvalidaException, AvaliacaoInvalidaException, ClienteInvalidoException {
 
         Midia midia = filtrarMidiaPorNome(nomeMidia);
         setClienteEspecialista();
 
-        if(!this.clienteAtual.jaViu(midia)) {
-            if(this.clienteAtual.criarAvaliacao(nota, midia ) == true) {        
+        if(!midia.getAvaliacoes().contains(clienteAtual.getNomeDeUsuario())){
+            if (this.clienteAtual.criarAvaliacao(nota, midia)) {
                 escreveArqAudiencia("A", midia, nota);
-            } else {
-                throw new AvaliacaoInvalidaException("Você já avaliou essa midia!");
             }
         } else {
-            throw new MidiaInvalidaException("Você ainda não assistiu a essa midia!");
-        }
-   
+            throw new AvaliacaoInvalidaException("Você já avaliou essa midia!");
+        } 
     }
 
      public String getListaJaVista() {
@@ -415,7 +418,7 @@ public class PlataformaStreaming {
 
     public void setClienteEspecialista() throws ClienteInvalidoException {
 
-        if (this.clienteAtual.getTamanhoL() >= 5) {
+        if (this.clienteAtual.getTamanhoListaJaVista() >= 5) {
             List<String> datasAssistidas = clienteAtual.getListaDataAssistida();
             LocalDate mesPassado = LocalDate.now().minusMonths(1);
             long contador = datasAssistidas.stream()

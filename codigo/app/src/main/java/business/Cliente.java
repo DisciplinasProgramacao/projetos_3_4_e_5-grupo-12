@@ -60,7 +60,7 @@ public class Cliente implements ISalvavel {
      * Método que chama um método de uma mídia específica para criar uma avaliação
      * @param nota Nota da avaliação que será criada
      * @param midia Mídia que armazenará a avaliação
-     * @throws Exception Lança uma exceção qu
+     * @throws MidiaInvalidaException, AvaliacaoInvalidaException Lança uma exceção qu
      */
     public boolean criarAvaliacao(float nota, Midia midia) throws AvaliacaoInvalidaException, MidiaInvalidaException {
         boolean permitido = false;
@@ -69,13 +69,14 @@ public class Cliente implements ISalvavel {
             retirarDaLista(midia);
         }
         
-        if(!(this.listaJaVistas.contains(midia))) {
+        if((this.listaJaVistas.contains(midia))) {  //correto
             permitido = true;
             Avaliacao avaliacao = new Avaliacao(nota);
             midia.colocarAvaliacao(getNomeDeUsuario(), avaliacao);
             adicionarDataAssistida(LocalDate.now().toString());
-            adicionarMidiaVista(midia, nota);
-        } 
+        } else {
+            throw new MidiaInvalidaException("Você ainda não assistiu essa mídia");
+        }
         return permitido;
     }
     //REVISAR
@@ -159,8 +160,12 @@ public class Cliente implements ISalvavel {
         return this.listaParaVer.toString();
     }
 
-    public int getTamanhoL(){
+    public int getTamanhoListaJaVista(){
         return this.listaJaVistas.size();
+    }
+
+    public int getTamanhoListaParaVer(){
+        return this.listaParaVer.size();
     }
 
     /**
@@ -188,7 +193,7 @@ public class Cliente implements ISalvavel {
      * audiência da série.
      *
      * @param midia a série que foi vista pelo cliente.
-     * @throws Exception
+     * @throws MidiaInvalidaException
      */
     public boolean adicionarMidiaVista(Midia midia) throws MidiaInvalidaException {
 
