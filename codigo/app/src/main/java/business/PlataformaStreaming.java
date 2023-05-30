@@ -111,16 +111,9 @@ public class PlataformaStreaming {
         if(clienteAtual.criarAvaliacao(nota, midia ) == true) {        
             escreveArqAudiencia("A", midia, nota);
         } else {
-            System.out.println("Voce ja escreveu");
+            throw new AvaliacaoInvalidaException("Você já avaliou essa midia!");
         }
     }
-
-    // public void adicionarAvaliacao(float nota, String nomeMidia) throws MidiaInvalidaException
-    // {
-
-    // Midia midia = filtrarMidiaPorNome(nomeMidia);
-    // clienteAtual.adicionarAvaliacao(nota, midia);
-    // }
 
     public String getListaJaVista() {
         return this.clienteAtual.getListaJaVista().toString();
@@ -156,8 +149,8 @@ public class PlataformaStreaming {
      * @param genero Esse é o genero que foi escolhido para ser filtrado
      * @return retorna a lista filtrada do cliente atual
      */
-    public List<Midia> filtarPorGenero(String genero) {
-        return clienteAtual.filtrarMidiaPorGenero(genero);
+    public String filtrarPorGenero(String genero) {
+        return clienteAtual.filtrarMidiaPorGenero(genero).toString();
     }
 
     /**
@@ -167,8 +160,8 @@ public class PlataformaStreaming {
      *                       filtrada
      * @return retorna a lista filtrada do cliente atual
      */
-    public List<Midia> filtrarPorQtdEpisodios(int quantEpisodios) {
-        return clienteAtual.filtrarPorQtdEpisodios(quantEpisodios);
+    public String filtrarPorQtdEpisodios(int quantEpisodios) {
+        return clienteAtual.filtrarPorQtdEpisodios(quantEpisodios).toString();
     }
 
     /**
@@ -177,8 +170,8 @@ public class PlataformaStreaming {
      * @param idioma Esse é o idioma escolhido para ser filtrado
      * @return retorna a lista filtrada do cliente atual
      */
-    public List<Midia> filtrarPorIdioma(String idioma) {
-        return clienteAtual.filtrarMidiaPorIdioma(idioma);
+    public String filtrarPorIdioma(String idioma) {
+        return clienteAtual.filtrarMidiaPorIdioma(idioma).toString();
     }
 
     /**

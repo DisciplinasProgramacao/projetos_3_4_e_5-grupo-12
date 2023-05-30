@@ -2,6 +2,8 @@ package business;
 
 import java.util.*;
 
+import org.w3c.dom.NamedNodeMap;
+
 public class App {
 
     static Scanner entrada = new Scanner(System.in);
@@ -171,11 +173,12 @@ public class App {
             System.out.println("O que deseja fazer?");
 
             System.out.println("1 - Adicionar midia para assistir");
-            System.out.println("2 - Adicionar Midia ja assistida"); // pendente
+            System.out.println("2 - Adicionar Midia ja assistida");
             System.out.println("3 - Ver midias assistidas");
             System.out.println("4 - Ver midia para assistir");
-            System.out.println("9 - Deslogar");
-
+            System.out.println("5 - Buscar uma mídia");
+            System.out.println("6 - Avaliar uma mídia");
+            System.out.println("7 - Ver nota média de uma mídia");
             System.out.println("0 - Sair");
             op = entrada.nextInt();
 
@@ -193,9 +196,94 @@ public class App {
                 case 4:
                     verMidiasParaAssistir(plat);
                     break;
+                case 5:
+                    buscarMidia(plat);
+                    break;
+                case 6:
+                    entrada.nextLine();
+                    System.out.println("Digite o nome da midia que deseja avaliar:");
+                    String nomeMidia = entrada.nextLine();
+                    avaliarMidia(plat, nomeMidia);
+                    break;
+                case 7:
+                    notaMediaMidia(plat);
+                    break;
             }
 
         } while (op != 0);
+    }
+
+    private static void notaMediaMidia(PlataformaStreaming plat) {
+        try {
+            entrada.nextLine();
+            System.out.println("Digite o nome da midia que você deseja ver a nota:");
+            String nomeMidia = entrada.nextLine();
+            System.out.println(plat.getNotaMedia(nomeMidia));;
+        } catch (MidiaInvalidaException e) {
+            System.out.println(e.getMessage());
+        }
+        
+    }
+
+    private static void buscarMidia(PlataformaStreaming plat) {
+
+        int op;
+
+        do {
+            System.out.println("Selecione como deseja filtrar:");
+
+            System.out.println("1 - Filtrar por gênoro.");
+            System.out.println("2 - Filtrar por idioma.");
+            System.out.println("3 - Filtrar por quantidade de episódios.");
+            System.out.println("0 - Sair");
+            op = entrada.nextInt();
+
+            switch (op) {
+                case 1:
+                    filtrarPorGenero(plat);
+                    break;
+                case 2:
+                    filtrarPorIdioma(plat);
+                    break;
+                case 3:
+                    filtrarPorQtdEpisodios(plat);
+                    break;
+                case 4:
+                    verMidiasParaAssistir(plat);
+                    break;
+                case 5:
+                    buscarMidia(plat);
+                    break;
+            }
+
+        } while (op != 0);
+    }
+
+    private static void filtrarPorQtdEpisodios(PlataformaStreaming plat) {
+        entrada.nextLine();
+        System.out.println("Digite a quantidade de episódios:");
+        int qtdEpisodios = entrada.nextInt();
+
+        System.out.println(plat.filtrarPorQtdEpisodios(qtdEpisodios));
+    }
+
+    private static void filtrarPorIdioma(PlataformaStreaming plat) {
+
+        entrada.nextLine();
+        System.out.println("Digite o idioma:");
+        String idioma = entrada.nextLine();
+
+        System.out.println(plat.filtrarPorIdioma(idioma));
+    }
+
+    //ver se precisa de exception
+    private static void filtrarPorGenero(PlataformaStreaming plat) {
+
+        entrada.nextLine();
+        System.out.println("Digite o genero:");
+        String genero = entrada.nextLine();
+
+        System.out.println(plat.filtrarPorGenero(genero));
     }
 
     public static void adicionarMidiaParaAssistir(PlataformaStreaming plat) {
@@ -235,70 +323,55 @@ public class App {
 
     public static void submenu(PlataformaStreaming plat, String nomeMidia) {
 
-        int op;
-
-        System.out.println("Você gostaria de avaliar essa serie:");
-        System.out.println("1 - Sim");
-        System.out.println("2 - Não");
         try {
-            System.out.println("Nota media de " + nomeMidia + ": " + plat.getNotaMedia(nomeMidia));
+            int op;
+
+            System.out.println("Você gostaria de avaliar essa serie:");
+            System.out.println("1 - Sim");
+            System.out.println("2 - Não");
+
+            op = entrada.nextInt();
+        
+            switch (op) {
+                case 1:
+                    avaliarMidia(plat, nomeMidia);
+                    break;
+                case 2:
+                    plat.adicionarMidiaVista(nomeMidia);
+                    break;
+            }
         } catch (MidiaInvalidaException e ) {
             System.out.println(e.getMessage());
         }
-
-        op = entrada.nextInt();
-        
-        switch (op) {
-            case 1:
-                avaliarMidia(plat, nomeMidia);
-                break;
-            case 2:
-                try {
-                    plat.adicionarMidiaVista(nomeMidia);
-                } catch (MidiaInvalidaException e) {
-                    System.out.println(e.getMessage());
-                }
-                break;
-        }
-
     }
 
     private static void avaliarMidia(PlataformaStreaming plat, String nomeMidia) {
 
-        float nota;
-        
-        System.out.println("Digite a nota para essa midia:");
-        nota = entrada.nextFloat();
-        entrada.nextLine();
-
         try {
+            float nota;
+        
+            System.out.println("Digite a nota para essa midia:");
+            nota = entrada.nextFloat();
+            entrada.nextLine();
+
             plat.adicionarAvaliacao(nomeMidia, nota);
 
-        } catch (AvaliacaoInvalidaException | MidiaInvalidaException | ClienteInvalidoException e) {
+            if(plat.eEspecialista()) {
+                System.out.println("Gostaria de deixar um comentário?");
+                System.out.println("1- Sim");
+                System.out.println("2- Não");
+                int resposta = entrada.nextInt();
+        
+                if (resposta == 1) {
+                    System.out.println("Qual é seu comentário para essa midia?");
+                    entrada.nextLine();
+                    String comentario = entrada.nextLine();
+                      
+                    plat.comentar(comentario, nomeMidia);                                         
+                } 
+            }
+        } catch (MidiaInvalidaException | ClienteInvalidoException | AvaliacaoInvalidaException e) {
             System.out.println(e.getMessage());
-        }
-        
-        
-        if(plat.eEspecialista()) {
-            System.out.println("Gostaria de deixar um comentário?");
-            System.out.println("1- Sim");
-            System.out.println("2- Não");
-            int resposta = entrada.nextInt();
-    
-            if (resposta == 1) {
-                System.out.println("Qual é seu comentário para essa midia?");
-                entrada.nextLine();
-                String comentario = entrada.nextLine();
-
-                try {
-                    plat.comentar(comentario, nomeMidia);
-                } catch (MidiaInvalidaException | ClienteInvalidoException | AvaliacaoInvalidaException e) {
-                    System.out.println(e.getMessage());
-                }
-                 
-            } 
-        }
-        
-        
+        }     
     }
 }

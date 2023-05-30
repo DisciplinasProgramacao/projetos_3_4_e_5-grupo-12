@@ -193,17 +193,6 @@ public class Cliente implements ISalvavel {
 
     }
 
-    
-
-    /**
-     * Remove uma série da lista de séries já vistas pelo cliente.
-     *
-     * @param serie a série que deve ser removida da lista.
-     */
-    public void retirarMidiaVista(Midia midia) {
-        listaJaVistas.remove(midia);
-    }
-
     /**
      * Método que adiciona uma série à lista de séries já vistas pelo cliente e
      * atribui uma nota para essa série.
