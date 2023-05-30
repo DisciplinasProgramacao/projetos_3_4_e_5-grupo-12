@@ -14,7 +14,7 @@
 - Refatoração do sistema;✔️ (Pedro, Giovanni, Guilherme)
 - Testes;✔️ (Giovanni, Rafael)
 - Documentação; ✔️ (Giovanni, Pedro, Rafael)
-- Para esse trabalho foi usado o kanban para a divisão de tarefas
+- Para esse trabalho foi usado o kanban linkado nos projects para a divisão de tarefas
 
 
 > Written with [StackEdit](https://stackedit.io/).
