@@ -73,7 +73,7 @@ class ClienteTest {
         c1.adicionarListaParaVer(s3);
         c1.adicionarListaParaVer(f1);
         c1.adicionarListaParaVer(f2);
-        assertEquals(5, c1.getListaParaVer().size());
+        assertEquals(5, c1.getTamanhoListaParaVer());
     }
 
     @Test
@@ -84,7 +84,7 @@ class ClienteTest {
         c1.adicionarMidiaVista(s1);
         c1.adicionarMidiaVista(s2);
         c1.adicionarMidiaVista(s3);
-        assertEquals(5, c1.getListaJaVista().size());
+        assertEquals(5, c1.getTamanhoListaJaVista());
     }
 
     @Test
@@ -96,7 +96,7 @@ class ClienteTest {
         c1.adicionarListaParaVer(f2);
         c1.retirarDaLista(f1);
         c1.retirarDaLista(f2);
-        assertEquals(3, c1.getListaParaVer().size());
+        assertEquals(3, c1.getTamanhoListaParaVer());
     }
 
     @Test

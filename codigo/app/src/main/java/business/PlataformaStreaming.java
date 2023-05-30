@@ -415,7 +415,7 @@ public class PlataformaStreaming {
 
     public void setClienteEspecialista() throws ClienteInvalidoException {
 
-        if (this.clienteAtual.getTamanhoL() >= 5) {
+        if (this.clienteAtual.getTamanhoListaJaVista() >= 5) {
             List<String> datasAssistidas = clienteAtual.getListaDataAssistida();
             LocalDate mesPassado = LocalDate.now().minusMonths(1);
             long contador = datasAssistidas.stream()

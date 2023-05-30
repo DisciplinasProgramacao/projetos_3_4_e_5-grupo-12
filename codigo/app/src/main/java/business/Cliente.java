@@ -159,8 +159,12 @@ public class Cliente implements ISalvavel {
         return this.listaParaVer.toString();
     }
 
-    public int getTamanhoL(){
+    public int getTamanhoListaJaVista(){
         return this.listaJaVistas.size();
+    }
+
+    public int getTamanhoListaParaVer(){
+        return this.listaParaVer.size();
     }
 
     /**
