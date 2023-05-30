@@ -1,6 +1,8 @@
 package business;
 
-public class MidiaInvalidaException extends Exception{
+import javax.management.InvalidAttributeValueException;
+
+public class MidiaInvalidaException extends InvalidAttributeValueException{
 
     public MidiaInvalidaException(String message) {
         super(message);
