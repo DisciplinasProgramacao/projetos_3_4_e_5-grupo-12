@@ -1,5 +1,9 @@
 package business;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import javax.management.InvalidAttributeValueException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +33,7 @@ public class PlataformaStreamingTest {
 
 
     @Test
-    void test() throws MidiaInvalidaException, AvaliacaoInvalidaException, ClienteInvalidoException, Exception{
+    void test() throws InvalidAttributeValueException{
         p.adicionarAvaliacao(null, 0); //Avaliaçao?
         p.adicionarCliente(null, null, null);
         p.adicionarMidia(f1);
@@ -37,22 +41,30 @@ public class PlataformaStreamingTest {
         p.adicionarMidiaVista(null);
         p.comentar(null, null); // Avaliaçao?
         p.eEspecialista();
-        p.filtrarMidiaPorNome(null);
-        p.filtrarPorGenero(null);
-        p.filtrarPorIdioma(null);
-        p.filtrarPorQtdEpisodios(0);
         p.login(null, null);
         p.registrarAudiencia(f1);
         p.setClienteEspecialista();
-        p.setNome(null);
-        p.registrarAudiencia(f1);
     }
 
     @Test
-    void testLogin() throws Exception{
+    void testLogin() throws ClienteInvalidoException, MidiaInvalidaException   {
         p.adicionarCliente("Geoge o Curioso","George","123poGchamp456");
         p.login("George", "123poGchamp456");
-        assertEquals(c1,p.getClienteAtual());
+        assertEquals(c1.toString(),p.getClienteAtual().toString());
     }
-   
+
+    @Test
+    void testFiltrarMidiaPorNome() throws MidiaInvalidaException{
+        p.adicionarFilme("Demanda Dos Conselheiros","portugues","aventura",160);
+        p.adicionarSerie("Nana a Banana","portugues","comedia",16);
+        assertEquals("Demanda Dos Conselheiros",p.filtrarMidiaPorNome("Demanda Dos Conselheiros").getNome());
+    }
+
+    @Test
+    void testNomeInvalido(){
+        assertThrows(InvalidAttributeValueException.class, () -> {
+            p.setNome("");;
+        });
+    }
+
 }
