@@ -18,28 +18,31 @@ class ClienteTest {
 
     @BeforeEach
     void setUp() throws ClienteInvalidoException, MidiaInvalidaException {
-        c1 = new Cliente("Geoge o Curioso", "George", "123pogchamp456");
-        c2 = new Cliente("Paulo BEM Grande", "paulo", "MalFeitoFeito");
-        s1 = new Serie("comedia", "Nana a Banana", "portugues", 10);
+        c1 = new Cliente("Geoge o Curioso", "George", "123poGchamp456");
+        c2 = new Cliente("Paulo BEM Grande", "paulo", "MalFeit0Feito");
+        s1 = new Serie("comedia", "Nana a Banana", "portugues", 12);
         s2 = new Serie("terror", "Polyforme", "ingles", 8);
         s3 = new Serie("documentario", "Papaleguas", "ingles", 12);
         f1 = new Filme("aventura", "Demanda Dos Conselheiros", "portugues", 160);
         f2 = new Filme("terror", "Sinestesia Do Ódio", "portugues", 180);
     }
 
-    
-        // c1.adicionarMidiaVista(s1, null); //talvez fazer na avaliaçao
-        // c1.criarAvaliacao(0, s1); //talvez fazer na avaliaçao
-        // c1.fazerComentario(null, s1); //talvez fazer na avaliaçao
-        // c1.filtrarPorQtdEpisodios(0);
-        // c1.registrarAudiencia(s1);
-        // c1.retirarMidiaVista(s1);
-        // c1.setMeuTipo(null);
-        // c1.setNomeCompleto(null);
-        // c1.setNomeDeUsuario(null);
-        // c1.setSenha(null);
-  
-
+    @Test
+    void test() throws AvaliacaoInvalidaException, ClienteInvalidoException, MidiaInvalidaException {
+        c1.adicionarMidiaVista(f1, 0);// talvez fazer na avaliaçao
+        c1.criarAvaliacao(0, f1); // talvez fazer na avaliaçao
+        c1.fazerComentario(null, s1); // talvez fazer na avaliaçao
+        c1.setMeuTipo(null); // nao entendi como faz o teste corretamente
+        /*
+         * @Test
+         * void testSetmeuTipo() throws ClienteInvalidoException{
+         * 
+         * c1.setMeuTipo(new ClienteEspecialista(c1.getNomeCompleto(),
+         * c1.getNomeDeUsuario(), c1.getSenha()));
+         * assertEquals(ClienteEspecialista.class,c1.getClass() );
+         * }
+         */
+    }
 
     @Test
     void testNomeUsuarioVazio() throws ClienteInvalidoException {
@@ -70,7 +73,7 @@ class ClienteTest {
         c1.adicionarListaParaVer(s3);
         c1.adicionarListaParaVer(f1);
         c1.adicionarListaParaVer(f2);
-        assertEquals(5,c1.getListaParaVer().size());
+        assertEquals(5, c1.getListaParaVer().size());
     }
 
     @Test
@@ -81,7 +84,7 @@ class ClienteTest {
         c1.adicionarMidiaVista(s1);
         c1.adicionarMidiaVista(s2);
         c1.adicionarMidiaVista(s3);
-        assertEquals(5,c1.getListaJaVista().size());
+        assertEquals(5, c1.getListaJaVista().size());
     }
 
     @Test
@@ -93,28 +96,55 @@ class ClienteTest {
         c1.adicionarListaParaVer(f2);
         c1.retirarDaLista(f1);
         c1.retirarDaLista(f2);
-        assertEquals(3,c1.getListaParaVer().size());
+        assertEquals(3, c1.getListaParaVer().size());
     }
 
     @Test
-    void testFiltrarMidiaPorGenero() throws MidiaInvalidaException{
+    void testFiltrarMidiaPorGenero() throws MidiaInvalidaException {
         c1.adicionarMidiaVista(f1);
         c1.adicionarMidiaVista(f2);
         c1.adicionarMidiaVista(s1);
         c1.adicionarMidiaVista(s2);
         c1.adicionarMidiaVista(s3);
-        assertEquals(2,c1.filtrarMidiaPorGenero("terror").size());
+        assertEquals(2, c1.filtrarMidiaPorGenero("terror").size());
     }
 
     @Test
-    void testFiltrarMidiaPorIdioma() throws MidiaInvalidaException{
+    void testFiltrarMidiaPorIdioma() throws MidiaInvalidaException {
         c1.adicionarMidiaVista(f1);
         c1.adicionarMidiaVista(f2);
         c1.adicionarMidiaVista(s1);
         c1.adicionarMidiaVista(s2);
         c1.adicionarMidiaVista(s3);
-        assertEquals(3,c1.filtrarMidiaPorIdioma("portugues").size());
+        assertEquals(3, c1.filtrarMidiaPorIdioma("portugues").size());
     }
 
+    @Test
+    void testFiltrarPorQtdEpisodios() throws MidiaInvalidaException {
+        c1.adicionarMidiaVista(f1);
+        c1.adicionarMidiaVista(f2);
+        c1.adicionarMidiaVista(s1);
+        c1.adicionarMidiaVista(s2);
+        c1.adicionarMidiaVista(s3);
+        assertEquals(2, c1.filtrarPorQtdEpisodios(12).size());
+    }
+
+    @Test
+    void testSetNomeCompleto() throws ClienteInvalidoException {
+        c1.setNomeCompleto("Pedro");
+        assertEquals("Pedro", c1.getNomeCompleto());
+    }
+
+    @Test
+    void testSetNomeDeUsuario() throws ClienteInvalidoException {
+        c1.setNomeDeUsuario("Pedro");
+        assertEquals("Pedro", c1.getNomeDeUsuario());
+    }
+
+    @Test
+    void testSetSenha() throws ClienteInvalidoException {
+        c1.setSenha("AMil13111");
+        assertEquals("AMil13111", c1.getSenha());
+    }
 
 }
