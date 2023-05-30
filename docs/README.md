@@ -5,5 +5,3 @@ A documentação do projeto é composta pelos seguintes itens:
  - [Instruções para uso](/docs/instrucoes.md) **Obrigatório**
  - [Backlog do projeto (requisitos implementados)](/docs/backlog.md) **Opcional**
  - [Kanban do trabalho](https://github.com/orgs/DisciplinasProgramacao/projects/81/views/1)
- - 
-
