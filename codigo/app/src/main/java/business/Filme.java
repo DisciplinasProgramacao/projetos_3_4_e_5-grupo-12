@@ -14,9 +14,7 @@ public class Filme extends Midia {
      * @param nome    Esse é o nome do filme
      * @param idioma  Esse é o idioma do filme como portugues ou ingles
      * @param duracao Essa é a duração em minutos do filme
-     * @throws SerieInvalidaException
-     * @throws FilmeInvalidoException
-     * @throws MidiaInvalidaException
+     * @throws MidiaInvalidaException propaga exceção se houver valores inválidos
      */
     public Filme(String genero, String nome, String idioma, int duracao) throws MidiaInvalidaException {
         super(genero, nome, idioma);
@@ -31,8 +29,7 @@ public class Filme extends Midia {
      * @param nome           Esse é o nome do filme
      * @param dataLancamento Esse é a data de lançamento do filme
      * @param duracao        Essa é a duração em minutos do filme
-     * @throws MidiaInvalidaException
-     * @throws FilmeInvalidoException
+     * @throws MidiaInvalidaException propaga exceção se houver valores inválidos
      */
     public Filme(int id, String nome, LocalDate dataLancamento, int duracao) throws MidiaInvalidaException {
         super(id, nome, dataLancamento);
@@ -47,13 +44,14 @@ public class Filme extends Midia {
     public int getDuracao() {
         return duracao;
     }
-    
+
     /**
      * Metodo para por a duração do filme
      * 
      * @param duracao essa é a duração do filme em minutos, sendo que ela deve ter
      *                mais de 1 minuto
-     * @throws FilmeInvalidoException
+     * @throws MidiaInvalidaException propaga exceção se a duração do filme for
+     *                                menor que 1 minuto
      */
     public void setDuracao(int duracao) throws MidiaInvalidaException {
         if (duracao > 0) {
@@ -64,8 +62,11 @@ public class Filme extends Midia {
     }
 
     /**
-     * Esse método é para receber os dados do filme formatados para colocar no
+     * Esse método implementa o método da interface ISalvavel é para receber os
+     * dados do filme formatados para colocar no
      * arquivo
+     * 
+     * @return uma string com os dados do filme
      */
     @Override
     public String getDados() {
@@ -78,6 +79,11 @@ public class Filme extends Midia {
         return ("\n" + id + ";" + nome + ";" + data + ";" + duracao);
     }
 
+    /**
+     * Método que retorna todos os dados do filme formatados para mostrar na tela
+     * 
+     * @return uma string com os dados do filme
+     */
     @Override
     public String toString() {
         return "'filme'{" +
