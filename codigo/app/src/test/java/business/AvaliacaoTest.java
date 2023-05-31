@@ -71,8 +71,8 @@ class AvaliacaoTest {
 
     @Test
     void testComentar() throws ClienteInvalidoException, MidiaInvalidaException, AvaliacaoInvalidaException { // revisar
-        p.adicionarCliente("Geoge o Curioso","George","123poGchamp456");
-        p.login("George", "123poGchamp456");
+        p.adicionarCliente("Geoge o Curioso","George","123poGchAmp456");
+        p.login("George", "123poGchAmp456");
         p.adicionarSerie("Nana a Banana","portugues","comedia",16);
         p.adicionarSerie("Papaleguas","portugues","terror",16);
         p.adicionarSerie("jardim","portugues","comedia",16);
@@ -88,7 +88,8 @@ class AvaliacaoTest {
         p.adicionarAvaliacao("jardim", 2);
         p.adicionarAvaliacao("Lago", 1);
         p.adicionarAvaliacao("Destiny", 4);
-        p.comentar("Ola Meus Amigos", "Papaleguas");
+        p.setClienteEspecialista();
+        p.comentar("Ola", "Papaleguas");
         
         assertTrue(p.filtrarMidiaPorNome("Papaleguas").getAvaliacoes().contains(p.getClienteAtual().getNomeDeUsuario()));
     }
