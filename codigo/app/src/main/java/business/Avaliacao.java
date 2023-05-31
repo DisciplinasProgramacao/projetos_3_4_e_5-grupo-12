@@ -9,7 +9,7 @@ public class Avaliacao {
      * Cria uma avaliação com somente a nota
      * 
      * @param nota nota da avaliação
-     * @throws Exception Exceção do setNota, se a nota for inválida
+     * @throws AvaliacaoInvalidaException Exceção do setNota, se a nota for inválida
      */
     Avaliacao(float nota) throws AvaliacaoInvalidaException {
         setNota(nota);
@@ -20,8 +20,9 @@ public class Avaliacao {
      * 
      * @param nota       nota da avaliação
      * @param comentario comentário da avaliação
-     * @throws Exception Exceção do setNota e setComentario, se algum valor for
-     *                   inválido
+     * @throws AvaliacaoInvalidaException Exceção do setNota e setComentario, se
+     *                                    algum valor for
+     *                                    inválido
      */
     Avaliacao(float nota, String comentario) throws AvaliacaoInvalidaException {
         setNota(nota);
@@ -32,7 +33,8 @@ public class Avaliacao {
      * Define uma nova nota para este objeto e realiza a verificação necessária.
      *
      * @param nota o novo valor da nota a ser definida.
-     * @throws Exception Cria e lança uma exceção se o valor for inválido
+     * @throws AvaliacaoInvalidaException Cria e lança uma exceção se o valor for
+     *                                    inválido
      */
     public void setNota(float nota) throws AvaliacaoInvalidaException {
         if ((nota >= 1) && (nota <= 5)) {
@@ -55,7 +57,8 @@ public class Avaliacao {
      * Define o comentário da avaliação e realiza a verificação necessária.
      *
      * @param comentario o novo comentário da avaliação
-     * @throws Exception Cria e lança uma exceção se o valor for inválido
+     * @throws AvaliacaoInvalidaException Cria e lança uma exceção se o valor for
+     *                                    inválido
      */
     public void setComentario(String comentario) throws AvaliacaoInvalidaException {
         if (comentario.length() > 0) {
