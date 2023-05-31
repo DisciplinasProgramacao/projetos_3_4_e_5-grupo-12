@@ -51,17 +51,6 @@ public class Cliente implements ISalvavel {
     }
 
     /**
-     * Método para verificar se uma mídia está na lista ja vista
-     * 
-     * @param midia Mídia que se deseja buscar
-     * @return true se achar a mídia, false se não achar
-     */
-    public boolean jaViu(Midia midia) {
-
-        return listaJaVistas.contains(midia);
-    }
-
-    /**
      * Método para verificar se uma mídia está na lista para ver
      * 
      * @param midia Mídia que se deseja buscar
@@ -226,9 +215,11 @@ public class Cliente implements ISalvavel {
      * 
      * @param serie Serie que se deseja adicionar na lista
      */
-    public void adicionarListaParaVer(Midia midia) {
+    public void adicionarListaParaVer(Midia midia) throws MidiaInvalidaException {
         if (!listaParaVer.contains(midia)) {
             listaParaVer.add(midia);
+        } else {
+            throw new MidiaInvalidaException("Você já colocou essa midia para assistir!");
         }
     }
 

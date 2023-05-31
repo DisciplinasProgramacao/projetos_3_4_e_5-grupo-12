@@ -208,6 +208,11 @@ public class App {
                     break;
                 case 7:
                     notaMediaMidia(plat);
+                    break;      
+                case 0:
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
                     break;
             }
 
@@ -250,11 +255,10 @@ public class App {
                 case 3:
                     filtrarPorQtdEpisodios(plat);
                     break;
-                case 4:
-                    verMidiasParaAssistir(plat);
+                case 0:
                     break;
-                case 5:
-                    buscarMidia(plat);
+                default:
+                    System.out.println("Opção inválida!");
                     break;
             }
 

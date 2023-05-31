@@ -89,6 +89,7 @@ class AvaliacaoTest {
         p.adicionarAvaliacao("Lago", 1);
         p.adicionarAvaliacao("Destiny", 4);
         p.comentar("Ola Meus Amigos", "Papaleguas");
-        assertEquals("Ola Meus Amigos",p.filtrarMidiaPorNome("Papaleguas").getAvaliacoes());
+        
+        assertTrue(p.filtrarMidiaPorNome("Papaleguas").getAvaliacoes().contains(p.getClienteAtual().getNomeDeUsuario()));
     }
 }

@@ -48,7 +48,7 @@ class ClienteTest {
     }
 
     @Test
-    void testAdicionarListaParaVer() {
+    void testAdicionarListaParaVer() throws MidiaInvalidaException {
         c1.adicionarListaParaVer(s1);
         c1.adicionarListaParaVer(s1);
         c1.adicionarListaParaVer(s2);

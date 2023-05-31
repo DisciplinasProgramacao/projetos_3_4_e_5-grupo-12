@@ -39,8 +39,10 @@ public class PlataformaStreamingTest {
         p.adicionarSerie("Nana a Banana","portugues","comedia",16);
         p.adicionarSerie("Papaleguas","portugues","terror",16);
         p.adicionarMidiaParaAssistir("Nana a Banana");
+        p.adicionarMidiaParaAssistir("Nana a Banana");
         p.adicionarMidiaParaAssistir("Papaleguas");
-        assertTrue(p.getClienteAtual().getListaParaVer().length()>1);
+        assertTrue(p.getListaParaAssistir().contains("Papaleguas"));
+        assertTrue(p.getListaParaAssistir().contains("Nana a Banana"));
     }
 
     @Test
@@ -50,10 +52,13 @@ public class PlataformaStreamingTest {
         p.adicionarSerie("Nana a Banana","portugues","comedia",16);
         p.adicionarSerie("Papaleguas","portugues","terror",16);
         p.adicionarMidiaVista("Nana a Banana");
+        p.adicionarMidiaVista("Nana a Banana");
         p.adicionarMidiaVista("Papaleguas");
-        assertTrue(p.getClienteAtual().getListaJaVista().length()>1);
+        assertTrue(p.getListaJaVista().contains("Papaleguas"));
+        assertTrue(p.getListaJaVista().contains("Nana a Banana"));
     }
 
+    
     @Test
     void testLogin() throws ClienteInvalidoException, MidiaInvalidaException   {
         p.adicionarCliente("Geoge o Curioso","George","123poGchamp456");
