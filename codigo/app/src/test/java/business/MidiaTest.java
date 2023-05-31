@@ -28,12 +28,6 @@ public class MidiaTest {
         f2 = new Filme("terror", "Sinestesia Do Ódio", "portugues", 180);
     }
 
-    @Test
-    void test() throws MidiaInvalidaException, AvaliacaoInvalidaException {
-        s1.calcularNotaMedia(); // possivelmente na avaliaçao
-        s1.colocarAvaliacao(null, null); // possivelmente na avaliaçao
-        s1.setComentario(null, null); // possivelmente na avaliaçao
-    }
 
     @Test
     void testQuantidadeDeEpisodiosInvalido() {
