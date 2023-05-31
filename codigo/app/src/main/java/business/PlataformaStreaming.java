@@ -511,7 +511,6 @@ public class PlataformaStreaming {
                         clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha()));
             }
         }
-        System.out.println(this.clienteAtual.getListaDataAssistida());
     }
 
 
