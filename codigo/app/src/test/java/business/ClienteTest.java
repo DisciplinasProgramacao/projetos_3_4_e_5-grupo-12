@@ -27,13 +27,6 @@ class ClienteTest {
     }
 
     @Test
-    void test() throws AvaliacaoInvalidaException, ClienteInvalidoException, MidiaInvalidaException {
-        c1.adicionarMidiaVista(f1, 0);// talvez fazer na avaliaçao
-        c1.criarAvaliacao(0, f1); // talvez fazer na avaliaçao
-        c1.fazerComentario(null, s1); // talvez fazer na avaliaçao
-    }
-
-    @Test
     void testNomeUsuarioVazio() {
         assertThrows(ClienteInvalidoException.class, () -> {
             c1.setNomeDeUsuario("");

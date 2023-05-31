@@ -33,17 +33,25 @@ public class PlataformaStreamingTest {
 
 
     @Test
-    void test() throws InvalidAttributeValueException{
-        p.adicionarAvaliacao(null, 0); //Avaliaçao?
-        p.adicionarCliente(null, null, null);
-        p.adicionarMidia(f1);
-        p.adicionarMidiaParaAssistir(null);
-        p.adicionarMidiaVista(null);
-        p.comentar(null, null); // Avaliaçao?
-        p.eEspecialista();
-        p.login(null, null);
-        p.registrarAudiencia(f1);
-        p.setClienteEspecialista();
+    void testAdicionarMidiaParaAssistir() throws MidiaInvalidaException, ClienteInvalidoException{ // conferir
+        p.adicionarCliente("Geoge o Curioso","George","123poGchamp456");
+        p.login("George", "123poGchamp456");
+        p.adicionarSerie("Nana a Banana","portugues","comedia",16);
+        p.adicionarSerie("Papaleguas","portugues","terror",16);
+        p.adicionarMidiaParaAssistir("Nana a Banana");
+        p.adicionarMidiaParaAssistir("Papaleguas");
+        assertTrue(p.getClienteAtual().getListaParaVer().length()>1);
+    }
+
+    @Test
+    void testAdicionarMidiaVista() throws MidiaInvalidaException, ClienteInvalidoException{ // conferir
+        p.adicionarCliente("Geoge o Curioso","George","123poGchamp456");
+        p.login("George", "123poGchamp456");
+        p.adicionarSerie("Nana a Banana","portugues","comedia",16);
+        p.adicionarSerie("Papaleguas","portugues","terror",16);
+        p.adicionarMidiaVista("Nana a Banana");
+        p.adicionarMidiaVista("Papaleguas");
+        assertTrue(p.getClienteAtual().getListaJaVista().length()>1);
     }
 
     @Test
