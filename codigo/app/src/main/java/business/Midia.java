@@ -24,8 +24,7 @@ public abstract class Midia implements ISalvavel {
      * @param genero o gênero da mídia.
      * @param nome   o nome da mídia.
      * @param idioma o idioma da mídia.
-     * @throws SerieInvalidaException
-     * @throws MidiaInvalidaException
+     * @throws MidiaInvalidaException Excecao para caso a midia seje invalida
      */
     public Midia(String genero, String nome, String idioma) throws MidiaInvalidaException {
 
@@ -37,14 +36,15 @@ public abstract class Midia implements ISalvavel {
     }
 
     /**
-     * Construtor da classe Midia que recebe um id e um nome para criar um objeto
+     * Construtor da classe Midia que recebe um id, um nome  e uma data para criar um objeto
      * Midia.
      * O genero e idioma são selecionados aleatoriamente entre as opções disponíveis
      * na classe.
      * 
      * @param id   Identificador numérico único da Midia.
      * @param nome Nome da Midia.
-     * @throws MidiaInvalidaException
+     * @param dataLacameto data de lancamento da midia
+     * @throws MidiaInvalidaException Excecao para caso a midia seje invalida
      */
     public Midia(int id, String nome, LocalDate dataLancamento) throws MidiaInvalidaException {
         setId(id);
@@ -54,15 +54,12 @@ public abstract class Midia implements ISalvavel {
         setDataLancamento(dataLancamento);
     }
 
-    public boolean getNotaAvaliacao(String nomeUsuario) {
-        System.out.println(avaliacoes.get(nomeUsuario));
-        if(avaliacoes.containsKey(nomeUsuario)) {
-            return false;
-        } else {
-            return true;
-        }
-    }
 
+    /**
+     * esse método da set no Id da midia
+     * @param id esse é o id que sera enviado para trocar
+     * @throws MidiaInvalidaException Excecao para caso o id da midia enviado esteje vazio
+     */
     public void setId(int id) throws MidiaInvalidaException {
         if(id>0){
             this.id = id;
@@ -93,9 +90,8 @@ public abstract class Midia implements ISalvavel {
      * Define um novo gênero para este objeto.
      * 
      * @param genero o novo valor do gênero a ser definido.
-     * @throws MidiaInvalidaException
+     * @throws MidiaInvalidaException  Excecao para caso o genero da midia esteje incorreto
      */
-    //perguntar como faz a excecao aqui
     public void setGenero(String genero) throws MidiaInvalidaException {
         boolean generoValido = false;
 
@@ -126,7 +122,7 @@ public abstract class Midia implements ISalvavel {
      * comprimento maior que zero.
      * 
      * @param idioma o novo valor do idioma a ser definido.
-     * @throws SerieInvalidaException
+     * @throws SerieInvalidaException excecao caso o idioma esteje incorreto
      */
     public void setIdioma(String idioma) throws MidiaInvalidaException {
         boolean idiomaValido = false;
@@ -215,21 +211,42 @@ public abstract class Midia implements ISalvavel {
         this.audiencia++;
     }
 
+    /**
+     * Metodo para colocar um comentario em uma avaliaçao
+     * @param comentario esse é o comentario que sera enviado
+     * @param nomeUsuario nome de quem esta enviando
+     * @throws AvaliacaoInvalidaException excecao para caso a avaliaçao esteje errada
+     */
     public void setComentario(String comentario, String nomeUsuario) throws AvaliacaoInvalidaException {
 
        avaliacoes.get(nomeUsuario).setComentario(comentario);
     }
 
-    
+    /**
+     * pega os dados da midia em questao
+     * @param nomeUsuario nome do usuario
+     * @param tipo tipo da midia
+     * @return retorna os dados em formato string
+     */
     public String getDados(String nomeUsuario, String tipo) {
         int id = getId();
         return ("\n" + nomeUsuario + ";" + tipo + ";" + id);
     }
 
+    /**
+     * Coloca avaliaçao na midia em questão
+     * @param nomeUsuario nome do usuario enviando a avaliaçao
+     * @param avaliacao avaliaçao enviada
+     * @throws MidiaInvalidaException excecao caso a midia seje invalida
+     */
     public void colocarAvaliacao(String nomeUsuario, Avaliacao avaliacao) throws MidiaInvalidaException {
         avaliacoes.put(nomeUsuario, avaliacao);
     }
 
+    /**
+     * Método que calcula a nota media da midia
+     * @return retorna a media da avaliação
+     */
     public double calcularNotaMedia() {
         return this.avaliacoes.values().stream()
             .mapToDouble(Avaliacao::getNota)
@@ -237,6 +254,10 @@ public abstract class Midia implements ISalvavel {
             .orElse(0.0);
     }
 
+    /**
+     * Metodo para pegar as avaliaçoes feitas para determindada midia
+     * @return retorna uma string com avaliaçoes e quem fez elas
+     */
     public String getAvaliacoes () {
         return avaliacoes.toString();
     }
