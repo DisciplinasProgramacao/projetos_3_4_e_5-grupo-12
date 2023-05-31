@@ -16,7 +16,7 @@ public class Serie extends Midia {
      * @param nome                Esse é o nome da serie
      * @param idioma              Esse é o idioma da serie como portugues ou ingles
      * @param quantidadeEpisodios Essa é a quantidade de episodios da serie
-     * @throws MidiaInvalidaException
+     * @throws MidiaInvalidaException Essa é a Excecao quando o set da midia esta incorreto
      */
     public Serie(String genero, String nome, String idioma, int quantidadeEpisodios) throws MidiaInvalidaException{
         super(genero, nome, idioma);
@@ -29,8 +29,8 @@ public class Serie extends Midia {
      * @param id             Esse é o id da serie
      * @param nome           Esse é o nome da serie
      * @param dataLancamento Esse é a data de lançamento da serie
-     * @throws SerieInvalidaException
-     * @throws MidiaInvalidaException
+     * @throws SerieInvalidaException Essa é a Excecao quando o set da serie esta incorreto
+     * @throws MidiaInvalidaException Essa é a Excecao quando o set da midia esta incorreto
      */
     public Serie(int id, String nome, LocalDate dataLancamento) throws MidiaInvalidaException {
         super(id, nome, dataLancamento);
@@ -50,7 +50,7 @@ public class Serie extends Midia {
      * Metodo para por a quantida de episodios da serie
      * 
      * @param quantidadeEpisodios a quantidade de episódios a ser definida
-     * @throws SerieInvalidaException
+     * @throws SerieInvalidaException Essa é a Excecao quando o set da serie esta incorreto
      */
     public void setQuantidadeEpisodios(int quantidadeEpisodios) throws MidiaInvalidaException {
         if (quantidadeEpisodios > 0) {
