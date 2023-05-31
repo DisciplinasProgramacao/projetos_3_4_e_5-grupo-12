@@ -25,7 +25,7 @@ public class PlataformaStreaming {
      * Constutor da plataforma de Streamming
      * 
      * @param nome esse é o nome da plataforma de Streamming
-     * @throws Exception InvalidAtributeValue Excepion
+     * @throws InvalidAtributeValue propaga esssa excecao
      */
     public PlataformaStreaming(String nome) throws InvalidAttributeValueException {
 
@@ -36,6 +36,12 @@ public class PlataformaStreaming {
         carregarAudiencia();
     }
 
+    /**
+     * Método para setar o nome da plataforma
+     * 
+     * @param nome atributo nome
+     * @throws InvalidAttributeValueException propaga excecao de atributo inválido
+     */
     public void setNome(String nome) throws InvalidAttributeValueException {
         if (nome.length() > 0) {
             this.nome = nome;
@@ -63,12 +69,11 @@ public class PlataformaStreaming {
     }
 
     /**
-     * Método para adicionar uma serie na lista de series
+     * Método para adicionar uma midia na lista de midia
      * 
-     * @param serie Esse é a serie que será recebido
-     * @throws MidiaInvalidaException
+     * @param midia Esse é a midia que será recebida
+     * @throws MidiaInvalidaException caso midia ja existe
      */
-
     public void adicionarMidia(Midia midia) throws MidiaInvalidaException {
         if (!midias.containsKey(midia.getId())) {
             midias.put(midia.getId(), midia);
@@ -78,17 +83,43 @@ public class PlataformaStreaming {
         }
     }
 
+    /**
+     * Esse metodo recebe parametros do cliente, cria uma serie e envia para um metodo polimorfico
+     * que adiciona na lista de midias
+     *
+     * @param nome nome da midia
+     * @param idioma idioma da midia
+     * @param genero genero da midia
+     * @param qtdEpisodios quantidade de episiodios da serie
+     * @throws MidiaInvalidaException caso atributos invalidos
+     */
     public void adicionarSerie(String nome, String idioma, String genero, int qtdEpisodios) throws MidiaInvalidaException {
 
         Serie serieCad = new Serie(genero, nome, idioma, qtdEpisodios);
         adicionarMidia(serieCad);
     }
 
+    /**
+     * Esse metodo recebe parametros do cliente, cria um filme e envia para um metodo polimorfico
+     * que adiciona na lista de midias
+     *
+     * @param nome nome da midia
+     * @param idioma idioma da midia
+     * @param genero genero da midia
+     * @param duracao duracao do filme
+     * @throws MidiaInvalidaException caso atributos invalidos
+     */
     public void adicionarFilme(String nome, String idioma, String genero, int duracao) throws MidiaInvalidaException{
         Filme filmeCad = new Filme(genero, nome, idioma, duracao);
         adicionarMidia(filmeCad);
     }
 
+    /**
+     * Esse metodo recebe o nome da midia, filtra e adiciona na lista para ver do cliente.
+     * 
+     * @param nomeMidia nome da midia
+     * @throws MidiaInvalidaException caso nenhuma midia seja encontrada com o nome recebido
+     */
     public void adicionarMidiaParaAssistir(String nomeMidia) throws MidiaInvalidaException {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
         if (midia != null) {
@@ -99,6 +130,12 @@ public class PlataformaStreaming {
         }
     }
 
+    /**
+     * Adiciona a midia como vista ao receber como parametro o nome da midia que quer assistir.
+     * 
+     * @param nomeMidia nome da midia
+     * @throws MidiaInvalidaException caso ja tenha assitido essa midia
+     */
     public void adicionarMidiaVista(String nomeMidia) throws MidiaInvalidaException {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
         if(clienteAtual.querVer(midia)){
@@ -112,7 +149,15 @@ public class PlataformaStreaming {
         }
     }
     
-
+    /**
+     * Adiciona avaliacao do cliente recebendo como parametro o nome da midia que quer avaliar e a nota
+     * 
+     * @param nomeMidia nome da midia
+     * @param nota nota da midia
+     * @throws MidiaInvalidaException caso midia seja invalida
+     * @throws AvaliacaoInvalidaException caso avaliacao seja invalida
+     * @throws ClienteInvalidoException caso cliente seja invalido
+     */
     public void adicionarAvaliacao(String nomeMidia, float nota)
             throws MidiaInvalidaException, AvaliacaoInvalidaException, ClienteInvalidoException {
 
@@ -128,22 +173,32 @@ public class PlataformaStreaming {
         } 
     }
 
-     public String getListaJaVista() {
-         return this.clienteAtual.getListaJaVista();
-     }
 
+    /**
+     * Retorna a lista ja vista do cliente logado
+     * @return lista ja vista do cliente logado
+     */
+    public String getListaJaVista() {
+        return this.clienteAtual.getListaJaVista();
+    }
+
+    /**
+     * Retorna a lista para assistir do cliente atual em formato de string
+     * @return
+     */
     public String getListaParaAssistir() {
         return this.clienteAtual.getListaParaVer().toString();
     }
 
     /**
-     * Método para adicionar um cliente na lista de clientes
+     * Cria o cliente, adiciona ele no hash map de clientes e escreve no arquivo
      * 
-     * @param c Esse é o cliente que será recebido
-     * @throws MidiaInvalidaException
+     * @param nomeCompleto nome completo do usuario
+     * @param nomeDeUsuario nome do usuario
+     * @param senha senha do usuario
+     * @throws ClienteInvalidoException caso atributos do cliente seja invalido
+     * @throws MidiaInvalidaException caso midia seja invalida
      */
-
-    // REVISAR ESSE TROWS
     public void adicionarCliente(String nomeCompleto, String nomeDeUsuario, String senha)
             throws ClienteInvalidoException, MidiaInvalidaException {
         Cliente c = new Cliente(nomeCompleto, nomeDeUsuario, senha);
@@ -157,7 +212,7 @@ public class PlataformaStreaming {
     }
 
     /**
-     * Metodo para filtrar uma serie pelo seu genero
+     * Metodo para filtrar uma midia pelo seu genero
      * 
      * @param genero Esse é o genero que foi escolhido para ser filtrado
      * @return retorna a lista filtrada do cliente atual
@@ -167,7 +222,7 @@ public class PlataformaStreaming {
     }
 
     /**
-     * Metodo para filtrar uma serie pela quantidade de episodios
+     * Metodo para filtrar uma midia pela quantidade de episodios
      * 
      * @param quantEpisodios Essa é a quantidade de episodioes escolhida para ser
      *                       filtrada
@@ -178,7 +233,7 @@ public class PlataformaStreaming {
     }
 
     /**
-     * Metodo para filtrar uma serie pelo idioma
+     * Metodo para filtrar uma midia pelo idioma
      * 
      * @param idioma Esse é o idioma escolhido para ser filtrado
      * @return retorna a lista filtrada do cliente atual
@@ -188,9 +243,9 @@ public class PlataformaStreaming {
     }
 
     /**
-     * Esse método registra o cliente atual como audiencia da serie especificada
+     * Esse método registra o cliente atual como audiencia da midia especificada
      * 
-     * @param serie Essa é a serie especificada
+     * @param midia Essa é a midia especificada
      */
     public void registrarAudiencia(Midia midia) {
         clienteAtual.registrarAudiencia(midia);
@@ -221,9 +276,7 @@ public class PlataformaStreaming {
 
     /**
      * Esse método carrega os clientes do arquivo de clientes
-     * 
-     * @return Retorna um mapa com as series do arquivo
-     * @throws MidiaInvalidaException
+     * @throws ClienteInvalidoException caso cliente invalido
      */
     private void carregarClientes() throws ClienteInvalidoException {
 
@@ -246,6 +299,11 @@ public class PlataformaStreaming {
         
     }
 
+    /**
+     * carrega arquivo de midias do sistema
+     * @param tipoArquivo tipo do arquivo
+     * @throws MidiaInvalidaException caso midia invalida
+     */
     private void carregarMidia(String tipoArquivo) throws MidiaInvalidaException {
 
         try {
@@ -280,12 +338,10 @@ public class PlataformaStreaming {
     }
 
     /**
-     * Esse metodo carrega as audiencias do arquivo de audiencia
-     * 
-     * @throws MidiaInvalidaException
+     * carrega o arquivo que possui todas as audiencias dos clientes do sistema
+     * @throws AvaliacaoInvalidaException caso avaliacao invalida
+     * @throws MidiaInvalidaException caso midia invalida
      */
-
-    // revisar typecasting
     private void carregarAudiencia() throws AvaliacaoInvalidaException, MidiaInvalidaException {
 
         try {
@@ -345,6 +401,10 @@ public class PlataformaStreaming {
         }
     }
 
+    /**
+     * esse metodo recebe uma midia que implementa isalvavel e chama um metodo de escrever no arquivo
+     * @param midia
+     */
     private void escreveArqMidia(ISalvavel midia) {
         if (midia instanceof Filme) {
             escreveArquivo(midia, arqFilmes);
@@ -369,8 +429,8 @@ public class PlataformaStreaming {
      * Esse metodo escreve a audiencia no arquivo de audiencia
      * 
      * @param tipo     Isso indica se o cliente ja viu a serie ou futuramente
-     *                 assistira
-     * @param serieCad Essa é a serie que tera a audiencia
+     *                 assistida
+     * @param midiaCad Essa é a midiaque tera a audiencia
      */
     private void escreveArqAudiencia(String tipo, Midia midiaCad, float nota) {
 
@@ -395,10 +455,10 @@ public class PlataformaStreaming {
     }
 
     /**
-     * Esse metodo acha a serie com o nome enviado
+     * Esse metodo acha a midia com o nome enviado
      * 
      * @param nome Esse é o nome enviado
-     * @return Retorna a serie com o mesmo nome que o enviado
+     * @return Retorna a midia com o mesmo nome que o enviado
      */
     public Midia filtrarMidiaPorNome(String nome) throws MidiaInvalidaException {
         return this.midias.values().stream()
@@ -407,15 +467,33 @@ public class PlataformaStreaming {
                 .orElseThrow(() -> new MidiaInvalidaException("Nenhuma midia encontrada com esse nome!"));
     }
 
+    /**
+     * testa se o cliente é especialista
+     * @return true caso ele seja especialista
+     */
     public boolean eEspecialista() {
         return (clienteAtual.getMeuTipo() != null);
     }
 
+    /**
+     * Metodo que permite o cliente comentar caso ele seja especialista
+     * 
+     * @param comentario comentario do cliente
+     * @param nomeMidia midia a receber o comentario
+     * @throws ClienteInvalidoException caso cliente nao seja especialista
+     * @throws AvaliacaoInvalidaException caso avaliacao invalida
+     * @throws MidiaInvalidaException caso midia invalida
+     */
     public void comentar(String comentario, String nomeMidia) throws ClienteInvalidoException, AvaliacaoInvalidaException, MidiaInvalidaException {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
         clienteAtual.fazerComentario(comentario, midia);
     }
 
+    /**
+     * Seta o cliente como especialista caso ele tenha assistido 5 midias no ultimo mes.
+     * 
+     * @throws ClienteInvalidoException caso cliente invalido
+     */
     public void setClienteEspecialista() throws ClienteInvalidoException {
 
         if (this.clienteAtual.getTamanhoListaJaVista() >= 5) {
@@ -437,6 +515,13 @@ public class PlataformaStreaming {
     }
 
 
+    /**
+     * Retorna a nota media de uma midia especificada
+     * 
+     * @param nomeMidia midia que quer calcular a nota media
+     * @return a nota media da midia
+     * @throws MidiaInvalidaException caso midia invalida
+     */
     public double getNotaMedia(String nomeMidia) throws MidiaInvalidaException{
         Midia midia = filtrarMidiaPorNome(nomeMidia);
 
