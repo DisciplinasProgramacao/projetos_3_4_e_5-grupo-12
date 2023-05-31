@@ -48,8 +48,23 @@ class ClienteTest {
     }
 
     @Test
+    void testAdicionarListaParaVerDuplicada() {
+        assertThrows(MidiaInvalidaException.class, () -> {
+            c1.adicionarListaParaVer(s1);
+            c1.adicionarListaParaVer(s1);
+        });
+    }
+
+    @Test
+    void testAdicionarMidiaVistaDuplicada() {
+        assertThrows(MidiaInvalidaException.class, () -> {
+            c1.adicionarMidiaVista(f2);
+            c1.adicionarMidiaVista(f2);
+        });
+    }
+
+    @Test
     void testAdicionarListaParaVer() throws MidiaInvalidaException {
-        c1.adicionarListaParaVer(s1);
         c1.adicionarListaParaVer(s1);
         c1.adicionarListaParaVer(s2);
         c1.adicionarListaParaVer(s3);
@@ -61,7 +76,6 @@ class ClienteTest {
     @Test
     void testAdicionarMidiaVista() throws MidiaInvalidaException {
         c1.adicionarMidiaVista(f1);
-        c1.adicionarMidiaVista(f2);
         c1.adicionarMidiaVista(f2);
         c1.adicionarMidiaVista(s1);
         c1.adicionarMidiaVista(s2);
@@ -139,7 +153,7 @@ class ClienteTest {
 
     @Test
     void testSetmeuTipo() throws ClienteInvalidoException {
-        c1.setMeuTipo(new ClienteEspecialista(c1.getNomeCompleto(),c1.getNomeDeUsuario(), c1.getSenha()));
+        c1.setMeuTipo(new ClienteEspecialista(c1.getNomeCompleto(), c1.getNomeDeUsuario(), c1.getSenha()));
         assertEquals(ClienteEspecialista.class, c1.getMeuTipo().getClass());
     }
 
