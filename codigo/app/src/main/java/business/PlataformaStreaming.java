@@ -275,7 +275,7 @@ public class PlataformaStreaming {
             }
             reader.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         } 
     }
 
@@ -323,7 +323,7 @@ public class PlataformaStreaming {
     
             reader.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         } 
         
     }

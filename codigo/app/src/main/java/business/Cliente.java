@@ -105,7 +105,7 @@ public class Cliente implements ISalvavel {
         if (meuTipo != null) {
             meuTipo.comentar(comentario, midia, getNomeDeUsuario());
         } else {
-            System.out.println("Desculpe, apenas clientes especialistas podem comentar.");
+            throw new ClienteInvalidoException("Somente clientes especialistas podem comentar!");
         }
     }
 
@@ -218,8 +218,6 @@ public class Cliente implements ISalvavel {
     public void adicionarListaParaVer(Midia midia) throws MidiaInvalidaException {
         if (!listaParaVer.contains(midia)) {
             listaParaVer.add(midia);
-        } else {
-            throw new MidiaInvalidaException("Você já colocou essa midia para assistir!");
         }
     }
 
@@ -251,6 +249,8 @@ public class Cliente implements ISalvavel {
         }
 
     }
+
+    
 
     /**
      * Filtra filmesParaVer e a filmesJaVistos por gênero

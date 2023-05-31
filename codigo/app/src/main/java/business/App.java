@@ -294,11 +294,10 @@ public class App {
 
     public static void adicionarMidiaParaAssistir(PlataformaStreaming plat) {
 
-        entrada.nextLine();
-        System.out.println("Digite o nome da midia que você deseja adicionar:");
-        String nomeMidiaAVer = entrada.nextLine();
-
         try {
+            entrada.nextLine();
+            System.out.println("Digite o nome da midia que você deseja adicionar:");
+            String nomeMidiaAVer = entrada.nextLine();
             plat.adicionarMidiaParaAssistir(nomeMidiaAVer);
         } catch (MidiaInvalidaException e) {
             System.out.println(e.getMessage());
