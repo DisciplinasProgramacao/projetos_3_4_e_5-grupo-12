@@ -14,6 +14,7 @@
 - Refatoração do sistema;✔️ (Pedro, Giovanni, Guilherme)
 - Testes;✔️ (Giovanni, Rafael)
 - Documentação; ✔️ (Giovanni, Pedro, Rafael)
+- Produzir relatório❌
 - Qual cliente assistiu mais mídias, e quantas mídias;❌
 - Qual cliente tem mais avaliações, e quantas avaliações;❌
 - Qual a porcentagem dos clientes com pelo menos 15 avaliações;❌
