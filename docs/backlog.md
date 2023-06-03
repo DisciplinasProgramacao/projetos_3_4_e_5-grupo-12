@@ -14,6 +14,13 @@
 - Refatoração do sistema;✔️ (Pedro, Giovanni, Guilherme)
 - Testes;✔️ (Giovanni, Rafael)
 - Documentação; ✔️ (Giovanni, Pedro, Rafael)
+- Qual cliente assistiu mais mídias, e quantas mídias;❌
+- Qual cliente tem mais avaliações, e quantas avaliações;❌
+- Qual a porcentagem dos clientes com pelo menos 15 avaliações;❌
+- Quais são as 10 mídias de melhor avaliação, com pelo menos 100 avaliações, em ordem decrescente;❌
+- Quais são as 10 mídias com mais visualizações, em ordem decrescente;❌
+- Estes mesmos dois últimos relatórios, porém com as mídias separadas por gênero❌
+- Mídias serão marcadas como “Lançamento”.❌
 - Para esse trabalho foi usado o kanban linkado nos projects para a divisão de tarefas;
 
 
