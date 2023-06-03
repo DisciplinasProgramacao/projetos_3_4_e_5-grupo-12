@@ -14,6 +14,7 @@
 - Refatoração do sistema;✔️ (Pedro, Giovanni, Guilherme)
 - Testes;✔️ (Giovanni, Rafael)
 - Documentação; ✔️ (Giovanni, Pedro, Rafael)
+- Gêneros válidos para mídias: Ação, Anime, Aventura, Comédia, Documentário, Drama, Policial, Romance e Suspense✔️
 - Produzir relatório❌
 - Qual cliente assistiu mais mídias, e quantas mídias;❌
 - Qual cliente tem mais avaliações, e quantas avaliações;❌
