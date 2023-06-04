@@ -230,6 +230,8 @@ public class App {
             System.out.println("Selecione o relatório que você deseja ver:");
 
             System.out.println("1 - Qual cliente assistiu mais mídias, e quantas mídias;.");
+
+            System.out.println("2 - Qual cliente avaliou mais mídias, e quantas mídias;.");
             
             System.out.println("0 - Sair");
             op = entrada.nextInt();
@@ -237,6 +239,9 @@ public class App {
             switch (op) {
                 case 1:
                 clienteComMaisMidias(plat);
+                    break;
+                case 2:
+                System.out.println(plat.clienteComMaisAvaliacoes());
                     break;
                 case 0:
                     break;

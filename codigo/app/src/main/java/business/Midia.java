@@ -2,7 +2,6 @@ package business;
 
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.NoSuchElementException;
 import java.util.Random;
 
 public abstract class Midia implements ISalvavel {

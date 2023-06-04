@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.management.InvalidAttributeValueException;
 
@@ -546,9 +548,22 @@ public class PlataformaStreaming implements IRelatorio{
 
     @Override
     public String clienteComMaisAvaliacoes() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'clienteComMaisAvaliacoes'");
-    }
+        Map<String, Long> contadorAvaliacoes = midias.values().stream()
+            .flatMap(midia -> Arrays.stream(midia.getAvaliacoes().split(",")))
+            .map(avaliacao -> avaliacao.split("=")[0].substring(1))
+            .filter(nome -> !nome.contains("}"))
+            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+    
+        Map.Entry<String, Long> entry = contadorAvaliacoes.entrySet().stream()
+            .max(Map.Entry.comparingByValue())
+            .orElse(null);
+    
+        String relatorio = "";
+        if (entry != null) {
+            relatorio = "Cliente com mais avaliações: " + entry.getKey() + "\nNúmero de mídias avaliadas: " + entry.getValue();
+        }
+        return relatorio;
+    }    
 
     @Override
     public String porcentagemClientesComPeloMenos15Avaliacoes() {
