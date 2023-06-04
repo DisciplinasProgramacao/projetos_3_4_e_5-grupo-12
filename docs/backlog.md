@@ -15,8 +15,8 @@
 - Testes;✔️ (Giovanni, Rafael)
 - Documentação; ✔️ (Giovanni, Pedro, Rafael)
 - Gêneros válidos para mídias: Ação, Anime, Aventura, Comédia, Documentário, Drama, Policial, Romance e Suspense✔️
-- Produzir relatório❌
-- Qual cliente assistiu mais mídias, e quantas mídias;✔️
+- Produzir relatório✔️ (Pedro)
+- Qual cliente assistiu mais mídias, e quantas mídias;✔️ (Pedro)
 - Qual cliente tem mais avaliações, e quantas avaliações;❌
 - Qual a porcentagem dos clientes com pelo menos 15 avaliações;❌
 - Quais são as 10 mídias de melhor avaliação, com pelo menos 100 avaliações, em ordem decrescente;❌
@@ -28,4 +28,4 @@
 
 > Written with [StackEdit](https://stackedit.io/).
 
-❌✔️
+❌👨‍💻✔️
