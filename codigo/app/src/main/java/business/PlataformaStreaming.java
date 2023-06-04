@@ -11,7 +11,7 @@ import java.util.*;
 
 import javax.management.InvalidAttributeValueException;
 
-public class PlataformaStreaming {
+public class PlataformaStreaming implements IRelatorio{
     private static final String arqFilmes = "codigo/POO_Filmes.csv";
     private static final String arqSeries = "codigo/POO_Series.csv";
     private static final String arqClientes = "codigo/POO_Espectadores.csv";
@@ -525,6 +525,61 @@ public class PlataformaStreaming {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
 
         return midia.calcularNotaMedia();
+    }
+
+    @Override
+    public String clienteComMaisMidias() {
+        
+        String relatorio = "";
+        int midiasAssistidas = 0;
+        Cliente clienteComMaisMidias = null;
+        int maxMidias = 0;
+        for (Cliente cliente : clientes.values()) {
+            midiasAssistidas = cliente.getTamanhoListaJaVista();
+            if (midiasAssistidas > maxMidias) {
+                maxMidias = midiasAssistidas;
+                clienteComMaisMidias = cliente;
+            }
+        }
+
+        relatorio = "Cliente com mais mídias assistidas: " + clienteComMaisMidias.getDados() + "\nNúmero de mídias assistidas: " + midiasAssistidas;
+        return relatorio;
+    }
+
+    @Override
+    public String clienteComMaisAvaliacoes() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'clienteComMaisAvaliacoes'");
+    }
+
+    @Override
+    public String porcentagemClientesComPeloMenos15Avaliacoes() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'porcentagemClientesComPeloMenos15Avaliacoes'");
+    }
+
+    @Override
+    public String top10MidiasMelhorAvaliacao() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'top10MidiasMelhorAvaliacao'");
+    }
+
+    @Override
+    public String top10MidiasMaisVisualizacoes() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'top10MidiasMaisVisualizacoes'");
+    }
+
+    @Override
+    public String top10MidiasMelhorAvaliacaoPorGenero() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'top10MidiasMelhorAvaliacaoPorGenero'");
+    }
+
+    @Override
+    public String top10MidiasMaisVisualizacoesPorGenero() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'top10MidiasMaisVisualizacoesPorGenero'");
     }
 
 }
