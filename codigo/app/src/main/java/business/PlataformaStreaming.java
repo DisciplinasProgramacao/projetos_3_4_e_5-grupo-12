@@ -530,17 +530,15 @@ public class PlataformaStreaming implements IRelatorio{
     @Override
     public String clienteComMaisMidias() {
         
-        String relatorio = "";
-        int midiasAssistidas = 0;
-        Cliente clienteComMaisMidias = null;
-        int maxMidias = 0;
-        for (Cliente cliente : clientes.values()) {
-            midiasAssistidas = cliente.getTamanhoListaJaVista();
-            if (midiasAssistidas > maxMidias) {
-                maxMidias = midiasAssistidas;
-                clienteComMaisMidias = cliente;
-            }
-        }
+         String relatorio = "";
+         int midiasAssistidas = 0;
+         Cliente clienteComMaisMidias = null;
+
+        clienteComMaisMidias = clientes.values().stream()
+        .max(Comparator.comparing(c -> ((Cliente) c).getTamanhoListaJaVista()))
+        .orElse(null);
+    
+        midiasAssistidas = clienteComMaisMidias.getTamanhoListaJaVista();
 
         relatorio = "Cliente com mais mídias assistidas: " + clienteComMaisMidias.getDados() + "\nNúmero de mídias assistidas: " + midiasAssistidas;
         return relatorio;
