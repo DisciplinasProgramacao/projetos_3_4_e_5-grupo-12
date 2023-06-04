@@ -17,8 +17,8 @@
 - Gêneros válidos para mídias: Ação, Anime, Aventura, Comédia, Documentário, Drama, Policial, Romance e Suspense✔️ (Pedro)
 - Produzir relatório✔️ (Pedro)
 - Qual cliente assistiu mais mídias, e quantas mídias;✔️ (Pedro)
-- Qual cliente tem mais avaliações, e quantas avaliações;❌
-- Qual a porcentagem dos clientes com pelo menos 15 avaliações;❌
+- Qual cliente tem mais avaliações, e quantas avaliações;👨‍💻
+- Qual a porcentagem dos clientes com pelo menos 15 avaliações;👨‍💻
 - Quais são as 10 mídias de melhor avaliação, com pelo menos 100 avaliações, em ordem decrescente;❌
 - Quais são as 10 mídias com mais visualizações, em ordem decrescente;❌
 - Estes mesmos dois últimos relatórios, porém com as mídias separadas por gênero❌
