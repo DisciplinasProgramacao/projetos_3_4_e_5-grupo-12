@@ -23,6 +23,8 @@ public class PlataformaStreaming implements IRelatorio{
     private HashMap<String, Cliente> clientes = new HashMap<String, Cliente>();
     private Cliente clienteAtual;
 
+    private Float[] Top10maioresNotas = new Float[10];
+
     /**
      * Constutor da plataforma de Streamming
      * 
@@ -36,6 +38,9 @@ public class PlataformaStreaming implements IRelatorio{
         carregarMidia(arqFilmes);
         carregarClientes();
         carregarAudiencia();
+        for (int i=0; i<10; i++) {
+            Top10maioresNotas[i] = 0.0f;
+        }
     }
 
     /**
@@ -585,8 +590,41 @@ public class PlataformaStreaming implements IRelatorio{
 
     @Override
     public String top10MidiasMelhorAvaliacao() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'top10MidiasMelhorAvaliacao'");
+        List<Midia> lista = new ArrayList<Midia>(midias.values());
+        String relatorio = "";
+        boolean flag = false;
+        String notaString = "";
+        float nota;
+        String aux = "";
+        String partes[];
+
+        for (Midia m : lista) {      
+            if (m.getAvaliacoes().charAt(1) != '}') {
+                aux=m.getAvaliacoes();
+                partes = aux.split("=");
+          
+                for (int i=1; i<=3; i++) {
+                    notaString += partes[2].charAt(i);
+                }
+
+                nota = Float.parseFloat(notaString);
+
+                for (int i=0; i<9; i++) {
+                    if (nota > Top10maioresNotas[i]) {
+                        Top10maioresNotas[i] = nota;
+                        flag = true;
+                        break;
+                    }
+                }
+
+                if (flag) {
+                    relatorio += "Midia: " + m.getNome() + " - Nota: " + nota + '\n';
+                }
+            }
+            notaString = "";    
+        }     
+        return relatorio;
+        
     }
 
     @Override
