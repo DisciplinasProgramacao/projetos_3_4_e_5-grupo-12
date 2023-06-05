@@ -595,4 +595,8 @@ public class PlataformaStreaming implements IRelatorio{
         throw new UnsupportedOperationException("Unimplemented method 'top10MidiasMaisVisualizacoesPorGenero'");
     }
 
+
+    public void setLancamento(Midia midia) throws MidiaInvalidaException {
+        midia.setLancamento((Lancavel) midia);  
+    }
 }

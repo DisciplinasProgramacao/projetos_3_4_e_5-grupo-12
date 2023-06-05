@@ -16,6 +16,7 @@ public abstract class Midia implements ISalvavel {
     private static final String[] idiomas = new String[] { "portugues", "ingles", "espanhol" };
     private HashMap<String, Avaliacao> avaliacoes = new HashMap<>();
     private static Random random = new Random();
+    private Lancavel lancamento = null;
 
     /**
      * Construtor da classe Midia.
@@ -259,6 +260,10 @@ public abstract class Midia implements ISalvavel {
      */
     public String getAvaliacoes () {
         return avaliacoes.toString();
+    }
+
+    public void setLancamento(Lancavel midia) {
+        this.lancamento = midia;
     }
 
 }
