@@ -3,7 +3,7 @@ package business;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Filme extends Midia {
+public class Filme extends Midia implements Lancavel {
 
     private int duracao;
 
@@ -94,5 +94,10 @@ public class Filme extends Midia {
                 ", duracao='" + getDuracao() + "'" +
                 ", audiencia='" + getAudiencia() + "'" +
                 "}";
+    }
+
+    @Override
+    public void setLancamento(Lancavel lancamento) {
+        lancamento.setLancamento(lancamento);
     }
 }

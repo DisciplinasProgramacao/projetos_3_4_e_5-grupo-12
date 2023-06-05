@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
-public class Serie extends Midia {
+public class Serie extends Midia implements Lancavel{
 
     private int quantidadeEpisodios;
     private Random random = new Random();
@@ -92,5 +92,10 @@ public class Serie extends Midia {
         String data = getDataLancamento().format(formatter);
 
         return ("\n" + id + ";" + nome + ";" + data);
+    }
+
+    @Override
+    public void setLancamento(Lancavel lancamento) {
+        lancamento.setLancamento(lancamento);
     }
 }

@@ -106,7 +106,11 @@ public class App {
         qtdEpisodios = entrada.nextInt();
 
         try {
-            plat.adicionarSerie(nome, idioma, genero, qtdEpisodios);
+            Serie serie = new Serie(nome, idioma, genero, qtdEpisodios);
+            if(eLancamento())
+                plat.setLancamento(serie);
+
+            //plat.adicionarSerie(nome, idioma, genero, qtdEpisodios);
         } catch (MidiaInvalidaException e) {
             System.out.println(e.getMessage());
         }
@@ -133,7 +137,10 @@ public class App {
         duracao = entrada.nextInt();
 
         try {
-            plat.adicionarFilme(nome, idioma, genero, duracao);
+            Filme filme = new Filme(nome, idioma, genero, duracao);
+            if(eLancamento())
+                plat.setLancamento(filme);
+            //plat.adicionarFilme(nome, idioma, genero, duracao);
         } catch (MidiaInvalidaException e) {
             System.out.println(e.getMessage());
         }
@@ -419,5 +426,13 @@ public class App {
         } catch (MidiaInvalidaException | ClienteInvalidoException | AvaliacaoInvalidaException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private static boolean eLancamento(){
+        System.out.println("Essa midia é um lançamento?");
+        System.out.println("1- Sim");
+        System.out.println("2- Não");
+        int op = entrada.nextInt();
+        return (op==1);
     }
 }

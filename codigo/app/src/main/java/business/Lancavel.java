@@ -2,10 +2,10 @@ package business;
 
 public interface Lancavel {
 
-    public boolean isLancamento();
+    //public boolean isLancamento();
 
-    public void setLancamento(boolean lancamento);
+    public void setLancamento(Lancavel lancamento);
 
-    public boolean podeAssistir(ClienteProfissional cliente);
+    //public boolean podeAssistir(ClienteProfissional cliente);
     
 }
