@@ -23,7 +23,8 @@ public class PlataformaStreaming implements IRelatorio{
     private HashMap<String, Cliente> clientes = new HashMap<String, Cliente>();
     private Cliente clienteAtual;
 
-    private Float[] Top10maioresNotas = new Float[10];
+    private float[] Top10maioresNotas = new float[10];
+    private String[] top10MaisVisto = new String[20];
 
     /**
      * Constutor da plataforma de Streamming
@@ -38,9 +39,7 @@ public class PlataformaStreaming implements IRelatorio{
         carregarMidia(arqFilmes);
         carregarClientes();
         carregarAudiencia();
-        for (int i=0; i<10; i++) {
-            Top10maioresNotas[i] = 0.0f;
-        }
+        carregarDadosRelatorio();
     }
 
     /**
@@ -397,10 +396,33 @@ public class PlataformaStreaming implements IRelatorio{
             }
     
             reader.close();
+
+            
         } catch (IOException e) {
             System.out.println(e.getMessage());
         } 
         
+    }
+
+    private void carregarDadosRelatorio() {
+        for (int i=0; i<top10MaisVisto.length; i+=2) {
+            top10MaisVisto[i] = "0";
+            top10MaisVisto[i+1] = " ";
+        }
+        for (int i=0; i<Top10maioresNotas.length; i++) {
+            Top10maioresNotas[i] = 0.0f;
+        }
+        List<Midia> lista = new ArrayList<Midia>(midias.values());
+        for (Midia m : lista) {
+            for (int i=0; i<top10MaisVisto.length; i+=2) {
+                int aux = Integer.parseInt(top10MaisVisto[i]) ;
+                if (m.getAudiencia() > aux) {
+                    top10MaisVisto[i] = Integer.toString(m.getAudiencia());
+                    top10MaisVisto[i+1] = m.getNome();
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -622,15 +644,19 @@ public class PlataformaStreaming implements IRelatorio{
                 }
             }
             notaString = "";    
+            flag = false;
         }     
         return relatorio;
-        
     }
 
     @Override
     public String top10MidiasMaisVisualizacoes() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'top10MidiasMaisVisualizacoes'");
+        carregarDadosRelatorio();
+        String relatorio = "";
+        for (int i=0; i<top10MaisVisto.length; i+=2) {
+            relatorio += "Midia: " + top10MaisVisto[i+1] + " - Audiencia: " + top10MaisVisto[i] + '\n';      
+        }
+        return relatorio;
     }
 
     @Override
