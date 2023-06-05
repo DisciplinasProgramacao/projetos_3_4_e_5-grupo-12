@@ -77,4 +77,14 @@ public class Avaliacao {
     public String getComentario() {
         return this.comentario;
     }
+
+
+    @Override
+    public String toString() {
+        return "{" +
+            " nota='" + getNota() + "'" +
+            ", comentario='" + getComentario() + "'" +
+            "}";
+    }
+
 }

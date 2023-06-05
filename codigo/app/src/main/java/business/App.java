@@ -240,6 +240,16 @@ public class App {
             System.out.println("1 - Qual cliente assistiu mais mídias, e quantas mídias;.");
 
             System.out.println("2 - Qual cliente avaliou mais mídias, e quantas mídias;.");
+
+            System.out.println("3 - Porcentagem de clientes com pelo menos 15 avaliacoes;.");
+
+            System.out.println("4 - Top 10 midias melhores avaliadas;.");
+
+            System.out.println("5 - Top 10 midias mais vistas;.");
+
+            System.out.println("6 - Top 10 midias melhores avaliadas por genero;.");
+
+            System.out.println("7 - Top 10 midias mais vistas por genero;.");
             
             System.out.println("0 - Sair");
             op = entrada.nextInt();
@@ -251,6 +261,21 @@ public class App {
                 case 2:
                 System.out.println(plat.clienteComMaisAvaliacoes());
                     break;
+                case 3:
+                    System.out.println(plat.porcentagemClientesComPeloMenos15Avaliacoes());
+                        break;
+                case 4:
+                    System.out.println(plat.top10MidiasMelhorAvaliacao());
+                        break;
+                case 5:
+                    System.out.println(plat.top10MidiasMaisVisualizacoes());
+                        break;
+                case 6:
+                    System.out.println(plat.top10MidiasMelhorAvaliacaoPorGenero());
+                        break;
+                case 7:
+                    System.out.println(plat.top10MidiasMaisVisualizacoesPorGenero());
+                        break;      
                 case 0:
                     break;
                 default:
