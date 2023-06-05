@@ -52,6 +52,7 @@ public abstract class Midia implements ISalvavel {
         setGenero(generos[random.nextInt(generos.length-1)]);
         setIdioma(idiomas[random.nextInt(idiomas.length-1)]);
         setDataLancamento(dataLancamento);
+        //setLancamento(lancamento);
     }
 
 
@@ -262,8 +263,12 @@ public abstract class Midia implements ISalvavel {
         return avaliacoes.toString();
     }
 
-    public void setLancamento(Lancavel midia) {
-        this.lancamento = midia;
+    public void setLancamento(Lancavel lancamento) {
+        this.lancamento = lancamento;
+    }
+
+    public Lancavel getLancamento() {
+        return this.lancamento;
     }
 
 }

@@ -93,9 +93,4 @@ public class Serie extends Midia implements Lancavel{
 
         return ("\n" + id + ";" + nome + ";" + data);
     }
-
-    @Override
-    public void setLancamento(Lancavel lancamento) {
-        lancamento.setLancamento(lancamento);
-    }
 }

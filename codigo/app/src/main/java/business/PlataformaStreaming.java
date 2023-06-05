@@ -140,15 +140,27 @@ public class PlataformaStreaming implements IRelatorio{
      */
     public void adicionarMidiaVista(String nomeMidia) throws MidiaInvalidaException {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
-        if(clienteAtual.querVer(midia)){
-            clienteAtual.retirarDaLista(midia);
-        }
 
-        if(clienteAtual.adicionarMidiaVista(midia)){
-            escreveArqAudiencia("A", midia, -1F);
+        if(midia.getLancamento() != null){
+            if(this.clienteAtual.getMeuTipoProfissional() != null){
+                verificarAdicionarMidiaVista(midia);
+            }    
         } else {
-            throw new MidiaInvalidaException("Voce já assistiu essa midia");
-        }
+            verificarAdicionarMidiaVista(midia);
+        }  
+    }
+
+    public void verificarAdicionarMidiaVista(Midia midia) throws MidiaInvalidaException {
+  
+            if(clienteAtual.querVer(midia)){
+                clienteAtual.retirarDaLista(midia);
+            }
+
+            if(clienteAtual.adicionarMidiaVista(midia)){
+                escreveArqAudiencia("A", midia, -1F);
+            } else {
+                throw new MidiaInvalidaException("Voce já assistiu essa midia");
+            }
     }
     
     /**
