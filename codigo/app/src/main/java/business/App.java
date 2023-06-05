@@ -107,10 +107,10 @@ public class App {
 
         try {
             Serie serie = new Serie(genero, nome, idioma, qtdEpisodios);
-            if(eLancamento())
+            if (eLancamento())
                 plat.setLancamento(serie);
             plat.adicionarMidia(serie);
-            //plat.adicionarSerie(nome, idioma, genero, qtdEpisodios);
+            // plat.adicionarSerie(nome, idioma, genero, qtdEpisodios);
         } catch (MidiaInvalidaException e) {
             System.out.println(e.getMessage());
         }
@@ -138,10 +138,10 @@ public class App {
 
         try {
             Filme filme = new Filme(genero, nome, idioma, duracao);
-            if(eLancamento())
+            if (eLancamento())
                 plat.setLancamento(filme);
             plat.adicionarMidia(filme);
-            //plat.adicionarFilme(nome, idioma, genero, duracao);
+            // plat.adicionarFilme(nome, idioma, genero, duracao);
         } catch (MidiaInvalidaException e) {
             System.out.println(e.getMessage());
         }
@@ -250,32 +250,32 @@ public class App {
             System.out.println("6 - Top 10 midias melhores avaliadas por genero;.");
 
             System.out.println("7 - Top 10 midias mais vistas por genero;.");
-            
+
             System.out.println("0 - Sair");
             op = entrada.nextInt();
 
             switch (op) {
                 case 1:
-                clienteComMaisMidias(plat);
+                    clienteComMaisMidias(plat);
                     break;
                 case 2:
-                System.out.println(plat.clienteComMaisAvaliacoes());
+                    System.out.println(plat.clienteComMaisAvaliacoes());
                     break;
                 case 3:
                     System.out.println(plat.porcentagemClientesComPeloMenos15Avaliacoes());
-                        break;
+                    break;
                 case 4:
                     System.out.println(plat.top10MidiasMelhorAvaliacao());
-                        break;
+                    break;
                 case 5:
                     System.out.println(plat.top10MidiasMaisVisualizacoes());
-                        break;
+                    break;
                 case 6:
                     System.out.println(plat.top10MidiasMelhorAvaliacaoPorGenero());
-                        break;
+                    break;
                 case 7:
                     System.out.println(plat.top10MidiasMaisVisualizacoesPorGenero());
-                        break;      
+                    break;
                 case 0:
                     break;
                 default:
@@ -454,11 +454,11 @@ public class App {
         }
     }
 
-    private static boolean eLancamento(){
+    private static boolean eLancamento() {
         System.out.println("Essa midia é um lançamento?");
         System.out.println("1- Sim");
         System.out.println("2- Não");
         int op = entrada.nextInt();
-        return (op==1);
+        return (op == 1);
     }
 }

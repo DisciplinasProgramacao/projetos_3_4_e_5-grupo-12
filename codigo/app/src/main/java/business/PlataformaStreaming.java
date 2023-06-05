@@ -605,9 +605,20 @@ public class PlataformaStreaming implements IRelatorio{
     }    
 
     @Override
-    public String porcentagemClientesComPeloMenos15Avaliacoes() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'porcentagemClientesComPeloMenos15Avaliacoes'");
+    public double porcentagemClientesComPeloMenos15Avaliacoes() {
+        Map<String, Long> contadorAvaliacoes = midias.values().stream()
+                .flatMap(midia -> Arrays.stream(midia.getAvaliacoes().split(",")))
+                .map(avaliacao -> avaliacao.split("=")[0].substring(1))
+                .filter(nome -> !nome.contains("}"))
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        long totalClientes = contadorAvaliacoes.size();
+        long clientesComMaisDe15Avaliacoes = contadorAvaliacoes.values().stream()
+                .filter(contador -> contador > 15)
+                .count();
+
+        double porcentagem = (double) clientesComMaisDe15Avaliacoes / totalClientes * 100;
+        return porcentagem;
     }
 
     @Override
