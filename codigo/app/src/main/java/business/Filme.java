@@ -95,9 +95,4 @@ public class Filme extends Midia implements Lancavel {
                 ", audiencia='" + getAudiencia() + "'" +
                 "}";
     }
-
-    @Override
-    public void setLancamento(Lancavel lancamento) {
-        lancamento.setLancamento(lancamento);
-    }
 }

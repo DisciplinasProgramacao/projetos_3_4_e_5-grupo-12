@@ -15,6 +15,7 @@ public class Cliente implements ISalvavel {
     private List<Midia> listaJaVistas = new LinkedList<>();
     private List<String> dataAssitida = new LinkedList<>();
     private IComentarista meuTipo = null;
+    private ClienteProfissional profissional = null;
 
     /**
      * Cria um novo objeto Cliente com nome completo, nome de usuário e senha.
@@ -410,6 +411,10 @@ public class Cliente implements ISalvavel {
      */
     public List<String> getListaDataAssistida() {
         return this.dataAssitida;
+    }
+
+    public ClienteProfissional getMeuTipoProfissional(){
+        return this.profissional;
     }
 
 }

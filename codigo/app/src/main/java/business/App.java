@@ -106,10 +106,10 @@ public class App {
         qtdEpisodios = entrada.nextInt();
 
         try {
-            Serie serie = new Serie(nome, idioma, genero, qtdEpisodios);
+            Serie serie = new Serie(genero, nome, idioma, qtdEpisodios);
             if(eLancamento())
                 plat.setLancamento(serie);
-
+            plat.adicionarMidia(serie);
             //plat.adicionarSerie(nome, idioma, genero, qtdEpisodios);
         } catch (MidiaInvalidaException e) {
             System.out.println(e.getMessage());
@@ -137,9 +137,10 @@ public class App {
         duracao = entrada.nextInt();
 
         try {
-            Filme filme = new Filme(nome, idioma, genero, duracao);
+            Filme filme = new Filme(genero, nome, idioma, duracao);
             if(eLancamento())
                 plat.setLancamento(filme);
+            plat.adicionarMidia(filme);
             //plat.adicionarFilme(nome, idioma, genero, duracao);
         } catch (MidiaInvalidaException e) {
             System.out.println(e.getMessage());
