@@ -624,7 +624,7 @@ public class PlataformaStreaming implements IRelatorio {
                 .flatMap(midia -> midia.getAvaliadores().stream())
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
-        long totalClientes = contadorAvaliacoes.size();
+        long totalClientes = clientes.size();
         long clientesComMaisDe15Avaliacoes = contadorAvaliacoes.values().stream()
                 .filter(contador -> contador >= 15)
                 .count();
