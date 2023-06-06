@@ -537,17 +537,15 @@ public class PlataformaStreaming implements IRelatorio{
      * @throws ClienteInvalidoException caso cliente invalido
      */
     public void setClienteEspecialista() throws ClienteInvalidoException {
-
         if (this.clienteAtual.getTamanhoListaJaVista() >= 5) {
             List<String> datasAssistidas = clienteAtual.getListaDataAssistida();
-            LocalDate mesPassado = LocalDate.now().minusMonths(1);
+            LocalDate menos = LocalDate.now().minusDays(30);
+    
             long contador = datasAssistidas.stream()
                     .map(LocalDate::parse)
-                    .filter(dataAssistida -> (dataAssistida.getMonthValue() == mesPassado.getMonthValue() &&
-                            dataAssistida.getYear() == mesPassado.getYear()) ||
-                            (dataAssistida.getMonthValue() == LocalDate.now().getMonthValue() &&
-                                    dataAssistida.getYear() == LocalDate.now().getYear()))
+                    .filter(datassist -> datassist.isAfter(menos))
                     .count();
+    
             if (contador >= 5) {
                 clienteAtual.setMeuTipo(new ClienteEspecialista(clienteAtual.getNomeCompleto(),
                         clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha()));
