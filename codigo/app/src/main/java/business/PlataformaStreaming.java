@@ -556,7 +556,7 @@ public class PlataformaStreaming implements IRelatorio {
      * @throws ClienteInvalidoException caso cliente invalido
      */
     public void setClienteEspecialista() throws ClienteInvalidoException {
-        if (this.clienteAtual.getTamanhoListaJaVista() >= 5 || this.clienteAtual.getMeuTipoProfissional() != null) {
+        if (this.clienteAtual.getTamanhoListaJaVista() >= 5) {
             List<String> datasAssistidas = clienteAtual.getListaDataAssistida();
             LocalDate menos = LocalDate.now().minusDays(30);
 
@@ -565,11 +565,14 @@ public class PlataformaStreaming implements IRelatorio {
                     .filter(datassist -> datassist.isAfter(menos))
                     .count();
 
-            if (contador >= 5 || this.clienteAtual.getMeuTipoProfissional() != null) {
-                clienteAtual.setMeuTipo(new ClienteEspecialista(clienteAtual.getNomeCompleto(),
-                        clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha()));
+            if (contador >= 5) {
+                setComentarista();
             }
         }
+    }
+
+    public void setComentarista() throws ClienteInvalidoException {
+        this.clienteAtual.setMeuTipo(new ClienteEspecialista(clienteAtual.getNomeCompleto(),clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha()));
     }
 
     /**
@@ -812,5 +815,6 @@ public class PlataformaStreaming implements IRelatorio {
     public void setClienteProfissional(String nomeUsuario) throws ClienteInvalidoException {
         this.clienteAtual = clientes.get(nomeUsuario);
         this.clienteAtual.setMeuTipoProfissional(new ClienteProfissional(clienteAtual.getNomeCompleto(), clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha()));;
+        setComentarista();
   }
 }
