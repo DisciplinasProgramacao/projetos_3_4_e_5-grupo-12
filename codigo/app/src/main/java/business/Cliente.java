@@ -417,4 +417,8 @@ public class Cliente implements ISalvavel {
         return this.profissional;
     }
 
+    public void setMeuTipoProfissional(ClienteProfissional cliente){
+        this.profissional = cliente;
+    }
+
 }
