@@ -78,8 +78,9 @@ public class App {
 
         try {
             plat.adicionarCliente(nomeCompleto, nomeDeUsuario, senha);
-            if(eProfissional())
-                plat.setClienteProfissional();
+            if(eProfissional()){
+                plat.setClienteProfissional(nomeDeUsuario);
+            }
         } catch (ClienteInvalidoException e) {
             System.out.println(e.getMessage());
         }
