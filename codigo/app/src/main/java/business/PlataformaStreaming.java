@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 import javax.management.InvalidAttributeValueException;
 
-public class PlataformaStreaming implements IRelatorio{
+public class PlataformaStreaming implements IRelatorio {
     private static final String arqFilmes = "codigo/POO_Filmes.csv";
     private static final String arqSeries = "codigo/POO_Series.csv";
     private static final String arqClientes = "codigo/POO_Espectadores.csv";
@@ -40,7 +40,7 @@ public class PlataformaStreaming implements IRelatorio{
         carregarClientes();
         carregarAudiencia();
         carregarDadosRelatorio();
-        for (int i=0; i<Top10maioresNotas.length; i++) {
+        for (int i = 0; i < Top10maioresNotas.length; i++) {
             Top10maioresNotas[i] = 0.0f;
         }
     }
@@ -93,41 +93,46 @@ public class PlataformaStreaming implements IRelatorio{
     }
 
     /**
-     * Esse metodo recebe parametros do cliente, cria uma serie e envia para um metodo polimorfico
+     * Esse metodo recebe parametros do cliente, cria uma serie e envia para um
+     * metodo polimorfico
      * que adiciona na lista de midias
      *
-     * @param nome nome da midia
-     * @param idioma idioma da midia
-     * @param genero genero da midia
+     * @param nome         nome da midia
+     * @param idioma       idioma da midia
+     * @param genero       genero da midia
      * @param qtdEpisodios quantidade de episiodios da serie
      * @throws MidiaInvalidaException caso atributos invalidos
      */
-    public void adicionarSerie(String nome, String idioma, String genero, int qtdEpisodios) throws MidiaInvalidaException {
+    public void adicionarSerie(String nome, String idioma, String genero, int qtdEpisodios)
+            throws MidiaInvalidaException {
 
         Serie serieCad = new Serie(genero, nome, idioma, qtdEpisodios);
         adicionarMidia(serieCad);
     }
 
     /**
-     * Esse metodo recebe parametros do cliente, cria um filme e envia para um metodo polimorfico
+     * Esse metodo recebe parametros do cliente, cria um filme e envia para um
+     * metodo polimorfico
      * que adiciona na lista de midias
      *
-     * @param nome nome da midia
-     * @param idioma idioma da midia
-     * @param genero genero da midia
+     * @param nome    nome da midia
+     * @param idioma  idioma da midia
+     * @param genero  genero da midia
      * @param duracao duracao do filme
      * @throws MidiaInvalidaException caso atributos invalidos
      */
-    public void adicionarFilme(String nome, String idioma, String genero, int duracao) throws MidiaInvalidaException{
+    public void adicionarFilme(String nome, String idioma, String genero, int duracao) throws MidiaInvalidaException {
         Filme filmeCad = new Filme(genero, nome, idioma, duracao);
         adicionarMidia(filmeCad);
     }
 
     /**
-     * Esse metodo recebe o nome da midia, filtra e adiciona na lista para ver do cliente.
+     * Esse metodo recebe o nome da midia, filtra e adiciona na lista para ver do
+     * cliente.
      * 
      * @param nomeMidia nome da midia
-     * @throws MidiaInvalidaException caso nenhuma midia seja encontrada com o nome recebido
+     * @throws MidiaInvalidaException caso nenhuma midia seja encontrada com o nome
+     *                                recebido
      */
     public void adicionarMidiaParaAssistir(String nomeMidia) throws MidiaInvalidaException {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
@@ -140,7 +145,8 @@ public class PlataformaStreaming implements IRelatorio{
     }
 
     /**
-     * Adiciona a midia como vista ao receber como parametro o nome da midia que quer assistir.
+     * Adiciona a midia como vista ao receber como parametro o nome da midia que
+     * quer assistir.
      * 
      * @param nomeMidia nome da midia
      * @throws MidiaInvalidaException caso ja tenha assitido essa midia
@@ -148,36 +154,37 @@ public class PlataformaStreaming implements IRelatorio{
     public void adicionarMidiaVista(String nomeMidia) throws MidiaInvalidaException {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
 
-        if(midia.getLancamento() != null){
-            if(this.clienteAtual.getMeuTipoProfissional() != null){
+        if (midia.getLancamento() != null) {
+            if (this.clienteAtual.getMeuTipoProfissional() != null) {
                 verificarAdicionarMidiaVista(midia);
-            }    
+            }
         } else {
             verificarAdicionarMidiaVista(midia);
-        }  
+        }
     }
 
     public void verificarAdicionarMidiaVista(Midia midia) throws MidiaInvalidaException {
-  
-            if(clienteAtual.querVer(midia)){
-                clienteAtual.retirarDaLista(midia);
-            }
 
-            if(clienteAtual.adicionarMidiaVista(midia)){
-                escreveArqAudiencia("A", midia, -1F);
-            } else {
-                throw new MidiaInvalidaException("Voce já assistiu essa midia");
-            }
+        if (clienteAtual.querVer(midia)) {
+            clienteAtual.retirarDaLista(midia);
+        }
+
+        if (clienteAtual.adicionarMidiaVista(midia)) {
+            escreveArqAudiencia("A", midia, -1F);
+        } else {
+            throw new MidiaInvalidaException("Voce já assistiu essa midia");
+        }
     }
-    
+
     /**
-     * Adiciona avaliacao do cliente recebendo como parametro o nome da midia que quer avaliar e a nota
+     * Adiciona avaliacao do cliente recebendo como parametro o nome da midia que
+     * quer avaliar e a nota
      * 
      * @param nomeMidia nome da midia
-     * @param nota nota da midia
-     * @throws MidiaInvalidaException caso midia seja invalida
+     * @param nota      nota da midia
+     * @throws MidiaInvalidaException     caso midia seja invalida
      * @throws AvaliacaoInvalidaException caso avaliacao seja invalida
-     * @throws ClienteInvalidoException caso cliente seja invalido
+     * @throws ClienteInvalidoException   caso cliente seja invalido
      */
     public void adicionarAvaliacao(String nomeMidia, float nota)
             throws MidiaInvalidaException, AvaliacaoInvalidaException, ClienteInvalidoException {
@@ -185,18 +192,18 @@ public class PlataformaStreaming implements IRelatorio{
         Midia midia = filtrarMidiaPorNome(nomeMidia);
         setClienteEspecialista();
 
-        if(!midia.getAvaliacoes().contains(clienteAtual.getNomeDeUsuario())){
+        if (!midia.getAvaliacoes().contains(clienteAtual.getNomeDeUsuario())) {
             if (this.clienteAtual.criarAvaliacao(nota, midia)) {
                 escreveArqAudiencia("A", midia, nota);
             }
         } else {
             throw new AvaliacaoInvalidaException("Você já avaliou essa midia!");
-        } 
+        }
     }
-
 
     /**
      * Retorna a lista ja vista do cliente logado
+     * 
      * @return lista ja vista do cliente logado
      */
     public String getListaJaVista() {
@@ -205,6 +212,7 @@ public class PlataformaStreaming implements IRelatorio{
 
     /**
      * Retorna a lista para assistir do cliente atual em formato de string
+     * 
      * @return
      */
     public String getListaParaAssistir() {
@@ -214,11 +222,11 @@ public class PlataformaStreaming implements IRelatorio{
     /**
      * Cria o cliente, adiciona ele no hash map de clientes e escreve no arquivo
      * 
-     * @param nomeCompleto nome completo do usuario
+     * @param nomeCompleto  nome completo do usuario
      * @param nomeDeUsuario nome do usuario
-     * @param senha senha do usuario
+     * @param senha         senha do usuario
      * @throws ClienteInvalidoException caso atributos do cliente seja invalido
-     * @throws MidiaInvalidaException caso midia seja invalida
+     * @throws MidiaInvalidaException   caso midia seja invalida
      */
     public void adicionarCliente(String nomeCompleto, String nomeDeUsuario, String senha)
             throws ClienteInvalidoException, MidiaInvalidaException {
@@ -297,6 +305,7 @@ public class PlataformaStreaming implements IRelatorio{
 
     /**
      * Esse método carrega os clientes do arquivo de clientes
+     * 
      * @throws ClienteInvalidoException caso cliente invalido
      */
     private void carregarClientes() throws ClienteInvalidoException {
@@ -305,7 +314,7 @@ public class PlataformaStreaming implements IRelatorio{
             BufferedReader reader = new BufferedReader(new FileReader(arqClientes));
             String linha;
             reader.readLine();
-    
+
             while ((linha = reader.readLine()) != null) {
                 StringTokenizer str = new StringTokenizer(linha, ";");
                 Cliente cliente = new Cliente(str.nextToken(), str.nextToken(), str.nextToken());
@@ -317,11 +326,12 @@ public class PlataformaStreaming implements IRelatorio{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
     }
 
     /**
      * carrega arquivo de midias do sistema
+     * 
      * @param tipoArquivo tipo do arquivo
      * @throws MidiaInvalidaException caso midia invalida
      */
@@ -332,36 +342,37 @@ public class PlataformaStreaming implements IRelatorio{
 
             BufferedReader reader = new BufferedReader(new FileReader(tipoArquivo));
             String linha;
-    
+
             reader.readLine();
-    
+
             while ((linha = reader.readLine()) != null) {
-    
+
                 StringTokenizer str = new StringTokenizer(linha, ";");
                 int id = Integer.parseInt(str.nextToken());
                 String nome = str.nextToken();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 LocalDate dataLancamento = LocalDate.parse(str.nextToken(), formatter);
-    
+
                 if (tipoArquivo.equals(arqFilmes)) {
                     int n = Integer.parseInt(str.nextToken());
                     midia = new Filme(id, nome, dataLancamento, n);
                 } else {
                     midia = new Serie(id, nome, dataLancamento);
                 }
-    
+
                 midias.put(midia.getId(), midia);
             }
             reader.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());
-        } 
+        }
     }
 
     /**
      * carrega o arquivo que possui todas as audiencias dos clientes do sistema
+     * 
      * @throws AvaliacaoInvalidaException caso avaliacao invalida
-     * @throws MidiaInvalidaException caso midia invalida
+     * @throws MidiaInvalidaException     caso midia invalida
      */
     private void carregarAudiencia() throws AvaliacaoInvalidaException, MidiaInvalidaException {
 
@@ -370,12 +381,12 @@ public class PlataformaStreaming implements IRelatorio{
             BufferedReader reader = new BufferedReader(new FileReader(arqAudiencia));
             String linha;
             reader.readLine();
-    
+
             while ((linha = reader.readLine()) != null) {
                 StringTokenizer str = new StringTokenizer(linha, ";");
                 String login = str.nextToken();
                 String tipo = str.nextToken();
-                int idMidia = Integer.parseInt(str.nextToken());         
+                int idMidia = Integer.parseInt(str.nextToken());
                 Midia midia = midias.get(idMidia);
                 this.clienteAtual = clientes.get(login);
 
@@ -392,34 +403,33 @@ public class PlataformaStreaming implements IRelatorio{
                         }
                     }
                     clienteAtual.adicionarMidiaVista(midia);
-                    if(clienteAtual.querVer(midia)){
+                    if (clienteAtual.querVer(midia)) {
                         clienteAtual.retirarDaLista(midia);
                     }
                 }
             }
-    
+
             reader.close();
 
-            
         } catch (IOException e) {
             System.out.println(e.getMessage());
-        } 
-        
+        }
+
     }
 
     private void carregarDadosRelatorio() {
-        for (int i=0; i<top10MaisVisto.length; i+=2) {
+        for (int i = 0; i < top10MaisVisto.length; i += 2) {
             top10MaisVisto[i] = "0";
-            top10MaisVisto[i+1] = " ";
+            top10MaisVisto[i + 1] = " ";
         }
-        
+
         List<Midia> lista = new ArrayList<Midia>(midias.values());
         for (Midia m : lista) {
-            for (int i=0; i<top10MaisVisto.length; i+=2) {
-                int aux = Integer.parseInt(top10MaisVisto[i]) ;
+            for (int i = 0; i < top10MaisVisto.length; i += 2) {
+                int aux = Integer.parseInt(top10MaisVisto[i]);
                 if (m.getAudiencia() > aux) {
                     top10MaisVisto[i] = Integer.toString(m.getAudiencia());
-                    top10MaisVisto[i+1] = m.getNome();
+                    top10MaisVisto[i + 1] = m.getNome();
                     break;
                 }
             }
@@ -444,7 +454,9 @@ public class PlataformaStreaming implements IRelatorio{
     }
 
     /**
-     * esse metodo recebe uma midia que implementa isalvavel e chama um metodo de escrever no arquivo
+     * esse metodo recebe uma midia que implementa isalvavel e chama um metodo de
+     * escrever no arquivo
+     * 
      * @param midia
      */
     private void escreveArqMidia(ISalvavel midia) {
@@ -460,8 +472,9 @@ public class PlataformaStreaming implements IRelatorio{
      * dele ja nao estiver cadastrado
      * 
      * @param clienteCad Esse é o cliente a ser posto
-     * @throws MidiaInvalidaException excecao a ser lancada caso o nome de usuario esteja
-     *                   indisponivel ou haja algum erro
+     * @throws MidiaInvalidaException excecao a ser lancada caso o nome de usuario
+     *                                esteja
+     *                                indisponivel ou haja algum erro
      */
     private void escreveArqCliente(Cliente clienteCad) throws MidiaInvalidaException {
         escreveArquivo(clienteCad, arqClientes);
@@ -511,6 +524,7 @@ public class PlataformaStreaming implements IRelatorio{
 
     /**
      * testa se o cliente é especialista
+     * 
      * @return true caso ele seja especialista
      */
     public boolean eEspecialista() {
@@ -521,18 +535,20 @@ public class PlataformaStreaming implements IRelatorio{
      * Metodo que permite o cliente comentar caso ele seja especialista
      * 
      * @param comentario comentario do cliente
-     * @param nomeMidia midia a receber o comentario
-     * @throws ClienteInvalidoException caso cliente nao seja especialista
+     * @param nomeMidia  midia a receber o comentario
+     * @throws ClienteInvalidoException   caso cliente nao seja especialista
      * @throws AvaliacaoInvalidaException caso avaliacao invalida
-     * @throws MidiaInvalidaException caso midia invalida
+     * @throws MidiaInvalidaException     caso midia invalida
      */
-    public void comentar(String comentario, String nomeMidia) throws ClienteInvalidoException, AvaliacaoInvalidaException, MidiaInvalidaException {
+    public void comentar(String comentario, String nomeMidia)
+            throws ClienteInvalidoException, AvaliacaoInvalidaException, MidiaInvalidaException {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
         clienteAtual.fazerComentario(comentario, midia);
     }
 
     /**
-     * Seta o cliente como especialista caso ele tenha assistido 5 midias no ultimo mes.
+     * Seta o cliente como especialista caso ele tenha assistido 5 midias no ultimo
+     * mes.
      * 
      * @throws ClienteInvalidoException caso cliente invalido
      */
@@ -540,19 +556,18 @@ public class PlataformaStreaming implements IRelatorio{
         if (this.clienteAtual.getTamanhoListaJaVista() >= 5) {
             List<String> datasAssistidas = clienteAtual.getListaDataAssistida();
             LocalDate menos = LocalDate.now().minusDays(30);
-    
+
             long contador = datasAssistidas.stream()
                     .map(LocalDate::parse)
                     .filter(datassist -> datassist.isAfter(menos))
                     .count();
-    
+
             if (contador >= 5) {
                 clienteAtual.setMeuTipo(new ClienteEspecialista(clienteAtual.getNomeCompleto(),
                         clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha()));
             }
         }
     }
-
 
     /**
      * Retorna a nota media de uma midia especificada
@@ -561,7 +576,7 @@ public class PlataformaStreaming implements IRelatorio{
      * @return a nota media da midia
      * @throws MidiaInvalidaException caso midia invalida
      */
-    public double getNotaMedia(String nomeMidia) throws MidiaInvalidaException{
+    public double getNotaMedia(String nomeMidia) throws MidiaInvalidaException {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
 
         return midia.calcularNotaMedia();
@@ -569,51 +584,49 @@ public class PlataformaStreaming implements IRelatorio{
 
     @Override
     public String clienteComMaisMidias() {
-        
-         String relatorio = "";
-         int midiasAssistidas = 0;
-         Cliente clienteComMaisMidias = null;
+
+        String relatorio = "";
+        int midiasAssistidas = 0;
+        Cliente clienteComMaisMidias = null;
 
         clienteComMaisMidias = clientes.values().stream()
-        .max(Comparator.comparing(c -> ((Cliente) c).getTamanhoListaJaVista()))
-        .orElse(null);
-    
+                .max(Comparator.comparing(c -> ((Cliente) c).getTamanhoListaJaVista()))
+                .orElse(null);
+
         midiasAssistidas = clienteComMaisMidias.getTamanhoListaJaVista();
 
-        relatorio = "Cliente com mais mídias assistidas: " + clienteComMaisMidias.getDados() + "\nNúmero de mídias assistidas: " + midiasAssistidas;
+        relatorio = "Cliente com mais mídias assistidas: " + clienteComMaisMidias.getDados()
+                + "\nNúmero de mídias assistidas: " + midiasAssistidas;
         return relatorio;
     }
 
     @Override
     public String clienteComMaisAvaliacoes() {
         Map<String, Long> contadorAvaliacoes = midias.values().stream()
-            .flatMap(midia -> Arrays.stream(midia.getAvaliacoes().split(",")))
-            .map(avaliacao -> avaliacao.split("=")[0].substring(1))
-            .filter(nome -> !nome.contains("}"))
-            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-    
+                .flatMap(midia -> midia.getAvaliadores().stream())
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
         Map.Entry<String, Long> entry = contadorAvaliacoes.entrySet().stream()
-            .max(Map.Entry.comparingByValue())
-            .orElse(null);
-    
+                .max(Map.Entry.comparingByValue())
+                .orElse(null);
+
         String relatorio = "";
         if (entry != null) {
-            relatorio = "Cliente com mais avaliações: " + entry.getKey() + "\nNúmero de mídias avaliadas: " + entry.getValue();
+            relatorio = "Cliente com mais avaliações: " + entry.getKey() + "\nNúmero de mídias avaliadas: "
+                    + entry.getValue();
         }
         return relatorio;
-    }    
+    }
 
     @Override
     public double porcentagemClientesComPeloMenos15Avaliacoes() {
         Map<String, Long> contadorAvaliacoes = midias.values().stream()
-                .flatMap(midia -> Arrays.stream(midia.getAvaliacoes().split(",")))
-                .map(avaliacao -> avaliacao.split("=")[0].substring(1))
-                .filter(nome -> !nome.contains("}"))
+                .flatMap(midia -> midia.getAvaliadores().stream())
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
         long totalClientes = contadorAvaliacoes.size();
         long clientesComMaisDe15Avaliacoes = contadorAvaliacoes.values().stream()
-                .filter(contador -> contador > 15)
+                .filter(contador -> contador >= 15)
                 .count();
 
         double porcentagem = (double) clientesComMaisDe15Avaliacoes / totalClientes * 100;
@@ -630,18 +643,18 @@ public class PlataformaStreaming implements IRelatorio{
         String aux = "";
         String partes[];
 
-        for (Midia m : lista) {      
+        for (Midia m : lista) {
             if (m.getAvaliacoes().charAt(1) != '}') {
-                aux=m.getAvaliacoes();
+                aux = m.getAvaliacoes();
                 partes = aux.split("=");
-          
-                for (int i=1; i<=3; i++) {
+
+                for (int i = 1; i <= 3; i++) {
                     notaString += partes[2].charAt(i);
                 }
 
                 nota = Float.parseFloat(notaString);
 
-                for (int i=0; i<9; i++) {
+                for (int i = 0; i < 9; i++) {
                     if (nota > Top10maioresNotas[i]) {
                         Top10maioresNotas[i] = nota;
                         flag = true;
@@ -653,9 +666,9 @@ public class PlataformaStreaming implements IRelatorio{
                     relatorio += "Midia: " + m.getNome() + " - Nota: " + nota + '\n';
                 }
             }
-            notaString = "";    
+            notaString = "";
             flag = false;
-        }     
+        }
         return relatorio;
     }
 
@@ -663,8 +676,8 @@ public class PlataformaStreaming implements IRelatorio{
     public String top10MidiasMaisVisualizacoes() {
         carregarDadosRelatorio();
         String relatorio = "";
-        for (int i=0; i<top10MaisVisto.length; i+=2) {
-            relatorio += "Midia: " + top10MaisVisto[i+1] + " - Audiencia: " + top10MaisVisto[i] + '\n';      
+        for (int i = 0; i < top10MaisVisto.length; i += 2) {
+            relatorio += "Midia: " + top10MaisVisto[i + 1] + " - Audiencia: " + top10MaisVisto[i] + '\n';
         }
         return relatorio;
     }
@@ -678,31 +691,31 @@ public class PlataformaStreaming implements IRelatorio{
         float nota;
         String aux = "";
         String partes[];
-    
+
         // Mapa para armazenar as mídias de cada gênero com melhor avaliação
         Map<String, List<Midia>> top10PorGenero = new HashMap<>();
-    
+
         for (Midia m : lista) {
             if (m.getAvaliacoes().charAt(1) != '}') {
                 aux = m.getAvaliacoes();
                 partes = aux.split("=");
-    
+
                 for (int i = 1; i <= 3; i++) {
                     notaString += partes[2].charAt(i);
                 }
-    
+
                 nota = Float.parseFloat(notaString);
-    
+
                 // Verificar o gênero da mídia
                 String genero = m.getGenero();
-    
+
                 // Verificar se já existe uma lista para o gênero atual
                 if (!top10PorGenero.containsKey(genero)) {
                     top10PorGenero.put(genero, new ArrayList<>());
                 }
-    
+
                 List<Midia> midiasPorGenero = top10PorGenero.get(genero);
-    
+
                 for (int i = 0; i < 9; i++) {
                     if (nota > Top10maioresNotas[i]) {
                         Top10maioresNotas[i] = nota;
@@ -710,10 +723,10 @@ public class PlataformaStreaming implements IRelatorio{
                         break;
                     }
                 }
-    
+
                 if (flag) {
                     relatorio += "Gênero: " + genero + " - Mídia: " + m.getNome() + " - Nota: " + nota + '\n';
-    
+
                     // Adicionar a mídia à lista do gênero atual
                     midiasPorGenero.add(m);
                 }
@@ -721,7 +734,7 @@ public class PlataformaStreaming implements IRelatorio{
             notaString = "";
             flag = false;
         }
-    
+
         // Ordenar as listas de mídias por gênero com base na melhor avaliação
         for (List<Midia> midiasPorGenero : top10PorGenero.values()) {
             Collections.sort(midiasPorGenero, new Comparator<Midia>() {
@@ -732,9 +745,10 @@ public class PlataformaStreaming implements IRelatorio{
                 }
             });
         }
-    
-        // Aqui você pode acessar as listas de mídias por gênero em top10PorGenero para obter as top 10 mídias por gênero com melhor avaliação
-    
+
+        // Aqui você pode acessar as listas de mídias por gênero em top10PorGenero para
+        // obter as top 10 mídias por gênero com melhor avaliação
+
         return relatorio;
     }
 
@@ -742,23 +756,23 @@ public class PlataformaStreaming implements IRelatorio{
     public String top10MidiasMaisVisualizacoesPorGenero() {
         carregarDadosRelatorio();
         String relatorio = "";
-        
+
         // Mapa para armazenar as mídias de cada gênero com mais visualizações
         Map<String, List<Midia>> top10PorGenero = new HashMap<>();
-        
+
         for (int i = 0; i < top10MaisVisto.length; i += 2) {
             String midia = top10MaisVisto[i + 1];
             String genero = (midia); // Função fictícia para obter o gênero da mídia
-            
+
             // Verificar se já existe uma lista para o gênero atual
             if (!top10PorGenero.containsKey(genero)) {
                 top10PorGenero.put(genero, new ArrayList<>());
             }
-            
+
             List<Midia> midiasPorGenero = top10PorGenero.get(genero);
-            
+
         }
-        
+
         // Ordenar as listas de mídias por gênero com base no número de visualizações
         for (List<Midia> midiasPorGenero : top10PorGenero.values()) {
             Collections.sort(midiasPorGenero, new Comparator<Midia>() {
@@ -769,26 +783,26 @@ public class PlataformaStreaming implements IRelatorio{
                 }
             });
         }
-        
-        // Aqui você pode acessar as listas de mídias por gênero em top10PorGenero para obter as top 10 mídias por gênero com mais visualizações
-        
+
+        // Aqui você pode acessar as listas de mídias por gênero em top10PorGenero para
+        // obter as top 10 mídias por gênero com mais visualizações
+
         for (String genero : top10PorGenero.keySet()) {
             relatorio += "Gênero: " + genero + '\n';
             List<Midia> midiasPorGenero = top10PorGenero.get(genero);
-            
+
             for (int i = 0; i < Math.min(midiasPorGenero.size(), 10); i++) {
                 Midia m = midiasPorGenero.get(i);
                 relatorio += "Mídia: " + m.getNome() + " - Visualizações: " + m.getAudiencia() + '\n';
             }
-            
+
             relatorio += '\n';
         }
-        
+
         return relatorio;
     }
 
-
     public void setLancamento(Midia midia) throws MidiaInvalidaException {
-        midia.setLancamento((Lancavel) midia);  
+        midia.setLancamento((Lancavel) midia);
     }
 }

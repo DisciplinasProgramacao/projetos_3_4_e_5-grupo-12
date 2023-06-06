@@ -1,8 +1,12 @@
 package business;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class Midia implements ISalvavel {
 
@@ -269,6 +273,18 @@ public abstract class Midia implements ISalvavel {
 
     public Lancavel getLancamento() {
         return this.lancamento;
+    }
+
+    public List<String> getAvaliadores() {
+        List<String> nomes = new ArrayList<>();
+        Pattern pattern = Pattern.compile("\\{(.*?)=\\{");
+        Matcher matcher = pattern.matcher(getAvaliacoes());
+        while (matcher.find()) {
+            String nome = matcher.group(1);
+            nomes.add(nome);
+        } 
+       
+        return nomes;
     }
 
 }

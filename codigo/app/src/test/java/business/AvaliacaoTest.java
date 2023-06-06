@@ -88,7 +88,12 @@ class AvaliacaoTest {
         p.adicionarAvaliacao("Destiny", 4);
         p.setClienteEspecialista();
         p.comentar("Ola", "Papaleguas");
-        
+        p.adicionarCliente("Geoge o Curioso","Pablo","123poGchAmp456");
+        p.login("Pablo", "123poGchAmp456");
+        p.adicionarMidiaVista("Papaleguas");
+        p.adicionarAvaliacao("Papaleguas", 5);
+        assertEquals(1,p.filtrarMidiaPorNome("Papaleguas").getAvaliacoes());
+       
         assertTrue(p.filtrarMidiaPorNome("Papaleguas").getAvaliacoes().contains(p.getClienteAtual().getNomeDeUsuario()));
     }
 }
