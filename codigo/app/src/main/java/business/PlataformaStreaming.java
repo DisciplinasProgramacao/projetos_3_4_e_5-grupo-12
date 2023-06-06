@@ -805,11 +805,6 @@ public class PlataformaStreaming implements IRelatorio {
         return relatorio;
     }
 
-
-
-
-
-    
     public void setLancamento(Midia midia) throws MidiaInvalidaException {
         midia.setLancamento((Lancavel) midia);
     }
