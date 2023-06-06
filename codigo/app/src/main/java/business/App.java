@@ -78,6 +78,8 @@ public class App {
 
         try {
             plat.adicionarCliente(nomeCompleto, nomeDeUsuario, senha);
+            if(eProfissional())
+                plat.setClienteProfissional();
         } catch (ClienteInvalidoException e) {
             System.out.println(e.getMessage());
         }
@@ -419,7 +421,7 @@ public class App {
                     plat.adicionarMidiaVista(nomeMidia);
                     break;
             }
-        } catch (MidiaInvalidaException e) {
+        } catch (MidiaInvalidaException | ClienteInvalidoException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -461,4 +463,14 @@ public class App {
         int op = entrada.nextInt();
         return (op == 1);
     }
+
+    private static boolean eProfissional() {
+        System.out.println("Esse cliente é profissional?");
+        System.out.println("1- Sim");
+        System.out.println("2- Não");
+        int op = entrada.nextInt();
+        return (op == 1);
+    }
+
+    
 }

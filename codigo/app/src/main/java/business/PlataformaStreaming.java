@@ -150,13 +150,16 @@ public class PlataformaStreaming implements IRelatorio {
      * 
      * @param nomeMidia nome da midia
      * @throws MidiaInvalidaException caso ja tenha assitido essa midia
+     * @throws ClienteInvalidoException
      */
-    public void adicionarMidiaVista(String nomeMidia) throws MidiaInvalidaException {
+    public void adicionarMidiaVista(String nomeMidia) throws MidiaInvalidaException, ClienteInvalidoException {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
 
         if (midia.getLancamento() != null) {
             if (this.clienteAtual.getMeuTipoProfissional() != null) {
                 verificarAdicionarMidiaVista(midia);
+            } else {
+                throw new ClienteInvalidoException("Somente clientes profissionais podem assistir midias em lançamento!");
             }
         } else {
             verificarAdicionarMidiaVista(midia);
@@ -804,5 +807,9 @@ public class PlataformaStreaming implements IRelatorio {
 
     public void setLancamento(Midia midia) throws MidiaInvalidaException {
         midia.setLancamento((Lancavel) midia);
+    }
+
+    public void setClienteProfissional() throws ClienteInvalidoException {
+        this.clienteAtual.setMeuTipo(new ClienteProfissional(clienteAtual.getNomeCompleto(),clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha()));
     }
 }
