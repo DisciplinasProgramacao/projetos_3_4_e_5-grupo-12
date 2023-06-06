@@ -40,6 +40,9 @@ public class PlataformaStreaming implements IRelatorio{
         carregarClientes();
         carregarAudiencia();
         carregarDadosRelatorio();
+        for (int i=0; i<Top10maioresNotas.length; i++) {
+            Top10maioresNotas[i] = 0.0f;
+        }
     }
 
     /**
@@ -409,9 +412,7 @@ public class PlataformaStreaming implements IRelatorio{
             top10MaisVisto[i] = "0";
             top10MaisVisto[i+1] = " ";
         }
-        for (int i=0; i<Top10maioresNotas.length; i++) {
-            Top10maioresNotas[i] = 0.0f;
-        }
+        
         List<Midia> lista = new ArrayList<Midia>(midias.values());
         for (Midia m : lista) {
             for (int i=0; i<top10MaisVisto.length; i+=2) {
