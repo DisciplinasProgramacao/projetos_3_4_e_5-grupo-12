@@ -805,6 +805,11 @@ public class PlataformaStreaming implements IRelatorio {
         return relatorio;
     }
 
+
+
+
+
+    
     public void setLancamento(Midia midia) throws MidiaInvalidaException {
         midia.setLancamento((Lancavel) midia);
     }
@@ -812,5 +817,5 @@ public class PlataformaStreaming implements IRelatorio {
     public void setClienteProfissional(String nomeUsuario) throws ClienteInvalidoException {
         this.clienteAtual = clientes.get(nomeUsuario);
         this.clienteAtual.setMeuTipoProfissional(new ClienteProfissional(clienteAtual.getNomeCompleto(), clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha()));;
-    }
+  }
 }
