@@ -103,11 +103,14 @@ public class PlataformaStreaming implements IRelatorio {
      * @param qtdEpisodios quantidade de episiodios da serie
      * @throws MidiaInvalidaException caso atributos invalidos
      */
-    public void adicionarSerie(String nome, String idioma, String genero, int qtdEpisodios)
+    public void adicionarSerie(String nome, String idioma, String genero, int qtdEpisodios, boolean lancamento)
             throws MidiaInvalidaException {
 
         Serie serieCad = new Serie(genero, nome, idioma, qtdEpisodios);
         adicionarMidia(serieCad);
+        if(lancamento){
+            setLancamento(serieCad);
+        }
     }
 
     /**
@@ -121,9 +124,12 @@ public class PlataformaStreaming implements IRelatorio {
      * @param duracao duracao do filme
      * @throws MidiaInvalidaException caso atributos invalidos
      */
-    public void adicionarFilme(String nome, String idioma, String genero, int duracao) throws MidiaInvalidaException {
+    public void adicionarFilme(String nome, String idioma, String genero, int duracao, boolean lancamento) throws MidiaInvalidaException {
         Filme filmeCad = new Filme(genero, nome, idioma, duracao);
         adicionarMidia(filmeCad);
+        if(lancamento){
+            setLancamento(filmeCad);
+        }
     }
 
     /**
