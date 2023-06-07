@@ -26,7 +26,8 @@ public class App {
             System.out.println("1 - Cadastrar um cliente");
             System.out.println("2 - Cadastrar uma série");
             System.out.println("3 - Cadastrar um filme");
-            System.out.println("4 - Fazer login");
+            System.out.println("4 - Cadastrar um trailer");
+            System.out.println("5 - Fazer login");
             System.out.println("0 - Sair");
             op = entrada.nextInt();
             switch (op) {
@@ -42,6 +43,10 @@ public class App {
                     break;
 
                 case 4:
+                    cadastrarTrailer(plat);
+                    break;
+
+                case 5:
                     fazerLogin(plat);
                     break;
 
@@ -78,7 +83,7 @@ public class App {
 
         try {
             plat.adicionarCliente(nomeCompleto, nomeDeUsuario, senha);
-            if(eProfissional()){
+            if (eProfissional()) {
                 plat.setClienteProfissional(nomeDeUsuario);
             }
         } catch (ClienteInvalidoException e) {
@@ -152,9 +157,37 @@ public class App {
         System.out.println("Filme cadastrado com sucesso!");
     }
 
-    private static void fazerLogin(PlataformaStreaming plat) {
+    private static void cadastrarTrailer(PlataformaStreaming plat) {
 
         System.out.println("Opção 4 selecionada.");
+        System.out.println();
+        entrada.nextLine();
+
+        String nome, idioma, genero;
+        System.out.println("Digite o nome do trailer");
+        nome = entrada.nextLine();
+
+        System.out.println("Digite o idioma do trailer");
+        idioma = entrada.nextLine();
+
+        System.out.println("Digite o genero do trailer");
+        genero = entrada.nextLine();
+
+        try {
+            Trailer trailer = new Trailer(genero, nome, idioma);
+            if (eLancamento())
+                plat.setLancamento(trailer);
+            plat.adicionarMidia(trailer);
+        } catch (MidiaInvalidaException e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("Trailer cadastrado com sucesso!");
+    }
+
+    private static void fazerLogin(PlataformaStreaming plat) {
+
+        System.out.println("Opção 5 selecionada.");
         entrada.nextLine();
 
         System.out.println("Insira o nome de usuario:");
@@ -473,5 +506,4 @@ public class App {
         return (op == 1);
     }
 
-    
 }
