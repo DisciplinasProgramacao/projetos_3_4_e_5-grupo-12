@@ -655,6 +655,9 @@ public class PlataformaStreaming implements IRelatorio {
                 .map(midia -> "Midia do genero " + genero + ": " + midia.getNome() + " - Nota Media: "
                         + midia.calcularNotaMedia())
                 .collect(Collectors.joining("\n"));
+        if (relatorio.isEmpty()) {
+            relatorio = "Esse genero nao existe nessa midia";
+        }
         return relatorio;
     }
 
@@ -667,6 +670,9 @@ public class PlataformaStreaming implements IRelatorio {
                 .map(midia -> "Midia do genero " + genero + ": " + midia.getNome() + " - Audiencia: "
                         + midia.getAudiencia())
                 .collect(Collectors.joining("\n"));
+        if (relatorio.isEmpty()) {
+            relatorio = "Esse genero nao existe nessa midia";
+        }
         return relatorio;
     }
 
