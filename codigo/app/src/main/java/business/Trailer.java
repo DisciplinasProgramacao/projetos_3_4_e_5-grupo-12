@@ -29,7 +29,6 @@ public class Trailer extends Midia {
         String nome = getNome();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String data = getDataLancamento().format(formatter);
-        
 
         return ("\n" + id + ";" + nome + ";" + data);
     }

@@ -251,8 +251,6 @@ public class Cliente implements ISalvavel {
 
     }
 
-    
-
     /**
      * Filtra filmesParaVer e a filmesJaVistos por gênero
      * 
@@ -413,11 +411,11 @@ public class Cliente implements ISalvavel {
         return this.dataAssitida;
     }
 
-    public ClienteProfissional getMeuTipoProfissional(){
+    public ClienteProfissional getMeuTipoProfissional() {
         return this.profissional;
     }
 
-    public void setMeuTipoProfissional(ClienteProfissional cliente){
+    public void setMeuTipoProfissional(ClienteProfissional cliente) {
         this.profissional = cliente;
     }
 

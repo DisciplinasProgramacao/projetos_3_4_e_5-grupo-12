@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
-public class Serie extends Midia implements Lancavel{
+public class Serie extends Midia implements Lancavel {
 
     private int quantidadeEpisodios;
     private Random random = new Random();
@@ -16,9 +16,10 @@ public class Serie extends Midia implements Lancavel{
      * @param nome                Esse é o nome da serie
      * @param idioma              Esse é o idioma da serie como portugues ou ingles
      * @param quantidadeEpisodios Essa é a quantidade de episodios da serie
-     * @throws MidiaInvalidaException Essa é a Excecao quando o set da midia esta incorreto
+     * @throws MidiaInvalidaException Essa é a Excecao quando o set da midia esta
+     *                                incorreto
      */
-    public Serie(String genero, String nome, String idioma, int quantidadeEpisodios) throws MidiaInvalidaException{
+    public Serie(String genero, String nome, String idioma, int quantidadeEpisodios) throws MidiaInvalidaException {
         super(genero, nome, idioma);
         setQuantidadeEpisodios(quantidadeEpisodios);
     }
@@ -29,8 +30,10 @@ public class Serie extends Midia implements Lancavel{
      * @param id             Esse é o id da serie
      * @param nome           Esse é o nome da serie
      * @param dataLancamento Esse é a data de lançamento da serie
-     * @throws SerieInvalidaException Essa é a Excecao quando o set da serie esta incorreto
-     * @throws MidiaInvalidaException Essa é a Excecao quando o set da midia esta incorreto
+     * @throws SerieInvalidaException Essa é a Excecao quando o set da serie esta
+     *                                incorreto
+     * @throws MidiaInvalidaException Essa é a Excecao quando o set da midia esta
+     *                                incorreto
      */
     public Serie(int id, String nome, LocalDate dataLancamento) throws MidiaInvalidaException {
         super(id, nome, dataLancamento);
@@ -50,7 +53,8 @@ public class Serie extends Midia implements Lancavel{
      * Metodo para por a quantida de episodios da serie
      * 
      * @param quantidadeEpisodios a quantidade de episódios a ser definida
-     * @throws SerieInvalidaException Essa é a Excecao quando o set da serie esta incorreto
+     * @throws SerieInvalidaException Essa é a Excecao quando o set da serie esta
+     *                                incorreto
      */
     public void setQuantidadeEpisodios(int quantidadeEpisodios) throws MidiaInvalidaException {
         if (quantidadeEpisodios > 0) {
