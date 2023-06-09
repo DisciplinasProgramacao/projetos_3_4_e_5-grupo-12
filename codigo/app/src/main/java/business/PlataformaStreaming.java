@@ -422,7 +422,6 @@ public class PlataformaStreaming implements IRelatorio {
 
     }
 
-
     /**
      * esse metodo escreve o objeto no arquivo escolhido
      * 
@@ -623,7 +622,7 @@ public class PlataformaStreaming implements IRelatorio {
                 .count();
 
         double porcentagem = (double) clientesComMaisDe15Avaliacoes / totalClientes * 100;
-        String relatorio ="A media declientes com mais que 15 avaliações é" + porcentagem;
+        String relatorio = "A media declientes com mais que 15 avaliações é" + porcentagem;
         return relatorio;
     }
 
@@ -636,7 +635,6 @@ public class PlataformaStreaming implements IRelatorio {
                 .collect(Collectors.joining("\n"));
         return relatorio;
     }
-    
 
     @Override
     public String top10MidiasMaisVisualizacoes() {
@@ -650,13 +648,25 @@ public class PlataformaStreaming implements IRelatorio {
 
     @Override
     public String top10MidiasMelhorAvaliacaoPorGenero(String genero) {
-        String relatorio = "";
+        String relatorio = midias.values().stream()
+                .filter(midia -> midia.getGenero().equals(genero))
+                .sorted(Comparator.comparingDouble(Midia::calcularNotaMedia).reversed())
+                .limit(10)
+                .map(midia -> "Midia do genero " + genero + ": " + midia.getNome() + " - Nota Media: "
+                        + midia.calcularNotaMedia())
+                .collect(Collectors.joining("\n"));
         return relatorio;
     }
 
     @Override
     public String top10MidiasMaisVisualizacoesPorGenero(String genero) {
-        String relatorio = "";
+        String relatorio = midias.values().stream()
+                .filter(midia -> midia.getGenero().equals(genero))
+                .sorted(Comparator.comparingDouble(Midia::getAudiencia).reversed())
+                .limit(10)
+                .map(midia -> "Midia do genero " + genero + ": " + midia.getNome() + " - Audiencia: "
+                        + midia.getAudiencia())
+                .collect(Collectors.joining("\n"));
         return relatorio;
     }
 
