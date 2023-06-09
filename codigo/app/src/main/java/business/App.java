@@ -116,7 +116,7 @@ public class App {
         try {
             boolean lancamento = eLancamento();
             plat.adicionarSerie(nome, idioma, genero, qtdEpisodios, lancamento);
-            
+
         } catch (MidiaInvalidaException e) {
             System.out.println(e.getMessage());
         }
@@ -302,10 +302,17 @@ public class App {
                     System.out.println(plat.top10MidiasMaisVisualizacoes());
                     break;
                 case 6:
-                    System.out.println(plat.top10MidiasMelhorAvaliacaoPorGenero());
+                    String genero;
+                    entrada.nextLine();
+                    System.out.println("Qual genero voce quer ver o top 10?");
+                    genero = entrada.nextLine();
+                    System.out.println(plat.top10MidiasMelhorAvaliacaoPorGenero(genero));
                     break;
                 case 7:
-                    System.out.println(plat.top10MidiasMaisVisualizacoesPorGenero());
+                    entrada.nextLine();
+                    System.out.println("Qual genero voce quer ver o top 10?");
+                    genero = entrada.nextLine();
+                    System.out.println(plat.top10MidiasMaisVisualizacoesPorGenero(genero));
                     break;
                 case 0:
                     break;
