@@ -78,13 +78,12 @@ public class Avaliacao {
         return this.comentario;
     }
 
-
     @Override
     public String toString() {
         return "{" +
-            " nota='" + getNota() + "'" +
-            ", comentario='" + getComentario() + "'" +
-            "}";
+                " nota='" + getNota() + "'" +
+                ", comentario='" + getComentario() + "'" +
+                "}";
     }
 
 }
