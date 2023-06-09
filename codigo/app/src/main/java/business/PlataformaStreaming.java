@@ -23,9 +23,6 @@ public class PlataformaStreaming implements IRelatorio {
     private HashMap<String, Cliente> clientes = new HashMap<String, Cliente>();
     private Cliente clienteAtual;
 
-    private float[] Top10maioresNotas = new float[10];
-    private String[] top10MaisVisto = new String[20];
-
     /**
      * Constutor da plataforma de Streamming
      * 
@@ -39,10 +36,7 @@ public class PlataformaStreaming implements IRelatorio {
         carregarMidia(arqFilmes);
         carregarClientes();
         carregarAudiencia();
-        carregarDadosRelatorio();
-        for (int i = 0; i < Top10maioresNotas.length; i++) {
-            Top10maioresNotas[i] = 0.0f;
-        }
+
     }
 
     /**
@@ -428,24 +422,6 @@ public class PlataformaStreaming implements IRelatorio {
 
     }
 
-    private void carregarDadosRelatorio() {
-        for (int i = 0; i < top10MaisVisto.length; i += 2) {
-            top10MaisVisto[i] = "0";
-            top10MaisVisto[i + 1] = " ";
-        }
-
-        List<Midia> lista = new ArrayList<Midia>(midias.values());
-        for (Midia m : lista) {
-            for (int i = 0; i < top10MaisVisto.length; i += 2) {
-                int aux = Integer.parseInt(top10MaisVisto[i]);
-                if (m.getAudiencia() > aux) {
-                    top10MaisVisto[i] = Integer.toString(m.getAudiencia());
-                    top10MaisVisto[i + 1] = m.getNome();
-                    break;
-                }
-            }
-        }
-    }
 
     /**
      * esse metodo escreve o objeto no arquivo escolhido
@@ -636,7 +612,7 @@ public class PlataformaStreaming implements IRelatorio {
     }
 
     @Override
-    public double porcentagemClientesComPeloMenos15Avaliacoes() {
+    public String porcentagemClientesComPeloMenos15Avaliacoes() {
         Map<String, Long> contadorAvaliacoes = midias.values().stream()
                 .flatMap(midia -> midia.getAvaliadores().stream())
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
@@ -647,7 +623,8 @@ public class PlataformaStreaming implements IRelatorio {
                 .count();
 
         double porcentagem = (double) clientesComMaisDe15Avaliacoes / totalClientes * 100;
-        return porcentagem;
+        String relatorio ="A media declientes com mais que 15 avaliações é" + porcentagem;
+        return relatorio;
     }
 
     @Override
@@ -672,122 +649,14 @@ public class PlataformaStreaming implements IRelatorio {
     }
 
     @Override
-    public String top10MidiasMelhorAvaliacaoPorGenero() {
-        List<Midia> lista = new ArrayList<Midia>(midias.values());
+    public String top10MidiasMelhorAvaliacaoPorGenero(String genero) {
         String relatorio = "";
-        boolean flag = false;
-        String notaString = "";
-        float nota;
-        String aux = "";
-        String partes[];
-
-        // Mapa para armazenar as mídias de cada gênero com melhor avaliação
-        Map<String, List<Midia>> top10PorGenero = new HashMap<>();
-
-        for (Midia m : lista) {
-            if (m.getAvaliacoes().charAt(1) != '}') {
-                aux = m.getAvaliacoes();
-                partes = aux.split("=");
-
-                for (int i = 1; i <= 3; i++) {
-                    notaString += partes[2].charAt(i);
-                }
-
-                nota = Float.parseFloat(notaString);
-
-                // Verificar o gênero da mídia
-                String genero = m.getGenero();
-
-                // Verificar se já existe uma lista para o gênero atual
-                if (!top10PorGenero.containsKey(genero)) {
-                    top10PorGenero.put(genero, new ArrayList<>());
-                }
-
-                List<Midia> midiasPorGenero = top10PorGenero.get(genero);
-
-                for (int i = 0; i < 9; i++) {
-                    if (nota > Top10maioresNotas[i]) {
-                        Top10maioresNotas[i] = nota;
-                        flag = true;
-                        break;
-                    }
-                }
-
-                if (flag) {
-                    relatorio += "Gênero: " + genero + " - Mídia: " + m.getNome() + " - Nota: " + nota + '\n';
-
-                    // Adicionar a mídia à lista do gênero atual
-                    midiasPorGenero.add(m);
-                }
-            }
-            notaString = "";
-            flag = false;
-        }
-
-        // Ordenar as listas de mídias por gênero com base na melhor avaliação
-        for (List<Midia> midiasPorGenero : top10PorGenero.values()) {
-            Collections.sort(midiasPorGenero, new Comparator<Midia>() {
-                @Override
-                public int compare(Midia m1, Midia m2) {
-                    // Comparar as notas de avaliação
-                    return Float.compare(1, 2);
-                }
-            });
-        }
-
-        // Aqui você pode acessar as listas de mídias por gênero em top10PorGenero para
-        // obter as top 10 mídias por gênero com melhor avaliação
-
         return relatorio;
     }
 
     @Override
-    public String top10MidiasMaisVisualizacoesPorGenero() {
-        carregarDadosRelatorio();
+    public String top10MidiasMaisVisualizacoesPorGenero(String genero) {
         String relatorio = "";
-
-        // Mapa para armazenar as mídias de cada gênero com mais visualizações
-        Map<String, List<Midia>> top10PorGenero = new HashMap<>();
-
-        for (int i = 0; i < top10MaisVisto.length; i += 2) {
-            String midia = top10MaisVisto[i + 1];
-            String genero = (midia); // Função fictícia para obter o gênero da mídia
-
-            // Verificar se já existe uma lista para o gênero atual
-            if (!top10PorGenero.containsKey(genero)) {
-                top10PorGenero.put(genero, new ArrayList<>());
-            }
-
-            List<Midia> midiasPorGenero = top10PorGenero.get(genero);
-
-        }
-
-        // Ordenar as listas de mídias por gênero com base no número de visualizações
-        for (List<Midia> midiasPorGenero : top10PorGenero.values()) {
-            Collections.sort(midiasPorGenero, new Comparator<Midia>() {
-                @Override
-                public int compare(Midia m1, Midia m2) {
-                    // Comparar o número de visualizações
-                    return Integer.compare(0, 0);
-                }
-            });
-        }
-
-        // Aqui você pode acessar as listas de mídias por gênero em top10PorGenero para
-        // obter as top 10 mídias por gênero com mais visualizações
-
-        for (String genero : top10PorGenero.keySet()) {
-            relatorio += "Gênero: " + genero + '\n';
-            List<Midia> midiasPorGenero = top10PorGenero.get(genero);
-
-            for (int i = 0; i < Math.min(midiasPorGenero.size(), 10); i++) {
-                Midia m = midiasPorGenero.get(i);
-                relatorio += "Mídia: " + m.getNome() + " - Visualizações: " + m.getAudiencia() + '\n';
-            }
-
-            relatorio += '\n';
-        }
-
         return relatorio;
     }
 
