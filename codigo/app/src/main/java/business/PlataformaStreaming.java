@@ -86,9 +86,8 @@ public class PlataformaStreaming implements IRelatorio {
         }
     }
 
+    public void adicionarTrailer(Midia midia) throws MidiaInvalidaException {
 
-    public void adicionarTrailer(Midia midia) throws MidiaInvalidaException{
-        
         midia.setTrailer((ITrailer) midia);
         adicionarMidia(midia);
     }
@@ -144,12 +143,15 @@ public class PlataformaStreaming implements IRelatorio {
      */
     public void adicionarMidiaParaAssistir(String nomeMidia) throws MidiaInvalidaException {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
-        if (midia != null) {
-            this.clienteAtual.adicionarListaParaVer(midia);
-            escreveArqAudiencia("F", midia, -1);
+        if (midia.getTrailer() == null) {
+            if (midia != null) {
+                this.clienteAtual.adicionarListaParaVer(midia);
+                escreveArqAudiencia("F", midia, -1);
+            }
         } else {
-            throw new MidiaInvalidaException("Nenhuma midia encontrada com esse nome!");
+            throw new MidiaInvalidaException("Não é possível adicionar um trailer na lista de mídias para assistir");
         }
+
     }
 
     /**
@@ -163,16 +165,21 @@ public class PlataformaStreaming implements IRelatorio {
     public void adicionarMidiaVista(String nomeMidia) throws MidiaInvalidaException, ClienteInvalidoException {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
 
-        if (midia.getLancamento() != null) {
-            if (this.clienteAtual.getMeuTipoProfissional() != null) {
-                verificarAdicionarMidiaVista(midia);
+        if (midia.getTrailer() == null) {
+            if (midia.getLancamento() != null) {
+                if (this.clienteAtual.getMeuTipoProfissional() != null) {
+                    verificarAdicionarMidiaVista(midia);
+                } else {
+                    throw new ClienteInvalidoException(
+                            "Somente clientes profissionais podem assistir midias em lançamento!");
+                }
             } else {
-                throw new ClienteInvalidoException(
-                        "Somente clientes profissionais podem assistir midias em lançamento!");
+                verificarAdicionarMidiaVista(midia);
             }
         } else {
-            verificarAdicionarMidiaVista(midia);
+            throw new MidiaInvalidaException("Não é possível adicionar um trailer na lista de mídias assistidas");
         }
+
     }
 
     public void verificarAdicionarMidiaVista(Midia midia) throws MidiaInvalidaException {
@@ -204,13 +211,18 @@ public class PlataformaStreaming implements IRelatorio {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
         setClienteEspecialista();
 
-        if (!midia.getAvaliacoes().contains(clienteAtual.getNomeDeUsuario())) {
-            if (this.clienteAtual.criarAvaliacao(nota, midia)) {
-                escreveArqAudiencia("A", midia, nota);
+        if (midia.getTrailer() == null) {
+            if (!midia.getAvaliacoes().contains(clienteAtual.getNomeDeUsuario())) {
+                if (this.clienteAtual.criarAvaliacao(nota, midia)) {
+                    escreveArqAudiencia("A", midia, nota);
+                }
+            } else {
+                throw new AvaliacaoInvalidaException("Você já avaliou essa midia!");
             }
-        } else {
-            throw new AvaliacaoInvalidaException("Você já avaliou essa midia!");
+        }else{
+            throw new MidiaInvalidaException("Não é possível avaliar um trailer");
         }
+
     }
 
     /**
