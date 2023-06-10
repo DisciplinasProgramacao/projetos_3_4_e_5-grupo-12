@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
-public class Serie extends Midia implements Lancavel {
+public class Serie extends Midia implements Lancavel, ITrailer {
 
     private int quantidadeEpisodios;
     private Random random = new Random();
@@ -22,6 +22,19 @@ public class Serie extends Midia implements Lancavel {
     public Serie(String genero, String nome, String idioma, int quantidadeEpisodios) throws MidiaInvalidaException {
         super(genero, nome, idioma);
         setQuantidadeEpisodios(quantidadeEpisodios);
+    }
+
+        /**
+     * Esse é o construtor da classe serie para usar quando cadastrado manualmente
+     * 
+     * @param genero              Esse é o genero da serie, como terror ou comedia
+     * @param nome                Esse é o nome da serie
+     * @param idioma              Esse é o idioma da serie como portugues ou ingles
+     * @throws MidiaInvalidaException Essa é a Excecao quando o set da midia esta
+     *                                incorreto
+     */
+    public Serie(String genero, String nome, String idioma) throws MidiaInvalidaException {
+        super(genero, nome, idioma);
     }
 
     /**

@@ -86,6 +86,13 @@ public class PlataformaStreaming implements IRelatorio {
         }
     }
 
+
+    public void adicionarTrailer(Midia midia) throws MidiaInvalidaException{
+        
+        midia.setTrailer((ITrailer) midia);
+        adicionarMidia(midia);
+    }
+
     /**
      * Esse metodo recebe parametros do cliente, cria uma serie e envia para um
      * metodo polimorfico

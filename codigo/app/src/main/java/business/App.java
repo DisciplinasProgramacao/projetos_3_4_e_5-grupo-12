@@ -159,6 +159,7 @@ public class App {
         entrada.nextLine();
 
         String nome, idioma, genero;
+        int tipo;
         System.out.println("Digite o nome do trailer");
         nome = entrada.nextLine();
 
@@ -168,11 +169,22 @@ public class App {
         System.out.println("Digite o genero do trailer");
         genero = entrada.nextLine();
 
+        do {
+            System.out.println("Esse trailer é de uma série(1) ou de um filme(2)?");
+            tipo = entrada.nextInt();
+        } while (tipo != 1 || tipo != 2);
+
+        Midia midia = null;
         try {
-            Trailer trailer = new Trailer(genero, nome, idioma);
-            if (eLancamento())
-                plat.setLancamento(trailer);
-            plat.adicionarMidia(trailer);
+            if (tipo == 1) {
+                midia = new Serie(genero, nome, idioma);
+            } else if (tipo == 2) {
+                midia = new Filme(genero, nome, idioma);
+            } else {
+                System.out.println("Digite um valor válido");
+            }
+
+            plat.adicionarTrailer(midia);
         } catch (MidiaInvalidaException e) {
             System.out.println(e.getMessage());
         }
@@ -266,7 +278,7 @@ public class App {
     }
 
     private static void buscarMidiaNome(PlataformaStreaming plat) {
-        
+
         System.out.println("Nome da midia: ");
         entrada.nextLine();
         String input = entrada.nextLine();
@@ -278,9 +290,7 @@ public class App {
         } catch (MidiaInvalidaException e) {
             System.out.println(e.getMessage());
         }
-        
 
-        
     }
 
     private static void relatorios(PlataformaStreaming plat) {
