@@ -3,7 +3,7 @@ package business;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Filme extends Midia implements Lancavel {
+public class Filme extends Midia implements Lancavel, ITrailer {
 
     private int duracao;
 
@@ -20,6 +20,19 @@ public class Filme extends Midia implements Lancavel {
         super(genero, nome, idioma);
         setDuracao(duracao);
 
+    }
+
+        /**
+     * Esse é o construtor da classe filme para usar quando cadastrado manualmente
+     * 
+     * @param genero  Esse é o genero do filme, como terror ou comedia
+     * @param nome    Esse é o nome do filme
+     * @param idioma  Esse é o idioma do filme como portugues ou ingles
+     * @param duracao Essa é a duração em minutos do filme
+     * @throws MidiaInvalidaException propaga exceção se houver valores inválidos
+     */
+    public Filme(String genero, String nome, String idioma) throws MidiaInvalidaException {
+        super(genero, nome, idioma);
     }
 
     /**

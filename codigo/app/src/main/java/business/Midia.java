@@ -22,6 +22,7 @@ public abstract class Midia implements ISalvavel {
     private HashMap<String, Avaliacao> avaliacoes = new HashMap<>();
     private static Random random = new Random();
     private Lancavel lancamento = null;
+    private ITrailer trailer = null;
 
     /**
      * Construtor da classe Midia.
@@ -295,6 +296,16 @@ public abstract class Midia implements ISalvavel {
         }
 
         return nomes;
+    }
+
+    public void setTrailer(ITrailer trailer) throws MidiaInvalidaException {
+        if (trailer != null) {
+            this.trailer = trailer;
+        }
+    }
+
+    public ITrailer gTrailer(){
+        return this.trailer;
     }
 
 }
