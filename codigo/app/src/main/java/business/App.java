@@ -169,10 +169,10 @@ public class App {
         System.out.println("Digite o genero do trailer");
         genero = entrada.nextLine();
 
-        do {
+       
             System.out.println("Esse trailer é de uma série(1) ou de um filme(2)?");
             tipo = entrada.nextInt();
-        } while (tipo != 1 || tipo != 2);
+      
 
         Midia midia = null;
         try {
