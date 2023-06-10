@@ -215,10 +215,11 @@ public class App {
             System.out.println("2 - Adicionar Midia ja assistida");
             System.out.println("3 - Ver midias assistidas");
             System.out.println("4 - Ver midia para assistir");
-            System.out.println("5 - Buscar uma mídia");
+            System.out.println("5 - Buscar uma mídia da sua lista");
             System.out.println("6 - Avaliar uma mídia");
             System.out.println("7 - Ver nota média de uma mídia");
             System.out.println("8 - Ver relatórios");
+            System.out.println("9 - Buscar mídia por nome");
             System.out.println("0 - Sair");
             op = entrada.nextInt();
 
@@ -251,6 +252,9 @@ public class App {
                 case 8:
                     relatorios(plat);
                     break;
+                case 9:
+                    buscarMidiaNome(plat);
+                    break;
                 case 0:
                     break;
                 default:
@@ -259,6 +263,24 @@ public class App {
             }
 
         } while (op != 0);
+    }
+
+    private static void buscarMidiaNome(PlataformaStreaming plat) {
+        
+        System.out.println("Nome da midia: ");
+        entrada.nextLine();
+        String input = entrada.nextLine();
+        try {
+            Midia m = plat.filtrarMidiaPorNome(input);
+            System.out.println("Nome: " + m.getNome());
+            System.out.println("Genero: " + m.getGenero());
+            System.out.println("Idioma: " + m.getIdioma());
+        } catch (MidiaInvalidaException e) {
+            System.out.println(e.getMessage());
+        }
+        
+
+        
     }
 
     private static void relatorios(PlataformaStreaming plat) {
