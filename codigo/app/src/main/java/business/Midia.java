@@ -304,7 +304,7 @@ public abstract class Midia implements ISalvavel {
         }
     }
 
-    public ITrailer gTrailer(){
+    public ITrailer getTrailer(){
         return this.trailer;
     }
 
