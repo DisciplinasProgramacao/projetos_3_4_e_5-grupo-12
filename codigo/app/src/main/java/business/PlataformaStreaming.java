@@ -647,7 +647,7 @@ public class PlataformaStreaming implements IRelatorio {
                 .count();
 
         double porcentagem = (double) clientesComMaisDe15Avaliacoes / totalClientes * 100;
-        String relatorio = "A media declientes com mais que 15 avaliações é" + porcentagem;
+        String relatorio = "A media de clientes com mais que 15 avaliações é" + porcentagem;
         return relatorio;
     }
 
