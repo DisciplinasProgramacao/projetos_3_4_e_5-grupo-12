@@ -37,8 +37,8 @@ public class PlataformaStreamingTest {
     void testAdicionarMidiaParaAssistir() throws MidiaInvalidaException, ClienteInvalidoException { // conferir
         p.adicionarCliente("Geoge o Curioso", "George", "123poGchamp456");
         p.login("George", "123poGchamp456");
-        p.adicionarSerie("Nana a Banana", "portugues", "comedia", 16);
-        p.adicionarSerie("Papaleguas", "portugues", "terror", 16);
+        p.adicionarSerie("Nana a Banana", "portugues", "comedia", 16,false);
+        p.adicionarSerie("Papaleguas", "portugues", "terror", 16,false);
         p.adicionarMidiaParaAssistir("Nana a Banana");
         p.adicionarMidiaParaAssistir("Papaleguas");
         assertTrue(p.getListaParaAssistir().contains("Papaleguas"));
@@ -49,8 +49,8 @@ public class PlataformaStreamingTest {
     void testAdicionarMidiaVista() throws MidiaInvalidaException, ClienteInvalidoException { // conferir
         p.adicionarCliente("Geoge o Curioso", "George", "123poGchamp456");
         p.login("George", "123poGchamp456");
-        p.adicionarSerie("Nana a Banana", "portugues", "comedia", 16);
-        p.adicionarSerie("Papaleguas", "portugues", "terror", 16);
+        p.adicionarSerie("Nana a Banana", "portugues", "comedia", 16,false);
+        p.adicionarSerie("Papaleguas", "portugues", "terror", 16,false);
         p.adicionarMidiaVista("Nana a Banana");
         p.adicionarMidiaVista("Papaleguas");
         assertTrue(p.getListaJaVista().contains("Papaleguas"));
@@ -66,8 +66,8 @@ public class PlataformaStreamingTest {
 
     @Test
     void testFiltrarMidiaPorNome() throws MidiaInvalidaException {
-        p.adicionarFilme("Demanda Dos Conselheiros", "portugues", "aventura", 160);
-        p.adicionarSerie("Nana a Banana", "portugues", "comedia", 16);
+        p.adicionarFilme("Demanda Dos Conselheiros", "portugues", "aventura", 160,false);
+        p.adicionarSerie("Nana a Banana", "portugues", "comedia", 16,false);
         assertEquals("Demanda Dos Conselheiros", p.filtrarMidiaPorNome("Demanda Dos Conselheiros").getNome());
     }
 
@@ -75,8 +75,8 @@ public class PlataformaStreamingTest {
     void testAdicionarMidiaParaAssistirDuplicada() throws MidiaInvalidaException, ClienteInvalidoException {
         p.adicionarCliente("Geoge o Curioso", "George", "123poGchamp456");
         p.login("George", "123poGchamp456");
-        p.adicionarSerie("Nana a Banana", "portugues", "comedia", 16);
-        p.adicionarSerie("Papaleguas", "portugues", "terror", 16);
+        p.adicionarSerie("Nana a Banana", "portugues", "comedia", 16,false);
+        p.adicionarSerie("Papaleguas", "portugues", "terror", 16,false);
         assertThrows(MidiaInvalidaException.class, () -> {
             p.adicionarMidiaParaAssistir("Nana a Banana");
             p.adicionarMidiaParaAssistir("Nana a Banana");
@@ -87,8 +87,8 @@ public class PlataformaStreamingTest {
     void testAdicionarMidiaVistaDulpicada() throws MidiaInvalidaException, ClienteInvalidoException {
         p.adicionarCliente("Geoge o Curioso", "George", "123poGchamp456");
         p.login("George", "123poGchamp456");
-        p.adicionarSerie("Nana a Banana", "portugues", "comedia", 16);
-        p.adicionarSerie("Papaleguas", "portugues", "terror", 16);
+        p.adicionarSerie("Nana a Banana", "portugues", "comedia", 16,false);
+        p.adicionarSerie("Papaleguas", "portugues", "terror", 16,false);
         assertThrows(MidiaInvalidaException.class, () -> {
             p.adicionarMidiaVista("Nana a Banana");
             p.adicionarMidiaVista("Nana a Banana");
