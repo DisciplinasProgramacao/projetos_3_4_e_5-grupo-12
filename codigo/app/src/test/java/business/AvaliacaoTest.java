@@ -48,11 +48,11 @@ class AvaliacaoTest {
     void testSetClienteEspecialista() throws ClienteInvalidoException, MidiaInvalidaException, AvaliacaoInvalidaException {
         p.adicionarCliente("Geoge o Curioso","George","123poGchamp456");
         p.login("George", "123poGchamp456");
-        p.adicionarSerie("Nana a Banana","portugues","comedia",16);
-        p.adicionarSerie("Papaleguas","portugues","terror",16);
-        p.adicionarSerie("jardim","portugues","comedia",16);
-        p.adicionarFilme("Lago","portugues","terror",160);
-        p.adicionarFilme("Destiny","portugues","terror",160);
+        p.adicionarSerie("Nana a Banana","portugues","comedia",16,false);
+        p.adicionarSerie("Papaleguas","portugues","terror",16,false);
+        p.adicionarSerie("jardim","portugues","comedia",16,false);
+        p.adicionarFilme("Lago","portugues","terror",160,false);
+        p.adicionarFilme("Destiny","portugues","terror",160,false);
         p.adicionarMidiaVista("Nana a Banana");
         p.adicionarMidiaVista("Papaleguas");
         p.adicionarMidiaVista("jardim");
@@ -71,11 +71,11 @@ class AvaliacaoTest {
     void testComentar() throws ClienteInvalidoException, MidiaInvalidaException, AvaliacaoInvalidaException { // revisar
         p.adicionarCliente("Geoge o Curioso","George","123poGchAmp456");
         p.login("George", "123poGchAmp456");
-        p.adicionarSerie("Nana a Banana","portugues","comedia",16);
-        p.adicionarSerie("Papaleguas","portugues","terror",16);
-        p.adicionarSerie("jardim","portugues","comedia",16);
-        p.adicionarFilme("Lago","portugues","terror",160);
-        p.adicionarFilme("Destiny","portugues","terror",160);
+        p.adicionarSerie("Nana a Banana","portugues","comedia",16,false);
+        p.adicionarSerie("Papaleguas","portugues","terror",16,false);
+        p.adicionarSerie("jardim","portugues","comedia",16,false);
+        p.adicionarFilme("Lago","portugues","terror",160,false);
+        p.adicionarFilme("Destiny","portugues","terror",160,false);
         p.adicionarMidiaVista("Nana a Banana");
         p.adicionarMidiaVista("Papaleguas");
         p.adicionarMidiaVista("jardim");
