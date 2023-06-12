@@ -527,6 +527,12 @@ public class PlataformaStreaming implements IRelatorio {
                 .orElseThrow(() -> new MidiaInvalidaException("Nenhuma midia encontrada com esse nome!"));
     }
 
+    public String filtrarMidiaPorNomeString(String nome) throws MidiaInvalidaException {
+        Midia m = filtrarMidiaPorNome(nome);
+        return "Nome: " + m.getNome() + "\nGenero: " + m.getGenero() + "\nIdioma: " + m.getIdioma();
+        
+    }
+
     /**
      * testa se o cliente é especialista
      * 
