@@ -1,5 +1,6 @@
 package business;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
@@ -8,6 +9,7 @@ public class Serie extends Midia implements Lancavel, ITrailer {
 
     private int quantidadeEpisodios;
     private Random random = new Random();
+    private static final String arqSeries = "codigo/POO_Series.csv";
 
     /**
      * Esse é o construtor da classe serie para usar quando cadastrado manualmente
@@ -109,5 +111,10 @@ public class Serie extends Midia implements Lancavel, ITrailer {
         String data = getDataLancamento().format(formatter);
 
         return ("\n" + id + ";" + nome + ";" + data);
+    }
+
+    @Override
+    public String getArquivo() {
+        return arqSeries;
     }
 }

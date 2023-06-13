@@ -1,5 +1,7 @@
 package business;
 
+import java.io.File;
+
 public interface ISalvavel {
 
     /**
@@ -8,5 +10,7 @@ public interface ISalvavel {
      * @return uma string com os dados
      */
     String getDados();
+
+    String getArquivo();
 
 }
