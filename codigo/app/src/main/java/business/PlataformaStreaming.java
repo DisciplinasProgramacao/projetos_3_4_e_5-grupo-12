@@ -14,10 +14,10 @@ import java.util.stream.Collectors;
 import javax.management.InvalidAttributeValueException;
 
 public class PlataformaStreaming implements IRelatorio {
-    private static final String arqFilmes = "codigo/POO_Filmes.csv";
-    private static final String arqSeries = "codigo/POO_Series.csv";
     private static final String arqClientes = "codigo/POO_Espectadores.csv";
     private static final String arqAudiencia = "codigo/POO_Audiencia.csv";
+    private static final String arqSeries = "codigo/POO_Series.csv";
+    private static final String arqFilmes = "codigo/POO_Filmes.csv";
     private String nome;
     private HashMap<Integer, Midia> midias = new HashMap<>();
     private HashMap<String, Cliente> clientes = new HashMap<String, Cliente>();
@@ -465,11 +465,7 @@ public class PlataformaStreaming implements IRelatorio {
      * @param midia
      */
     private void escreveArqMidia(ISalvavel midia) {
-        if (midia instanceof Filme) {
-            escreveArquivo(midia, arqFilmes);
-        } else if (midia instanceof Serie) {
-            escreveArquivo(midia, arqSeries);
-        }
+       escreveArquivo(midia, midia.getArquivo());
     }
 
     /**

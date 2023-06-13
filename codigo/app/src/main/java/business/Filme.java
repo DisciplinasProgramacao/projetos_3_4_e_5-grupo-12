@@ -1,11 +1,13 @@
 package business;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Filme extends Midia implements Lancavel, ITrailer {
 
     private int duracao;
+    private static final String arqFilmes = "codigo/POO_Filmes.csv";
 
     /**
      * Esse é o construtor da classe filme para usar quando cadastrado manualmente
@@ -107,5 +109,10 @@ public class Filme extends Midia implements Lancavel, ITrailer {
                 ", duracao='" + getDuracao() + "'" +
                 ", audiencia='" + getAudiencia() + "'" +
                 "}";
+    }
+
+    @Override
+    public String getArquivo() {
+        return arqFilmes; 
     }
 }

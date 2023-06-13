@@ -16,6 +16,7 @@ public class Cliente implements ISalvavel {
     private List<String> dataAssitida = new LinkedList<>();
     private IComentarista meuTipo = null;
     private ClienteProfissional profissional = null;
+    private static final String arqClientes = "codigo/POO_Espectadores.csv";
 
     /**
      * Cria um novo objeto Cliente com nome completo, nome de usuário e senha.
@@ -417,6 +418,11 @@ public class Cliente implements ISalvavel {
 
     public void setMeuTipoProfissional(ClienteProfissional cliente) {
         this.profissional = cliente;
+    }
+
+    @Override
+    public String getArquivo() {
+        return arqClientes;
     }
 
 }
