@@ -1,13 +1,19 @@
 package business;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class Filme extends Midia implements Lancavel, ITrailer {
+public class Filme extends Midia implements Lancavel, IAssistivel {
 
     private int duracao;
     private static final String arqFilmes = "codigo/POO_Filmes.csv";
+    private HashMap<String, Avaliacao> avaliacoes = new HashMap<>();
+    private int audiencia = 0;
 
     /**
      * Esse é o construtor da classe filme para usar quando cadastrado manualmente
@@ -24,7 +30,7 @@ public class Filme extends Midia implements Lancavel, ITrailer {
 
     }
 
-        /**
+    /**
      * Esse é o construtor da classe filme para usar quando cadastrado manualmente
      * 
      * @param genero  Esse é o genero do filme, como terror ou comedia
@@ -52,6 +58,13 @@ public class Filme extends Midia implements Lancavel, ITrailer {
     }
 
     /**
+     * Registra um aumento na audiência associada a este objeto.
+     */
+    public void registrarAudiencia() {
+        this.audiencia++;
+    }
+
+    /**
      * metodo para pegar a duração do filme
      * 
      * @return retorna a duraçao do filme
@@ -74,6 +87,68 @@ public class Filme extends Midia implements Lancavel, ITrailer {
         } else {
             throw new MidiaInvalidaException("O filme deve possuir pelo menos 1 minuto");
         }
+    }
+
+    /**
+     * Metodo para colocar um comentario em uma avaliaçao
+     * 
+     * @param comentario  esse é o comentario que sera enviado
+     * @param nomeUsuario nome de quem esta enviando
+     * @throws AvaliacaoInvalidaException excecao para caso a avaliaçao esteje
+     *                                    errada
+     */
+    @Override
+    public void setComentario(String comentario, String nomeUsuario) throws AvaliacaoInvalidaException {
+
+        avaliacoes.get(nomeUsuario).setComentario(comentario);
+    }
+
+    /**
+     * Coloca avaliaçao na midia em questão
+     * 
+     * @param nomeUsuario nome do usuario enviando a avaliaçao
+     * @param avaliacao   avaliaçao enviada
+     * @throws MidiaInvalidaException excecao caso a midia seje invalida
+     */
+    @Override
+    public void colocarAvaliacao(String nomeUsuario, Avaliacao avaliacao) throws MidiaInvalidaException {
+        avaliacoes.put(nomeUsuario, avaliacao);
+    }
+
+    /**
+     * Método que calcula a nota media da midia
+     * 
+     * @return retorna a media da avaliação
+     */
+    @Override
+    public double calcularNotaMedia() {
+        return this.avaliacoes.values().stream()
+                .mapToDouble(Avaliacao::getNota)
+                .average()
+                .orElse(0.0);
+    }
+
+    /**
+     * Metodo para pegar as avaliaçoes feitas para determindada midia
+     * 
+     * @return retorna uma string com avaliaçoes e quem fez elas
+     */
+    @Override
+    public String getAvaliacoes() {
+        return avaliacoes.toString();
+    }
+
+    @Override
+    public List<String> getAvaliadores() {
+        List<String> nomes = new ArrayList<>();
+        Pattern pattern = Pattern.compile("\\{(.*?)=\\{");
+        Matcher matcher = pattern.matcher(getAvaliacoes());
+        while (matcher.find()) {
+            String nome = matcher.group(1);
+            nomes.add(nome);
+        }
+
+        return nomes;
     }
 
     /**
@@ -113,6 +188,21 @@ public class Filme extends Midia implements Lancavel, ITrailer {
 
     @Override
     public String getArquivo() {
-        return arqFilmes; 
+        return arqFilmes;
     }
+
+    /**
+     * Retorna a audiência associada a este objeto.
+     * 
+     * @return a audiência associada a este objeto.
+     */
+    public int getAudiencia() {
+        return this.audiencia;
+    }
+
+    @Override
+    public void registrarAudienciaSeNecessario() {
+        registrarAudiencia();
+    }
+
 }

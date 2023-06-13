@@ -1,7 +1,4 @@
 package business;
-
-import java.io.File;
-
 public interface ISalvavel {
 
     /**

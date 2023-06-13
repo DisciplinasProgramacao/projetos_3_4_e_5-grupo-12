@@ -86,9 +86,10 @@ public class PlataformaStreaming implements IRelatorio {
         }
     }
 
+    // pedro
     public void adicionarTrailer(Midia midia) throws MidiaInvalidaException {
 
-        midia.setTrailer((ITrailer) midia);
+        midia.setTrailer((Trailer) midia);
         adicionarMidia(midia);
     }
 
@@ -145,7 +146,7 @@ public class PlataformaStreaming implements IRelatorio {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
         if (midia.getTrailer() == null) {
             if (midia != null) {
-                this.clienteAtual.adicionarListaParaVer(midia);
+                this.clienteAtual.adicionarListaParaVer((IAssistivel) midia);
                 escreveArqAudiencia("F", midia, -1);
             }
         } else {
@@ -184,8 +185,8 @@ public class PlataformaStreaming implements IRelatorio {
 
     public void verificarAdicionarMidiaVista(Midia midia) throws MidiaInvalidaException {
 
-        if (clienteAtual.querVer(midia)) {
-            clienteAtual.retirarDaLista(midia);
+        if (clienteAtual.querVer((IAssistivel) midia)) {
+            clienteAtual.retirarDaLista((IAssistivel) midia);
         }
 
         if (clienteAtual.adicionarMidiaVista(midia)) {
@@ -208,19 +209,15 @@ public class PlataformaStreaming implements IRelatorio {
     public void adicionarAvaliacao(String nomeMidia, float nota)
             throws MidiaInvalidaException, AvaliacaoInvalidaException, ClienteInvalidoException {
 
-        Midia midia = filtrarMidiaPorNome(nomeMidia);
+        IAssistivel midia = (IAssistivel) filtrarMidiaPorNome(nomeMidia);
         setClienteEspecialista();
 
-        if (midia.getTrailer() == null) {
-            if (!midia.getAvaliacoes().contains(clienteAtual.getNomeDeUsuario())) {
-                if (this.clienteAtual.criarAvaliacao(nota, midia)) {
-                    escreveArqAudiencia("A", midia, nota);
-                }
-            } else {
-                throw new AvaliacaoInvalidaException("Você já avaliou essa midia!");
+        if (!midia.getAvaliacoes().contains(clienteAtual.getNomeDeUsuario())) {
+            if (this.clienteAtual.criarAvaliacao(nota, midia)) {
+                escreveArqAudiencia("A", (Midia) midia, nota);
             }
-        }else{
-            throw new MidiaInvalidaException("Não é possível avaliar um trailer");
+        } else {
+            throw new AvaliacaoInvalidaException("Você já avaliou essa midia!");
         }
 
     }
@@ -411,7 +408,7 @@ public class PlataformaStreaming implements IRelatorio {
                 String login = str.nextToken();
                 String tipo = str.nextToken();
                 int idMidia = Integer.parseInt(str.nextToken());
-                Midia midia = midias.get(idMidia);
+                IAssistivel midia = (IAssistivel) midias.get(idMidia);
                 this.clienteAtual = clientes.get(login);
 
                 if (tipo.equals("F")) {
@@ -426,7 +423,7 @@ public class PlataformaStreaming implements IRelatorio {
                             clienteAtual.criarAvaliacao(nota, midia);
                         }
                     }
-                    clienteAtual.adicionarMidiaVista(midia);
+                    clienteAtual.adicionarMidiaVista((Midia) midia);
                     if (clienteAtual.querVer(midia)) {
                         clienteAtual.retirarDaLista(midia);
                     }
@@ -465,7 +462,7 @@ public class PlataformaStreaming implements IRelatorio {
      * @param midia
      */
     private void escreveArqMidia(ISalvavel midia) {
-       escreveArquivo(midia, midia.getArquivo());
+        escreveArquivo(midia, midia.getArquivo());
     }
 
     /**
@@ -526,7 +523,7 @@ public class PlataformaStreaming implements IRelatorio {
     public String filtrarMidiaPorNomeString(String nome) throws MidiaInvalidaException {
         Midia m = filtrarMidiaPorNome(nome);
         return "Nome: " + m.getNome() + "\nGenero: " + m.getGenero() + "\nIdioma: " + m.getIdioma();
-        
+
     }
 
     /**
@@ -549,7 +546,7 @@ public class PlataformaStreaming implements IRelatorio {
      */
     public void comentar(String comentario, String nomeMidia)
             throws ClienteInvalidoException, AvaliacaoInvalidaException, MidiaInvalidaException {
-        Midia midia = filtrarMidiaPorNome(nomeMidia);
+        IAssistivel midia = (IAssistivel) filtrarMidiaPorNome(nomeMidia);
         clienteAtual.fazerComentario(comentario, midia);
     }
 
@@ -588,7 +585,7 @@ public class PlataformaStreaming implements IRelatorio {
      * @throws MidiaInvalidaException caso midia invalida
      */
     public double getNotaMedia(String nomeMidia) throws MidiaInvalidaException {
-        Midia midia = filtrarMidiaPorNome(nomeMidia);
+        IAssistivel midia = (IAssistivel) filtrarMidiaPorNome(nomeMidia);
 
         return midia.calcularNotaMedia();
     }
@@ -657,6 +654,7 @@ public class PlataformaStreaming implements IRelatorio {
         return relatorio;
     }
 
+
     @Override
     public String top10MidiasMaisVisualizacoes() {
         String relatorio = midias.values().stream()
@@ -666,6 +664,7 @@ public class PlataformaStreaming implements IRelatorio {
                 .collect(Collectors.joining("\n"));
         return relatorio;
     }
+
 
     @Override
     public String top10MidiasMelhorAvaliacaoPorGenero(String genero) {

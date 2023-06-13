@@ -8,7 +8,7 @@ public class ClienteProfissional extends Cliente implements IComentarista {
     }
 
     @Override
-    public void comentar(String comentario, Midia midia, String nomeUsuario)
+    public void comentar(String comentario, IAssistivel midia, String nomeUsuario)
             throws ClienteInvalidoException, AvaliacaoInvalidaException {
         midia.setComentario(comentario, nomeUsuario);
     }

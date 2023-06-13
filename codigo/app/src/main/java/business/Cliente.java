@@ -58,9 +58,9 @@ public class Cliente implements ISalvavel {
      * @param midia Mídia que se deseja buscar
      * @return true se achar a mídia, false se não achar
      */
-    public boolean querVer(Midia midia) {
+    public boolean querVer(IAssistivel midia) {
 
-        return listaParaVer.contains(midia);
+        return listaParaVer.contains((Midia) midia);
     }
 
     /**
@@ -74,14 +74,14 @@ public class Cliente implements ISalvavel {
      * @throws MidiaInvalidaException     cria e propaga a exceção se o usuário
      *                                    ainda não assistiu a mídia
      */
-    public boolean criarAvaliacao(float nota, Midia midia) throws AvaliacaoInvalidaException, MidiaInvalidaException {
+    public boolean criarAvaliacao(float nota, IAssistivel midia) throws AvaliacaoInvalidaException, MidiaInvalidaException {
         boolean permitido = false;
 
         if (querVer(midia)) {
             retirarDaLista(midia);
         }
 
-        if ((this.listaJaVistas.contains(midia))) { // correto
+        if ((this.listaJaVistas.contains((Midia) midia))) { // correto
             permitido = true;
             Avaliacao avaliacao = new Avaliacao(nota);
             midia.colocarAvaliacao(getNomeDeUsuario(), avaliacao);
@@ -102,7 +102,7 @@ public class Cliente implements ISalvavel {
      * @throws ClienteInvalidoException   Propaga exceção se houver valores
      *                                    inválidos
      */
-    public void fazerComentario(String comentario, Midia midia)
+    public void fazerComentario(String comentario, IAssistivel midia)
             throws AvaliacaoInvalidaException, ClienteInvalidoException {
         if (meuTipo != null) {
             meuTipo.comentar(comentario, midia, getNomeDeUsuario());
@@ -217,9 +217,9 @@ public class Cliente implements ISalvavel {
      * 
      * @param serie Serie que se deseja adicionar na lista
      */
-    public void adicionarListaParaVer(Midia midia) throws MidiaInvalidaException {
-        if (!listaParaVer.contains(midia)) {
-            listaParaVer.add(midia);
+    public void adicionarListaParaVer(IAssistivel midia) throws MidiaInvalidaException {
+        if (!listaParaVer.contains((Midia) midia)) {
+            listaParaVer.add((Midia)midia);
         }
     }
 
@@ -228,8 +228,8 @@ public class Cliente implements ISalvavel {
      * 
      * @param serie Serie que se deseja remover da lista
      */
-    public void retirarDaLista(Midia midia) {
-        listaParaVer.remove(midia);
+    public void retirarDaLista(IAssistivel midia) {
+        listaParaVer.remove((Midia) midia);
     }
 
     /**
@@ -244,7 +244,7 @@ public class Cliente implements ISalvavel {
 
         if (!listaJaVistas.contains(midia)) {
             listaJaVistas.add(midia);
-            midia.registrarAudiencia();
+            midia.registrarAudienciaSeNecessario();
             return true;
         } else {
             return false;
@@ -282,7 +282,7 @@ public class Cliente implements ISalvavel {
      * @return Uma lista com o resultado do filtro realizado
      */
     public List<Midia> filtrarMidiaPorIdioma(String idioma) {
-        List<Midia> listaFiltrada = Stream.concat(listaParaVer.stream(), listaJaVistas.stream())
+        List<Midia> listaFiltrada = Stream.concat((((List<Midia>) listaParaVer).stream()), listaJaVistas.stream())
                 .filter(m -> m.getIdioma().equals(idioma))
                 .collect(Collectors.toList());
 
@@ -315,7 +315,7 @@ public class Cliente implements ISalvavel {
      */
     public void registrarAudiencia(Midia midia) {
         if (listaJaVistas.size() == 0) {
-            midia.registrarAudiencia();
+            midia.registrarAudienciaSeNecessario();
             listaJaVistas.add(midia);
             for (int j = 0; j < listaParaVer.size(); j++) {
 
@@ -327,7 +327,7 @@ public class Cliente implements ISalvavel {
             for (int i = 0; i < listaJaVistas.size(); i++) {
 
                 if (!(listaJaVistas.get(i).equals(midia))) {
-                    midia.registrarAudiencia();
+                    midia.registrarAudienciaSeNecessario();
                     listaJaVistas.add(midia);
 
                     for (int j = 0; j < listaParaVer.size(); j++) {
