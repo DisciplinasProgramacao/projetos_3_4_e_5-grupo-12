@@ -28,7 +28,7 @@ public class App {
             System.out.println("3 - Cadastrar um filme");
             System.out.println("4 - Cadastrar um trailer");
             System.out.println("5 - Fazer login");
-            System.out.println("0 - Sair");
+            System.out.println("0 - Salvar alterações");
             op = entrada.nextInt();
             switch (op) {
                 case 1:
