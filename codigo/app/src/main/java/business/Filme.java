@@ -166,7 +166,7 @@ public class Filme extends Midia implements Lancavel, IAssistivel {
         String data = getDataLancamento().format(formatter);
         int duracao = getDuracao();
 
-        return ("\n" + id + ";" + nome + ";" + data + ";" + duracao);
+        return ("\n" + id + ";" + nome + ";" + data + ";" + duracao + ";F");
     }
 
     /**

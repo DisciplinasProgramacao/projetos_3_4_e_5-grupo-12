@@ -720,6 +720,5 @@ public class PlataformaStreaming implements IRelatorio {
     public void salvarDados() throws ClienteInvalidoException{
         escreveArqCliente();
         escreveArqMidia();
-        escreveArqAudiencia();
     }
 }
