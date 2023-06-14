@@ -18,6 +18,7 @@ public class PlataformaStreaming implements IRelatorio {
     private static final String arqAudiencia = "codigo/POO_Audiencia.csv";
     private static final String arqSeries = "codigo/POO_Series.csv";
     private static final String arqFilmes = "codigo/POO_Filmes.csv";
+    private static final String arqMidias = "codigo/POO_Midias.csv";
     private String nome;
     private HashMap<Integer, Midia> midias = new HashMap<>();
     private HashMap<String, Cliente> clientes = new HashMap<String, Cliente>();
@@ -80,7 +81,6 @@ public class PlataformaStreaming implements IRelatorio {
     public void adicionarMidia(Midia midia) throws MidiaInvalidaException {
         if (!midias.containsKey(midia.getId())) {
             midias.put(midia.getId(), midia);
-            escreveArqMidia(midia);
         } else {
             throw new MidiaInvalidaException("Essa midia já existe!");
         }
@@ -254,7 +254,6 @@ public class PlataformaStreaming implements IRelatorio {
         Cliente c = new Cliente(nomeCompleto, nomeDeUsuario, senha);
 
         if (!clientes.containsKey(c.getNomeDeUsuario())) {
-            escreveArqCliente(c);
             this.clientes.put(c.getNomeDeUsuario(), c);
         } else {
             throw new ClienteInvalidoException("Esse cliente já existe!");
@@ -444,15 +443,34 @@ public class PlataformaStreaming implements IRelatorio {
      * @param objeto      Esse é o objeto a ser escrito
      * @param nomeArquivo Esse é o arquivo em que sera escrito o objeto
      */
-    private void escreveArquivo(ISalvavel objeto, String nomeArquivo) {
+    private void escreveArquivo(HashMap<?, ? extends ISalvavel> map, String nomeArquivo) {
+    try {
+        FileWriter arquivo = new FileWriter(nomeArquivo, false);
+        map.forEach((key, value) -> {
+            try {
+                arquivo.write(value.getDados());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        arquivo.close();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
 
-        try {
-            FileWriter arquivo = new FileWriter(nomeArquivo, true);
-            arquivo.write(objeto.getDados());
-            arquivo.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+    /**
+     * Esse metodo escreve um cliente no arquivo de cliente, se o nome de usuario
+     * dele ja nao estiver cadastrado
+     * 
+     * @param clienteCad Esse é o cliente a ser posto
+     * @throws ClienteInvalidaException excecao a ser lancada caso o nome de usuario
+     *                                esteja
+     *                                indisponivel ou haja algum erro
+     */
+    private void escreveArqCliente() throws ClienteInvalidoException {
+        escreveArquivo(clientes, arqClientes);
     }
 
     /**
@@ -461,22 +479,10 @@ public class PlataformaStreaming implements IRelatorio {
      * 
      * @param midia
      */
-    private void escreveArqMidia(ISalvavel midia) {
-        escreveArquivo(midia, midia.getArquivo());
+    private void escreveArqMidia() {
+        escreveArquivo(midias, arqMidias);
     }
 
-    /**
-     * Esse metodo escreve um cliente no arquivo de cliente, se o nome de usuario
-     * dele ja nao estiver cadastrado
-     * 
-     * @param clienteCad Esse é o cliente a ser posto
-     * @throws MidiaInvalidaException excecao a ser lancada caso o nome de usuario
-     *                                esteja
-     *                                indisponivel ou haja algum erro
-     */
-    private void escreveArqCliente(Cliente clienteCad) throws MidiaInvalidaException {
-        escreveArquivo(clienteCad, arqClientes);
-    }
 
     /**
      * Esse metodo escreve a audiencia no arquivo de audiencia
@@ -709,5 +715,11 @@ public class PlataformaStreaming implements IRelatorio {
     }
 
     public void adicionarMidia(String string, String string2, String string3, int i) {
+    }
+
+    public void salvarDados() throws ClienteInvalidoException{
+        escreveArqCliente();
+        escreveArqMidia();
+        escreveArqAudiencia();
     }
 }
