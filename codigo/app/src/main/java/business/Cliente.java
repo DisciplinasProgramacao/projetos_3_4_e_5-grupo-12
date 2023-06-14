@@ -426,4 +426,17 @@ public class Cliente implements ISalvavel {
         return arqClientes;
     }
 
+    public String getDadosAudiencia() {
+        String dados="";
+
+        for(Midia m : listaJaVistas) {
+            if(m.eTrailer()){
+                dados += this.nomeDeUsuario + ";" + m.getTipoMidia() + ";" + m.getId() + "\n";
+            } else {
+                dados += this.nomeDeUsuario + ";" + m.getTipoMidia() + ";" + m.getId() + "\n";
+            }
+        }
+        return dados;
+    }
+
 }

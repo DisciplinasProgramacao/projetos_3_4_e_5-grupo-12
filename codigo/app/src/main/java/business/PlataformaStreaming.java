@@ -488,20 +488,20 @@ public class PlataformaStreaming implements IRelatorio {
      *                 assistida
      * @param midiaCad Essa é a midiaque tera a audiencia
      */
-    private void escreveArqAudiencia(String tipo, Midia midiaCad, float nota) {
+    private void escreveArqAudiencia() {
 
         try {
-            FileWriter arquivo = new FileWriter(arqAudiencia, true);
-            int id = midiaCad.getId();
-            String login = clienteAtual.getNomeDeUsuario();
-
+            FileWriter arquivo = new FileWriter(arqAudiencia, false);
             LocalDate data = LocalDate.now();
 
-            if (nota != -1) {
-                arquivo.write("\n" + login + ";" + tipo + ";" + id + ";" + nota + ";" + data);
-            } else {
-                arquivo.write("\n" + login + ";" + tipo + ";" + id + ";" + data);
-            }
+            clientes.forEach((key, content) -> {
+                Cliente c = clientes.get(key);
+                try {
+                    arquivo.write(c.getDadosAudiencia());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
 
             arquivo.close();
         } catch (IOException e) {
@@ -715,6 +715,7 @@ public class PlataformaStreaming implements IRelatorio {
     public void salvarDados() throws ClienteInvalidoException {
         escreveArqCliente();
         escreveArqMidia();
+        escreveArqAudiencia();
     }
 
     public void adicionarTrailer(String nome, String idioma, String genero) throws MidiaInvalidaException {

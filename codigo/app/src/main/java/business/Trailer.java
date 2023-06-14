@@ -70,4 +70,17 @@ public class Trailer extends Midia {
         return true;
     }
 
+    @Override
+    public String getTipoMidia() {
+        return "T";
+    }
+
+    @Override
+    public double getNotaCliente(String nomeUsuario) {
+        if(avaliacoes.get(nomeUsuario).getNota() != -1) {
+            return avaliacoes.get(nomeUsuario).getNota();
+        } else {
+            return -1;
+        }
+    }
 }
