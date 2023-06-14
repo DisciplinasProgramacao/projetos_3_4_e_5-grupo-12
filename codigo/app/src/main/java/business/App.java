@@ -55,11 +55,21 @@ public class App {
                     break;
 
                 case 0:
+                    salvarDados(plat);
                     break;
 
             }
         } while (op != 0);
 
+    }
+
+    private static void salvarDados(PlataformaStreaming plat) {
+        try {
+            plat.salvarDados(); 
+        } catch (ClienteInvalidoException e) {
+            System.out.println(e.getMessage());
+        }
+        
     }
 
     // tratar excecao com try catch dps
