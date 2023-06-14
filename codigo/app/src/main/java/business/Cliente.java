@@ -1,6 +1,7 @@
 package business;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,7 +14,7 @@ public class Cliente implements ISalvavel {
     private String nomeCompleto;
     private List<Midia> listaParaVer = new LinkedList<>();
     private List<Midia> listaJaVistas = new LinkedList<>();
-    private List<String> dataAssitida = new LinkedList<>();
+    private HashMap<Integer, String> dataAssitida = new HashMap<Integer, String>();
     private IComentarista meuTipo = null;
     private ClienteProfissional profissional = null;
     private static final String arqClientes = "codigo/POO_Espectadores.csv";
@@ -86,7 +87,7 @@ public class Cliente implements ISalvavel {
             permitido = true;
             Avaliacao avaliacao = new Avaliacao(nota);
             midia.colocarAvaliacao(getNomeDeUsuario(), avaliacao);
-            adicionarDataAssistida(LocalDate.now().toString());
+            adicionarDataAssistida(((Midia) midia).getId(),LocalDate.now().toString());
         } else {
             throw new MidiaInvalidaException("Você ainda não assistiu essa mídia");
         }
@@ -400,8 +401,8 @@ public class Cliente implements ISalvavel {
      * 
      * @param data data que será adicionada na lista
      */
-    public void adicionarDataAssistida(String data) {
-        this.dataAssitida.add(data);
+    public void adicionarDataAssistida(int idMidia,String data) {
+        this.dataAssitida.put(idMidia, data);
     }
 
     /**
@@ -409,7 +410,7 @@ public class Cliente implements ISalvavel {
      * 
      * @return lista de datas
      */
-    public List<String> getListaDataAssistida() {
+    public HashMap<Integer, String> getListaDataAssistida() {
         return this.dataAssitida;
     }
 
@@ -427,16 +428,31 @@ public class Cliente implements ISalvavel {
     }
 
     public String getDadosAudiencia() {
-        String dados="";
-
-        for(Midia m : listaJaVistas) {
-            if(m.eTrailer()){
-                dados += this.nomeDeUsuario + ";" + m.getTipoMidia() + ";" + m.getId() + "\n";
-            } else {
-                dados += this.nomeDeUsuario + ";" + m.getTipoMidia() + ";" + m.getId() + "\n";
-            }
+        String dados = "";
+        for (Midia m : listaJaVistas) {
+            String tipo = "A";
+            dados += getDadosMidia(m, tipo);
+        }
+        for (Midia m : listaParaVer) {
+            String tipo = "F";
+            dados += getDadosMidia(m, tipo);
         }
         return dados;
+    }
+
+    private String getDadosMidia(Midia m, String tipo) {
+        String data = "";
+
+        if(this.dataAssitida.get(m.getId()) != null){
+            data = this.dataAssitida.get(m.getId());
+        }
+
+        double nota = m.getNotaCliente(this.nomeDeUsuario);
+        if (m.eTrailer()) {
+            return this.nomeDeUsuario + ";" + tipo + ";" + m.getId() + "\n";
+        } else {
+            return this.nomeDeUsuario + ";" + tipo+ ";" + m.getId() + ";" + nota + ";" + data + "\n";     
+        }
     }
 
 }

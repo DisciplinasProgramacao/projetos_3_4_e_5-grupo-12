@@ -140,7 +140,6 @@ public class PlataformaStreaming implements IRelatorio {
 
         if (midia != null) {
             this.clienteAtual.adicionarListaParaVer((IAssistivel) midia);
-            escreveArqAudiencia("F", midia, -1);
         }
     }
 
@@ -169,19 +168,20 @@ public class PlataformaStreaming implements IRelatorio {
 
     }
 
+    //Drumond
     public void verificarAdicionarMidiaVista(Midia midia) throws MidiaInvalidaException, ClassCastException {
 
         if (clienteAtual.querVer(midia)) {
             clienteAtual.retirarDaLista((IAssistivel) midia);
         }
 
-        if (clienteAtual.adicionarMidiaVista(midia)) {
-            escreveArqAudiencia("A", midia, -1F);
-        } else {
+        if (!clienteAtual.adicionarMidiaVista(midia)) {
             throw new MidiaInvalidaException("Voce já assistiu essa midia");
         }
     }
 
+
+    //Drumond
     /**
      * Adiciona avaliacao do cliente recebendo como parametro o nome da midia que
      * quer avaliar e a nota
@@ -196,14 +196,11 @@ public class PlataformaStreaming implements IRelatorio {
             throws MidiaInvalidaException, AvaliacaoInvalidaException, ClienteInvalidoException, ClassCastException {
         Midia m = filtrarMidiaPorNome(nomeMidia);
         if (!m.eTrailer()) {
-
             IAssistivel midia = (IAssistivel) m;
             setClienteEspecialista();
 
             if (!midia.getAvaliacoes().contains(clienteAtual.getNomeDeUsuario())) {
-                if (this.clienteAtual.criarAvaliacao(nota, midia)) {
-                    escreveArqAudiencia("A", (Midia) midia, nota);
-                }
+                this.clienteAtual.criarAvaliacao(nota, midia);
             } else {
                 throw new AvaliacaoInvalidaException("Você já avaliou essa midia!");
             }
@@ -412,19 +409,22 @@ public class PlataformaStreaming implements IRelatorio {
                 if (tipo.equals("F")) {
                     clienteAtual.adicionarListaParaVer(midia);
                 } else {
-                    if (str.hasMoreTokens()) {
-                        String valor = str.nextToken();
-                        if (valor.contains("-")) {
-                            clienteAtual.adicionarDataAssistida(valor);
-                        } else {
-                            nota = Float.parseFloat(valor);
-                            clienteAtual.criarAvaliacao(nota, midia);
-                        }
-                    }
                     clienteAtual.adicionarMidiaVista((Midia) midia);
                     if (clienteAtual.querVer((Midia) midia)) {
                         clienteAtual.retirarDaLista(midia);
                     }
+                    if (str.hasMoreTokens()) {
+                        String valor = str.nextToken();
+                        if (valor.contains("-")) {
+                            clienteAtual.adicionarDataAssistida(((Midia) midia).getId(),valor);
+                        } else {
+                            nota = Float.parseFloat(valor);
+                            if(nota != -1){
+                                clienteAtual.criarAvaliacao(nota, midia);
+                            }
+                        }
+                    }
+                    
                 }
             }
 
@@ -561,10 +561,10 @@ public class PlataformaStreaming implements IRelatorio {
      */
     public void setClienteEspecialista() throws ClienteInvalidoException {
         if (this.clienteAtual.getTamanhoListaJaVista() >= 5) {
-            List<String> datasAssistidas = clienteAtual.getListaDataAssistida();
+            HashMap<Integer,String> datasAssistidas = clienteAtual.getListaDataAssistida();
             LocalDate menos = LocalDate.now().minusDays(30);
 
-            long contador = datasAssistidas.stream()
+            long contador = datasAssistidas.values().stream()
                     .map(LocalDate::parse)
                     .filter(datassist -> datassist.isAfter(menos))
                     .count();

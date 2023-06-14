@@ -217,7 +217,7 @@ public class Filme extends Midia implements Lancavel, IAssistivel {
 
     @Override
     public double getNotaCliente(String nomeUsuario) {
-        if(avaliacoes.get(nomeUsuario).getNota() != -1) {
+        if(avaliacoes.get(nomeUsuario) != null) {
             return avaliacoes.get(nomeUsuario).getNota();
         } else {
             return -1;

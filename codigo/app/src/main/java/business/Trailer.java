@@ -77,10 +77,6 @@ public class Trailer extends Midia {
 
     @Override
     public double getNotaCliente(String nomeUsuario) {
-        if(avaliacoes.get(nomeUsuario).getNota() != -1) {
-            return avaliacoes.get(nomeUsuario).getNota();
-        } else {
-            return -1;
-        }
+        return -1;
     }
 }
