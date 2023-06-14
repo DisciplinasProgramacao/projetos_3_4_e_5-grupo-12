@@ -89,6 +89,6 @@ class AvaliacaoTest {
         p.setClienteEspecialista();
         p.comentar("Ola", "Papaleguas");
         
-        assertTrue(p.filtrarMidiaPorNome("Papaleguas").getAvaliacoes().contains(p.getClienteAtual().getNomeDeUsuario()));
+        assertTrue(((IAssistivel) p.filtrarMidiaPorNome("Papaleguas")).getAvaliacoes().contains(p.getClienteAtual().getNomeDeUsuario()));
     }
 }

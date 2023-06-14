@@ -1,15 +1,21 @@
 package business;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class Serie extends Midia implements Lancavel, ITrailer {
+public class Serie extends Midia implements Lancavel, IAssistivel {
 
     private int quantidadeEpisodios;
     private Random random = new Random();
     private static final String arqSeries = "codigo/POO_Series.csv";
+    private HashMap<String, Avaliacao> avaliacoes = new HashMap<>();
+        private int audiencia = 0;
 
     /**
      * Esse é o construtor da classe serie para usar quando cadastrado manualmente
@@ -26,12 +32,12 @@ public class Serie extends Midia implements Lancavel, ITrailer {
         setQuantidadeEpisodios(quantidadeEpisodios);
     }
 
-        /**
+    /**
      * Esse é o construtor da classe serie para usar quando cadastrado manualmente
      * 
-     * @param genero              Esse é o genero da serie, como terror ou comedia
-     * @param nome                Esse é o nome da serie
-     * @param idioma              Esse é o idioma da serie como portugues ou ingles
+     * @param genero Esse é o genero da serie, como terror ou comedia
+     * @param nome   Esse é o nome da serie
+     * @param idioma Esse é o idioma da serie como portugues ou ingles
      * @throws MidiaInvalidaException Essa é a Excecao quando o set da midia esta
      *                                incorreto
      */
@@ -80,6 +86,75 @@ public class Serie extends Midia implements Lancavel, ITrailer {
     }
 
     /**
+     * Registra um aumento na audiência associada a este objeto.
+     */
+    public void registrarAudiencia() {
+        this.audiencia++;
+    }
+
+    /**
+     * Metodo para colocar um comentario em uma avaliaçao
+     * 
+     * @param comentario  esse é o comentario que sera enviado
+     * @param nomeUsuario nome de quem esta enviando
+     * @throws AvaliacaoInvalidaException excecao para caso a avaliaçao esteje
+     *                                    errada
+     */
+    @Override
+    public void setComentario(String comentario, String nomeUsuario) throws AvaliacaoInvalidaException {
+
+        avaliacoes.get(nomeUsuario).setComentario(comentario);
+    }
+
+    /**
+     * Coloca avaliaçao na midia em questão
+     * 
+     * @param nomeUsuario nome do usuario enviando a avaliaçao
+     * @param avaliacao   avaliaçao enviada
+     * @throws MidiaInvalidaException excecao caso a midia seje invalida
+     */
+    @Override
+    public void colocarAvaliacao(String nomeUsuario, Avaliacao avaliacao) throws MidiaInvalidaException {
+        avaliacoes.put(nomeUsuario, avaliacao);
+    }
+
+    /**
+     * Método que calcula a nota media da midia
+     * 
+     * @return retorna a media da avaliação
+     */
+    @Override
+    public double calcularNotaMedia() {
+        return this.avaliacoes.values().stream()
+                .mapToDouble(Avaliacao::getNota)
+                .average()
+                .orElse(0.0);
+    }
+
+    /**
+     * Metodo para pegar as avaliaçoes feitas para determindada midia
+     * 
+     * @return retorna uma string com avaliaçoes e quem fez elas
+     */
+    @Override
+    public String getAvaliacoes() {
+        return avaliacoes.toString();
+    }
+
+    @Override
+    public List<String> getAvaliadores() {
+        List<String> nomes = new ArrayList<>();
+        Pattern pattern = Pattern.compile("\\{(.*?)=\\{");
+        Matcher matcher = pattern.matcher(getAvaliacoes());
+        while (matcher.find()) {
+            String nome = matcher.group(1);
+            nomes.add(nome);
+        }
+
+        return nomes;
+    }
+
+    /**
      * Retorna uma representação em String do objeto Série.
      * 
      * @return uma String que contém o nome, o id, o gênero, o idioma, a quantidade
@@ -117,4 +192,19 @@ public class Serie extends Midia implements Lancavel, ITrailer {
     public String getArquivo() {
         return arqSeries;
     }
+
+        /**
+     * Retorna a audiência associada a este objeto.
+     * 
+     * @return a audiência associada a este objeto.
+     */
+    public int getAudiencia() {
+        return this.audiencia;
+    }
+
+    @Override
+public void registrarAudienciaSeNecessario() {
+    registrarAudiencia();
+}
+
 }

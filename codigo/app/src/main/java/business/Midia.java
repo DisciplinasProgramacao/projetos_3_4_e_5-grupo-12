@@ -1,12 +1,8 @@
 package business;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public abstract class Midia implements ISalvavel {
 
@@ -15,14 +11,13 @@ public abstract class Midia implements ISalvavel {
     private String genero;
     private String idioma;
     private LocalDate dataLancamento;
-    private int audiencia = 0;
     private static final String[] generos = new String[] { "comedia", "terror", "romance", "acao", "anime", "aventura",
             "documentario", "drama", "policial", "suspense" };
     private static final String[] idiomas = new String[] { "portugues", "ingles", "espanhol" };
-    private HashMap<String, Avaliacao> avaliacoes = new HashMap<>();
+
     private static Random random = new Random();
     private Lancavel lancamento = null;
-    private ITrailer trailer = null;
+    private Trailer trailer = null;
 
     /**
      * Construtor da classe Midia.
@@ -95,6 +90,10 @@ public abstract class Midia implements ISalvavel {
         return this.genero;
     }
 
+    public List<String> getAvaliadores() {
+        return null;
+    }
+
     /**
      * Define um novo gênero para este objeto.
      * 
@@ -146,15 +145,6 @@ public abstract class Midia implements ISalvavel {
         if (!idiomaValido) {
             throw new MidiaInvalidaException("Idioma inválido: " + idioma);
         }
-    }
-
-    /**
-     * Retorna a audiência associada a este objeto.
-     * 
-     * @return a audiência associada a este objeto.
-     */
-    public int getAudiencia() {
-        return this.audiencia;
     }
 
     /**
@@ -210,29 +200,11 @@ public abstract class Midia implements ISalvavel {
                 ", id='" + getId() + "'" +
                 ", genero='" + getGenero() + "'" +
                 ", idioma='" + getIdioma() + "'" +
-                ", audiencia='" + getAudiencia() + "'" +
+
                 "}";
     }
 
-    /**
-     * Registra um aumento na audiência associada a este objeto.
-     */
-    public void registrarAudiencia() {
-        this.audiencia++;
-    }
-
-    /**
-     * Metodo para colocar um comentario em uma avaliaçao
-     * 
-     * @param comentario  esse é o comentario que sera enviado
-     * @param nomeUsuario nome de quem esta enviando
-     * @throws AvaliacaoInvalidaException excecao para caso a avaliaçao esteje
-     *                                    errada
-     */
-    public void setComentario(String comentario, String nomeUsuario) throws AvaliacaoInvalidaException {
-
-        avaliacoes.get(nomeUsuario).setComentario(comentario);
-    }
+    public abstract void registrarAudienciaSeNecessario();
 
     /**
      * pega os dados da midia em questao
@@ -246,38 +218,6 @@ public abstract class Midia implements ISalvavel {
         return ("\n" + nomeUsuario + ";" + tipo + ";" + id);
     }
 
-    /**
-     * Coloca avaliaçao na midia em questão
-     * 
-     * @param nomeUsuario nome do usuario enviando a avaliaçao
-     * @param avaliacao   avaliaçao enviada
-     * @throws MidiaInvalidaException excecao caso a midia seje invalida
-     */
-    public void colocarAvaliacao(String nomeUsuario, Avaliacao avaliacao) throws MidiaInvalidaException {
-        avaliacoes.put(nomeUsuario, avaliacao);
-    }
-
-    /**
-     * Método que calcula a nota media da midia
-     * 
-     * @return retorna a media da avaliação
-     */
-    public double calcularNotaMedia() {
-        return this.avaliacoes.values().stream()
-                .mapToDouble(Avaliacao::getNota)
-                .average()
-                .orElse(0.0);
-    }
-
-    /**
-     * Metodo para pegar as avaliaçoes feitas para determindada midia
-     * 
-     * @return retorna uma string com avaliaçoes e quem fez elas
-     */
-    public String getAvaliacoes() {
-        return avaliacoes.toString();
-    }
-
     public void setLancamento(Lancavel lancamento) {
         this.lancamento = lancamento;
     }
@@ -286,26 +226,18 @@ public abstract class Midia implements ISalvavel {
         return this.lancamento;
     }
 
-    public List<String> getAvaliadores() {
-        List<String> nomes = new ArrayList<>();
-        Pattern pattern = Pattern.compile("\\{(.*?)=\\{");
-        Matcher matcher = pattern.matcher(getAvaliacoes());
-        while (matcher.find()) {
-            String nome = matcher.group(1);
-            nomes.add(nome);
-        }
-
-        return nomes;
-    }
-
-    public void setTrailer(ITrailer trailer) throws MidiaInvalidaException {
+    public void setTrailer(Trailer trailer) throws MidiaInvalidaException {
         if (trailer != null) {
             this.trailer = trailer;
         }
     }
 
-    public ITrailer getTrailer(){
+    public Trailer getTrailer() {
         return this.trailer;
     }
+
+    public abstract double calcularNotaMedia();
+
+    public abstract int getAudiencia();
 
 }
