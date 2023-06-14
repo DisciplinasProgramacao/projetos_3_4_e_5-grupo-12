@@ -210,4 +210,18 @@ public class Filme extends Midia implements Lancavel, IAssistivel {
         return false;
     }
 
+    @Override
+    public String getTipoMidia() {
+        return "F";
+    }
+
+    @Override
+    public double getNotaCliente(String nomeUsuario) {
+        if(avaliacoes.get(nomeUsuario).getNota() != -1) {
+            return avaliacoes.get(nomeUsuario).getNota();
+        } else {
+            return -1;
+        }
+    }
+
 }

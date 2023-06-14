@@ -203,14 +203,26 @@ public class Serie extends Midia implements Lancavel, IAssistivel {
     }
 
     @Override
-public void registrarAudienciaSeNecessario() {
-    registrarAudiencia();
-}
+    public void registrarAudienciaSeNecessario() {
+        registrarAudiencia();
+    }
 
     @Override
     public boolean eTrailer() {
         return false;
     }
 
+    @Override
+    public String getTipoMidia() {
+        return "S";
+    }
 
+    @Override
+    public double getNotaCliente(String nomeUsuario) {
+        if(avaliacoes.get(nomeUsuario).getNota() != -1) {
+            return avaliacoes.get(nomeUsuario).getNota();
+        } else {
+            return -1;
+        }
+    }
 }
