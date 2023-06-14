@@ -207,4 +207,10 @@ public void registrarAudienciaSeNecessario() {
     registrarAudiencia();
 }
 
+    @Override
+    public boolean eTrailer() {
+        return false;
+    }
+
+
 }

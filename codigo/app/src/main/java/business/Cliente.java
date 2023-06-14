@@ -58,9 +58,9 @@ public class Cliente implements ISalvavel {
      * @param midia Mídia que se deseja buscar
      * @return true se achar a mídia, false se não achar
      */
-    public boolean querVer(IAssistivel midia) {
+    public boolean querVer(Midia midia) {
 
-        return listaParaVer.contains((Midia) midia);
+        return listaParaVer.contains(midia);
     }
 
     /**
@@ -74,10 +74,11 @@ public class Cliente implements ISalvavel {
      * @throws MidiaInvalidaException     cria e propaga a exceção se o usuário
      *                                    ainda não assistiu a mídia
      */
-    public boolean criarAvaliacao(float nota, IAssistivel midia) throws AvaliacaoInvalidaException, MidiaInvalidaException {
+    public boolean criarAvaliacao(float nota, IAssistivel midia)
+            throws AvaliacaoInvalidaException, MidiaInvalidaException {
         boolean permitido = false;
 
-        if (querVer(midia)) {
+        if (querVer((Midia) midia)) {
             retirarDaLista(midia);
         }
 
@@ -219,7 +220,7 @@ public class Cliente implements ISalvavel {
      */
     public void adicionarListaParaVer(IAssistivel midia) throws MidiaInvalidaException {
         if (!listaParaVer.contains((Midia) midia)) {
-            listaParaVer.add((Midia)midia);
+            listaParaVer.add((Midia) midia);
         }
     }
 

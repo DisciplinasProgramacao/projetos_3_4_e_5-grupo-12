@@ -65,11 +65,11 @@ public class App {
 
     private static void salvarDados(PlataformaStreaming plat) {
         try {
-            plat.salvarDados(); 
+            plat.salvarDados();
         } catch (ClienteInvalidoException e) {
             System.out.println(e.getMessage());
         }
-        
+
     }
 
     // tratar excecao com try catch dps
@@ -169,7 +169,6 @@ public class App {
         entrada.nextLine();
 
         String nome, idioma, genero;
-        int tipo;
         System.out.println("Digite o nome do trailer");
         nome = entrada.nextLine();
 
@@ -179,27 +178,11 @@ public class App {
         System.out.println("Digite o genero do trailer");
         genero = entrada.nextLine();
 
-       
-            System.out.println("Esse trailer é de uma série(1) ou de um filme(2)?");
-            tipo = entrada.nextInt();
-      
-
-        Midia midia = null;
         try {
-            if (tipo == 1) {
-                midia = new Serie(genero, nome, idioma);
-            } else if (tipo == 2) {
-                midia = new Filme(genero, nome, idioma);
-            } else {
-                System.out.println("Digite um valor válido");
-            }
-
-            plat.adicionarTrailer(midia);
+            plat.adicionarTrailer(nome, idioma, genero);
         } catch (MidiaInvalidaException e) {
             System.out.println(e.getMessage());
         }
-
-        System.out.println("Trailer cadastrado com sucesso!");
     }
 
     private static void fazerLogin(PlataformaStreaming plat) {
@@ -293,7 +276,7 @@ public class App {
         entrada.nextLine();
         String input = entrada.nextLine();
         try {
-           System.out.println(plat.filtrarMidiaPorNomeString(input));
+            System.out.println(plat.filtrarMidiaPorNomeString(input));
         } catch (MidiaInvalidaException e) {
             System.out.println(e.getMessage());
         }
@@ -451,7 +434,10 @@ public class App {
             plat.adicionarMidiaParaAssistir(nomeMidiaAVer);
         } catch (MidiaInvalidaException e) {
             System.out.println(e.getMessage());
+        } catch (ClassCastException e) {
+            System.out.println("Não é possivel adicionar um trailer na lista de mídias para ver");
         }
+
     }
 
     public static void verMidiasAssistidas(PlataformaStreaming plat) {
@@ -498,7 +484,10 @@ public class App {
             }
         } catch (MidiaInvalidaException | ClienteInvalidoException e) {
             System.out.println(e.getMessage());
+        } catch (ClassCastException e) {
+            System.out.println("Não é permitido avaliar um trailer");
         }
+
     }
 
     private static void avaliarMidia(PlataformaStreaming plat, String nomeMidia) {
@@ -528,7 +517,10 @@ public class App {
             }
         } catch (MidiaInvalidaException | ClienteInvalidoException | AvaliacaoInvalidaException e) {
             System.out.println(e.getMessage());
+        } catch (ClassCastException e) {
+            System.out.println("Não é permitido avaliar um trailer");
         }
+
     }
 
     private static boolean eLancamento() {
