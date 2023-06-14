@@ -2,7 +2,7 @@ package business;
 
 public class Avaliacao {
 
-    private float nota;
+    private float nota = -1;
     private String comentario;
 
     /**
