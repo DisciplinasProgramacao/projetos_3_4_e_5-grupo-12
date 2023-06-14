@@ -17,7 +17,6 @@ public abstract class Midia implements ISalvavel {
 
     private static Random random = new Random();
     private Lancavel lancamento = null;
-    private Trailer trailer = null;
 
     /**
      * Construtor da classe Midia.
@@ -226,18 +225,10 @@ public abstract class Midia implements ISalvavel {
         return this.lancamento;
     }
 
-    public void setTrailer(Trailer trailer) throws MidiaInvalidaException {
-        if (trailer != null) {
-            this.trailer = trailer;
-        }
-    }
-
-    public Trailer getTrailer() {
-        return this.trailer;
-    }
-
     public abstract double calcularNotaMedia();
 
     public abstract int getAudiencia();
+
+    public abstract boolean eTrailer();
 
 }

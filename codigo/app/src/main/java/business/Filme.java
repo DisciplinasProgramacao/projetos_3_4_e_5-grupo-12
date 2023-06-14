@@ -205,4 +205,9 @@ public class Filme extends Midia implements Lancavel, IAssistivel {
         registrarAudiencia();
     }
 
+        @Override
+    public boolean eTrailer() {
+        return false;
+    }
+
 }

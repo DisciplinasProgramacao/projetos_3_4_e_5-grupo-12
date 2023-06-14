@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import javax.lang.model.util.ElementScanner14;
 import javax.management.InvalidAttributeValueException;
 
 public class PlataformaStreaming implements IRelatorio {
@@ -85,13 +86,6 @@ public class PlataformaStreaming implements IRelatorio {
         }
     }
 
-    // pedro
-    public void adicionarTrailer(Midia midia) throws MidiaInvalidaException {
-
-        midia.setTrailer((Trailer) midia);
-        adicionarMidia(midia);
-    }
-
     /**
      * Esse metodo recebe parametros do cliente, cria uma serie e envia para um
      * metodo polimorfico
@@ -141,17 +135,13 @@ public class PlataformaStreaming implements IRelatorio {
      * @throws MidiaInvalidaException caso nenhuma midia seja encontrada com o nome
      *                                recebido
      */
-    public void adicionarMidiaParaAssistir(String nomeMidia) throws MidiaInvalidaException {
+    public void adicionarMidiaParaAssistir(String nomeMidia) throws MidiaInvalidaException, ClassCastException {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
-        if (midia.getTrailer() == null) {
-            if (midia != null) {
-                this.clienteAtual.adicionarListaParaVer((IAssistivel) midia);
-                escreveArqAudiencia("F", midia, -1);
-            }
-        } else {
-            throw new MidiaInvalidaException("Não é possível adicionar um trailer na lista de mídias para assistir");
-        }
 
+        if (midia != null) {
+            this.clienteAtual.adicionarListaParaVer((IAssistivel) midia);
+            escreveArqAudiencia("F", midia, -1);
+        }
     }
 
     /**
@@ -162,29 +152,26 @@ public class PlataformaStreaming implements IRelatorio {
      * @throws MidiaInvalidaException   caso ja tenha assitido essa midia
      * @throws ClienteInvalidoException
      */
-    public void adicionarMidiaVista(String nomeMidia) throws MidiaInvalidaException, ClienteInvalidoException {
+    public void adicionarMidiaVista(String nomeMidia)
+            throws MidiaInvalidaException, ClienteInvalidoException, ClassCastException {
         Midia midia = filtrarMidiaPorNome(nomeMidia);
 
-        if (midia.getTrailer() == null) {
-            if (midia.getLancamento() != null) {
-                if (this.clienteAtual.getMeuTipoProfissional() != null) {
-                    verificarAdicionarMidiaVista(midia);
-                } else {
-                    throw new ClienteInvalidoException(
-                            "Somente clientes profissionais podem assistir midias em lançamento!");
-                }
-            } else {
+        if (midia.getLancamento() != null) {
+            if (this.clienteAtual.getMeuTipoProfissional() != null) {
                 verificarAdicionarMidiaVista(midia);
+            } else {
+                throw new ClienteInvalidoException(
+                        "Somente clientes profissionais podem assistir midias em lançamento!");
             }
         } else {
-            throw new MidiaInvalidaException("Não é possível adicionar um trailer na lista de mídias assistidas");
+            verificarAdicionarMidiaVista(midia);
         }
 
     }
 
-    public void verificarAdicionarMidiaVista(Midia midia) throws MidiaInvalidaException {
+    public void verificarAdicionarMidiaVista(Midia midia) throws MidiaInvalidaException, ClassCastException {
 
-        if (clienteAtual.querVer((IAssistivel) midia)) {
+        if (clienteAtual.querVer(midia)) {
             clienteAtual.retirarDaLista((IAssistivel) midia);
         }
 
@@ -206,17 +193,22 @@ public class PlataformaStreaming implements IRelatorio {
      * @throws ClienteInvalidoException   caso cliente seja invalido
      */
     public void adicionarAvaliacao(String nomeMidia, float nota)
-            throws MidiaInvalidaException, AvaliacaoInvalidaException, ClienteInvalidoException {
+            throws MidiaInvalidaException, AvaliacaoInvalidaException, ClienteInvalidoException, ClassCastException {
+        Midia m = filtrarMidiaPorNome(nomeMidia);
+        if (!m.eTrailer()) {
 
-        IAssistivel midia = (IAssistivel) filtrarMidiaPorNome(nomeMidia);
-        setClienteEspecialista();
+            IAssistivel midia = (IAssistivel) m;
+            setClienteEspecialista();
 
-        if (!midia.getAvaliacoes().contains(clienteAtual.getNomeDeUsuario())) {
-            if (this.clienteAtual.criarAvaliacao(nota, midia)) {
-                escreveArqAudiencia("A", (Midia) midia, nota);
+            if (!midia.getAvaliacoes().contains(clienteAtual.getNomeDeUsuario())) {
+                if (this.clienteAtual.criarAvaliacao(nota, midia)) {
+                    escreveArqAudiencia("A", (Midia) midia, nota);
+                }
+            } else {
+                throw new AvaliacaoInvalidaException("Você já avaliou essa midia!");
             }
         } else {
-            throw new AvaliacaoInvalidaException("Você já avaliou essa midia!");
+            throw new ClassCastException();
         }
 
     }
@@ -361,7 +353,7 @@ public class PlataformaStreaming implements IRelatorio {
 
             BufferedReader reader = new BufferedReader(new FileReader(tipoArquivo));
             String linha, tipo;
-            int n=0;
+            int n = 0;
 
             reader.readLine();
 
@@ -372,17 +364,19 @@ public class PlataformaStreaming implements IRelatorio {
                 String nome = str.nextToken();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 LocalDate dataLancamento = LocalDate.parse(str.nextToken(), formatter);
-                if(str.countTokens() == 1) {
+                if (str.countTokens() == 1) {
                     tipo = str.nextToken();
                 } else {
                     n = Integer.parseInt(str.nextToken());
                     tipo = str.nextToken();
                 }
-                
+
                 if (tipo.equals("F")) {
                     midia = new Filme(id, nome, dataLancamento, n);
-                } else {
+                } else if(tipo.equals("S")){
                     midia = new Serie(id, nome, dataLancamento);
+                }else{
+                    midia = new Trailer(id, nome, dataLancamento);
                 }
 
                 midias.put(midia.getId(), midia);
@@ -399,7 +393,7 @@ public class PlataformaStreaming implements IRelatorio {
      * @throws AvaliacaoInvalidaException caso avaliacao invalida
      * @throws MidiaInvalidaException     caso midia invalida
      */
-    private void carregarAudiencia() throws AvaliacaoInvalidaException, MidiaInvalidaException {
+    private void carregarAudiencia() throws AvaliacaoInvalidaException, MidiaInvalidaException, ClassCastException {
 
         try {
             float nota;
@@ -428,7 +422,7 @@ public class PlataformaStreaming implements IRelatorio {
                         }
                     }
                     clienteAtual.adicionarMidiaVista((Midia) midia);
-                    if (clienteAtual.querVer(midia)) {
+                    if (clienteAtual.querVer((Midia) midia)) {
                         clienteAtual.retirarDaLista(midia);
                     }
                 }
@@ -449,21 +443,20 @@ public class PlataformaStreaming implements IRelatorio {
      * @param nomeArquivo Esse é o arquivo em que sera escrito o objeto
      */
     private void escreveArquivo(HashMap<?, ? extends ISalvavel> map, String nomeArquivo) {
-    try {
-        FileWriter arquivo = new FileWriter(nomeArquivo, false);
-        map.forEach((key, value) -> {
-            try {
-                arquivo.write(value.getDados());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        arquivo.close();
-    } catch (IOException e) {
-        e.printStackTrace();
+        try {
+            FileWriter arquivo = new FileWriter(nomeArquivo, false);
+            map.forEach((key, value) -> {
+                try {
+                    arquivo.write(value.getDados());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            arquivo.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-}
-
 
     /**
      * Esse metodo escreve um cliente no arquivo de cliente, se o nome de usuario
@@ -471,8 +464,8 @@ public class PlataformaStreaming implements IRelatorio {
      * 
      * @param clienteCad Esse é o cliente a ser posto
      * @throws ClienteInvalidaException excecao a ser lancada caso o nome de usuario
-     *                                esteja
-     *                                indisponivel ou haja algum erro
+     *                                  esteja
+     *                                  indisponivel ou haja algum erro
      */
     private void escreveArqCliente() throws ClienteInvalidoException {
         escreveArquivo(clientes, arqClientes);
@@ -487,7 +480,6 @@ public class PlataformaStreaming implements IRelatorio {
     private void escreveArqMidia() {
         escreveArquivo(midias, arqMidias);
     }
-
 
     /**
      * Esse metodo escreve a audiencia no arquivo de audiencia
@@ -556,7 +548,7 @@ public class PlataformaStreaming implements IRelatorio {
      * @throws MidiaInvalidaException     caso midia invalida
      */
     public void comentar(String comentario, String nomeMidia)
-            throws ClienteInvalidoException, AvaliacaoInvalidaException, MidiaInvalidaException {
+            throws ClienteInvalidoException, AvaliacaoInvalidaException, MidiaInvalidaException, ClassCastException {
         IAssistivel midia = (IAssistivel) filtrarMidiaPorNome(nomeMidia);
         clienteAtual.fazerComentario(comentario, midia);
     }
@@ -595,7 +587,7 @@ public class PlataformaStreaming implements IRelatorio {
      * @return a nota media da midia
      * @throws MidiaInvalidaException caso midia invalida
      */
-    public double getNotaMedia(String nomeMidia) throws MidiaInvalidaException {
+    public double getNotaMedia(String nomeMidia) throws MidiaInvalidaException, ClassCastException {
         IAssistivel midia = (IAssistivel) filtrarMidiaPorNome(nomeMidia);
 
         return midia.calcularNotaMedia();
@@ -665,7 +657,6 @@ public class PlataformaStreaming implements IRelatorio {
         return relatorio;
     }
 
-
     @Override
     public String top10MidiasMaisVisualizacoes() {
         String relatorio = midias.values().stream()
@@ -675,7 +666,6 @@ public class PlataformaStreaming implements IRelatorio {
                 .collect(Collectors.joining("\n"));
         return relatorio;
     }
-
 
     @Override
     public String top10MidiasMelhorAvaliacaoPorGenero(String genero) {
@@ -722,8 +712,16 @@ public class PlataformaStreaming implements IRelatorio {
     public void adicionarMidia(String string, String string2, String string3, int i) {
     }
 
-    public void salvarDados() throws ClienteInvalidoException{
+    public void salvarDados() throws ClienteInvalidoException {
         escreveArqCliente();
         escreveArqMidia();
     }
+
+    public void adicionarTrailer(String nome, String idioma, String genero) throws MidiaInvalidaException {
+
+        Trailer trailerCad = new Trailer(genero, nome, idioma);
+        adicionarMidia(trailerCad);
+
+    }
+
 }
