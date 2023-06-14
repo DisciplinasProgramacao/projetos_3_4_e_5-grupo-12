@@ -185,7 +185,7 @@ public class Serie extends Midia implements Lancavel, IAssistivel {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String data = getDataLancamento().format(formatter);
 
-        return ("\n" + id + ";" + nome + ";" + data);
+        return ("\n" + id + ";" + nome + ";" + data + ";S");
     }
 
     @Override
