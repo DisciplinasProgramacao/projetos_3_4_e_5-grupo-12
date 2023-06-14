@@ -33,8 +33,7 @@ public class PlataformaStreaming implements IRelatorio {
     public PlataformaStreaming(String nome) throws InvalidAttributeValueException {
 
         setNome(nome);
-        carregarMidia(arqSeries);
-        carregarMidia(arqFilmes);
+        carregarMidia(arqMidias);
         carregarClientes();
         carregarAudiencia();
 
@@ -361,7 +360,8 @@ public class PlataformaStreaming implements IRelatorio {
             Midia midia;
 
             BufferedReader reader = new BufferedReader(new FileReader(tipoArquivo));
-            String linha;
+            String linha, tipo;
+            int n=0;
 
             reader.readLine();
 
@@ -372,9 +372,14 @@ public class PlataformaStreaming implements IRelatorio {
                 String nome = str.nextToken();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 LocalDate dataLancamento = LocalDate.parse(str.nextToken(), formatter);
-
-                if (tipoArquivo.equals(arqFilmes)) {
-                    int n = Integer.parseInt(str.nextToken());
+                if(str.countTokens() == 1) {
+                    tipo = str.nextToken();
+                } else {
+                    n = Integer.parseInt(str.nextToken());
+                    tipo = str.nextToken();
+                }
+                
+                if (tipo.equals("F")) {
                     midia = new Filme(id, nome, dataLancamento, n);
                 } else {
                     midia = new Serie(id, nome, dataLancamento);
