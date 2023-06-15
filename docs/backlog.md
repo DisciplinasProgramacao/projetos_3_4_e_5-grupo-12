@@ -27,5 +27,6 @@
 - Documentação; ✔️ (Giovanni, Pedro, Rafael)
 - Para esse trabalho foi usado o kanban linkado nos projects para a divisão de tarefas;
 
+
 > Written with [StackEdit](https://stackedit.io/).
 ❌👨‍💻✔️
