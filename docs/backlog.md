@@ -23,10 +23,10 @@
 - Mídias serão marcadas como “Lançamento”; ✔️ (Guilherme)
 - Classe Trailer; ✔️ (Pedro)
 - Polimorfismo do salvar e carregar arquivos; ✔️ (Guilherme)
-- - Testes; ✔️ (Giovanni, Rafael)
+- Testes; ✔️ (Giovanni, Rafael)
 - Documentação; ✔️ (Giovanni, Pedro, Rafael)
 - Para esse trabalho foi usado o kanban linkado nos projects para a divisão de tarefas;
-
+sgdfg
 
 > Written with [StackEdit](https://stackedit.io/).
 ❌👨‍💻✔️
