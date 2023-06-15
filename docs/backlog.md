@@ -13,7 +13,7 @@
 - Definição do tipo de cliente com o critério especificado; ✔️ (Guilherme)
 - Refatoração do sistema; ✔️ (Pedro, Giovanni, Guilherme)
 - Gêneros válidos para mídias: Ação, Anime, Aventura, Comédia, Documentário, Drama, Policial, Romance e Suspense✔️ (Pedro)
-- Produzir relatório✔️ (Pedro)
+- Produzir relatório; ✔️ (Pedro)
 - Qual cliente assistiu mais mídias, e quantas mídias; ✔️ (Pedro)
 - Qual cliente tem mais avaliações, e quantas avaliações; ✔️ (Giovanni)
 - Qual a porcentagem dos clientes com pelo menos 15 avaliações ;✔️ (Giovanni)
@@ -26,7 +26,6 @@
 - Testes; ✔️ (Giovanni, Rafael)
 - Documentação; ✔️ (Giovanni, Pedro, Rafael)
 - Para esse trabalho foi usado o kanban linkado nos projects para a divisão de tarefas;
-s
 
 > Written with [StackEdit](https://stackedit.io/).
 ❌👨‍💻✔️
