@@ -17,13 +17,14 @@
 - Gêneros válidos para mídias: Ação, Anime, Aventura, Comédia, Documentário, Drama, Policial, Romance e Suspense✔️ (Pedro)
 - Produzir relatório✔️ (Pedro)
 - Qual cliente assistiu mais mídias, e quantas mídias;✔️ (Pedro)
-- Qual cliente tem mais avaliações, e quantas avaliações;👨‍💻
-- Qual a porcentagem dos clientes com pelo menos 15 avaliações;👨‍💻
-- Quais são as 10 mídias de melhor avaliação, com pelo menos 100 avaliações, em ordem decrescente;❌
-- Quais são as 10 mídias com mais visualizações, em ordem decrescente;❌
-- Estes mesmos dois últimos relatórios, porém com as mídias separadas por gênero❌
-- Mídias serão marcadas como “Lançamento”👨‍💻(Guilherme)
-- Classe Trailer👨‍💻(Pedro)
+- Qual cliente tem mais avaliações, e quantas avaliações;✔️ (Giovanni)
+- Qual a porcentagem dos clientes com pelo menos 15 avaliações;✔️ (Giovanni)
+- Quais são as 10 mídias de melhor avaliação, com pelo menos 100 avaliações, em ordem decrescente;✔️ (Giovanni, Samuel)
+- Quais são as 10 mídias com mais visualizações, em ordem decrescente;✔️ (Giovanni, Samuel)
+- Estes mesmos dois últimos relatórios, porém com as mídias separadas por gênero;✔️ (Giovanni, Rafael)
+- Mídias serão marcadas como “Lançamento”;✔️(Guilherme)
+- Classe Trailer;✔️(Pedro)
+- Polimorfismo do salvar e carregar arquivos; ✔️ (Guilherme)
 - Para esse trabalho foi usado o kanban linkado nos projects para a divisão de tarefas;
 
 
