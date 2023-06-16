@@ -197,7 +197,6 @@ public class PlataformaStreaming implements IRelatorio {
         setClienteEspecialista();
         if (!m.eTrailer()) {
             IAssistivel midia = (IAssistivel) m;
-            
 
             if (!midia.getAvaliacoes().contains(clienteAtual.getNomeDeUsuario())) {
                 this.clienteAtual.criarAvaliacao(nota, midia);
@@ -325,8 +324,14 @@ public class PlataformaStreaming implements IRelatorio {
 
             while ((linha = reader.readLine()) != null) {
                 StringTokenizer str = new StringTokenizer(linha, ";");
-                Cliente cliente = new Cliente(str.nextToken(), str.nextToken(), str.nextToken());
-                clientes.put(cliente.getNomeDeUsuario(), cliente);
+                String nome = str.nextToken();
+                String nomeUsuario = str.nextToken();
+                String senha = str.nextToken();
+                clienteAtual = new Cliente(nome, nomeUsuario, senha);
+                clientes.put(clienteAtual.getNomeDeUsuario(), clienteAtual);
+                if (str.hasMoreTokens()) {
+                    setClienteProfissional(nome);
+                }
             }
             reader.close();
         } catch (FileNotFoundException e) {
@@ -350,6 +355,7 @@ public class PlataformaStreaming implements IRelatorio {
 
             BufferedReader reader = new BufferedReader(new FileReader(tipoArquivo));
             String linha, tipo;
+            boolean lancamento = false;
             int n = 0;
 
             reader.readLine();
@@ -361,22 +367,45 @@ public class PlataformaStreaming implements IRelatorio {
                 String nome = str.nextToken();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 LocalDate dataLancamento = LocalDate.parse(str.nextToken(), formatter);
-                if (str.countTokens() == 1) {
+
+                int tokenCount = str.countTokens();
+                if (tokenCount == 1) {
                     tipo = str.nextToken();
+                } else if (tokenCount == 2) {
+                    String token = str.nextToken();
+                    if (token.equals("S")) {
+                        tipo = str.nextToken();
+                        lancamento = true;
+                    } else {
+                        n = Integer.parseInt(token);
+                        tipo = str.nextToken();
+                    }
                 } else {
                     n = Integer.parseInt(str.nextToken());
                     tipo = str.nextToken();
-                }
+                    lancamento = true;
+                } 
 
                 if (tipo.equals("F")) {
                     midia = new Filme(id, nome, dataLancamento, n);
+                    if (lancamento) {
+                        midia.setLancamento(new Filme(id, nome, dataLancamento, n));
+                    }
                 } else if (tipo.equals("S")) {
                     midia = new Serie(id, nome, dataLancamento);
-                } else {
+                    if (lancamento) {
+                        midia.setLancamento(new Serie(id, nome, dataLancamento));
+                    }
+                } else if (tipo.equals("T")){
                     midia = new Trailer(id, nome, dataLancamento);
+                } else {
+                    continue;
                 }
 
                 midias.put(midia.getId(), midia);
+
+                
+
             }
             reader.close();
         } catch (IOException e) {
@@ -405,7 +434,7 @@ public class PlataformaStreaming implements IRelatorio {
                 int idMidia = Integer.parseInt(str.nextToken());
                 IAssistivel midia = (IAssistivel) midias.get(idMidia);
                 this.clienteAtual = clientes.get(login);
-                
+
                 if (tipo.equals("F")) {
                     clienteAtual.adicionarListaParaVer(midia);
                 } else {
@@ -416,9 +445,9 @@ public class PlataformaStreaming implements IRelatorio {
                     if (str.countTokens() >= 1) {
                         String data = str.nextToken();
                         if (data.contains("-")) {
-                            
+
                             clienteAtual.adicionarDataAssistida(((Midia) midia).getId(), data);
-                            
+
                             if (str.countTokens() == 1) {
                                 nota = Float.parseFloat(str.nextToken());
                                 if (nota >= 0 && nota <= 5) {
@@ -433,7 +462,7 @@ public class PlataformaStreaming implements IRelatorio {
 
             reader.close();
 
-        } catch (IOException e) {
+        } catch (IOException e ) {
             System.out.println(e.getMessage());
         }
 

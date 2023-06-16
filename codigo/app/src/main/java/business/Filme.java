@@ -160,13 +160,20 @@ public class Filme extends Midia implements Lancavel, IAssistivel {
      */
     @Override
     public String getDados() {
+        String result = "";
+
         int id = getId();
         String nome = getNome();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String data = getDataLancamento().format(formatter);
         int duracao = getDuracao();
 
-        return ("\n" + id + ";" + nome + ";" + data + ";" + duracao + ";F");
+        result =  ("\n" + id + ";" + nome + ";" + data + ";" + duracao + ";F");
+
+        if(this.getLancamento()!= null){
+            result += ";L";
+        }
+        return result;     
     }
 
     /**
