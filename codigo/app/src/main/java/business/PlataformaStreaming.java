@@ -374,7 +374,7 @@ public class PlataformaStreaming implements IRelatorio {
                 } else if (tokenCount == 2) {
                     String token = str.nextToken();
                     if (token.equals("S")) {
-                        tipo = str.nextToken();
+                        tipo = token;
                         lancamento = true;
                     } else {
                         n = Integer.parseInt(token);
@@ -385,7 +385,7 @@ public class PlataformaStreaming implements IRelatorio {
                     tipo = str.nextToken();
                     lancamento = true;
                 } 
-
+                
                 if (tipo.equals("F")) {
                     midia = new Filme(id, nome, dataLancamento, n);
                     if (lancamento) {
@@ -403,8 +403,6 @@ public class PlataformaStreaming implements IRelatorio {
                 }
 
                 midias.put(midia.getId(), midia);
-
-                
 
             }
             reader.close();
