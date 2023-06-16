@@ -365,10 +365,16 @@ public class Cliente implements ISalvavel {
      */
     @Override
     public String getDados() {
+        String result = "";
         String login = getNomeDeUsuario();
         String senha = getSenha();
         String nome = getNomeCompleto();
-        return ("\n" + nome + ";" + login + ";" + senha);
+
+        result =  ("\n" + nome + ";" + login + ";" + senha);
+        if(getMeuTipoProfissional() != null) {
+            result += ";P";
+        }
+        return result;
     }
 
     /**
