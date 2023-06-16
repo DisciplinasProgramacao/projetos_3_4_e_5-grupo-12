@@ -168,7 +168,7 @@ public class PlataformaStreaming implements IRelatorio {
 
     }
 
-    //Drumond
+    // Drumond
     public void verificarAdicionarMidiaVista(Midia midia) throws MidiaInvalidaException, ClassCastException {
 
         if (clienteAtual.querVer(midia)) {
@@ -180,8 +180,7 @@ public class PlataformaStreaming implements IRelatorio {
         }
     }
 
-
-    //Drumond
+    // Drumond
     /**
      * Adiciona avaliacao do cliente recebendo como parametro o nome da midia que
      * quer avaliar e a nota
@@ -195,9 +194,10 @@ public class PlataformaStreaming implements IRelatorio {
     public void adicionarAvaliacao(String nomeMidia, float nota)
             throws MidiaInvalidaException, AvaliacaoInvalidaException, ClienteInvalidoException, ClassCastException {
         Midia m = filtrarMidiaPorNome(nomeMidia);
+        setClienteEspecialista();
         if (!m.eTrailer()) {
             IAssistivel midia = (IAssistivel) m;
-            setClienteEspecialista();
+            
 
             if (!midia.getAvaliacoes().contains(clienteAtual.getNomeDeUsuario())) {
                 this.clienteAtual.criarAvaliacao(nota, midia);
@@ -370,9 +370,9 @@ public class PlataformaStreaming implements IRelatorio {
 
                 if (tipo.equals("F")) {
                     midia = new Filme(id, nome, dataLancamento, n);
-                } else if(tipo.equals("S")){
+                } else if (tipo.equals("S")) {
                     midia = new Serie(id, nome, dataLancamento);
-                }else{
+                } else {
                     midia = new Trailer(id, nome, dataLancamento);
                 }
 
@@ -405,7 +405,7 @@ public class PlataformaStreaming implements IRelatorio {
                 int idMidia = Integer.parseInt(str.nextToken());
                 IAssistivel midia = (IAssistivel) midias.get(idMidia);
                 this.clienteAtual = clientes.get(login);
-
+                
                 if (tipo.equals("F")) {
                     clienteAtual.adicionarListaParaVer(midia);
                 } else {
@@ -413,18 +413,21 @@ public class PlataformaStreaming implements IRelatorio {
                     if (clienteAtual.querVer((Midia) midia)) {
                         clienteAtual.retirarDaLista(midia);
                     }
-                    if (str.hasMoreTokens()) {
-                        String valor = str.nextToken();
-                        if (valor.contains("-")) {
-                            clienteAtual.adicionarDataAssistida(((Midia) midia).getId(),valor);
-                        } else {
-                            nota = Float.parseFloat(valor);
-                            if(nota != -1){
-                                clienteAtual.criarAvaliacao(nota, midia);
+                    if (str.countTokens() >= 1) {
+                        String data = str.nextToken();
+                        if (data.contains("-")) {
+                            
+                            clienteAtual.adicionarDataAssistida(((Midia) midia).getId(), data);
+                            
+                            if (str.countTokens() == 1) {
+                                nota = Float.parseFloat(str.nextToken());
+                                if (nota >= 0 && nota <= 5) {
+                                    clienteAtual.criarAvaliacao(nota, midia);
+                                }
                             }
                         }
                     }
-                    
+
                 }
             }
 
@@ -560,8 +563,9 @@ public class PlataformaStreaming implements IRelatorio {
      * @throws ClienteInvalidoException caso cliente invalido
      */
     public void setClienteEspecialista() throws ClienteInvalidoException {
+        System.out.println("Tamanho:" + clienteAtual.getTamanhoListaJaVista());
         if (this.clienteAtual.getTamanhoListaJaVista() >= 5) {
-            HashMap<Integer,String> datasAssistidas = clienteAtual.getListaDataAssistida();
+            HashMap<Integer, String> datasAssistidas = clienteAtual.getListaDataAssistida();
             LocalDate menos = LocalDate.now().minusDays(30);
 
             long contador = datasAssistidas.values().stream()

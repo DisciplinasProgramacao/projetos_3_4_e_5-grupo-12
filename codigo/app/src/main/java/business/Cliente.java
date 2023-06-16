@@ -87,7 +87,7 @@ public class Cliente implements ISalvavel {
             permitido = true;
             Avaliacao avaliacao = new Avaliacao(nota);
             midia.colocarAvaliacao(getNomeDeUsuario(), avaliacao);
-            adicionarDataAssistida(((Midia) midia).getId(),LocalDate.now().toString());
+            adicionarDataAssistida(((Midia) midia).getId(), LocalDate.now().toString());
         } else {
             throw new MidiaInvalidaException("Você ainda não assistiu essa mídia");
         }
@@ -245,6 +245,7 @@ public class Cliente implements ISalvavel {
     public boolean adicionarMidiaVista(Midia midia) throws MidiaInvalidaException {
 
         if (!listaJaVistas.contains(midia)) {
+            adicionarDataAssistida(midia.getId(), LocalDate.now().toString());
             listaJaVistas.add(midia);
             midia.registrarAudienciaSeNecessario();
             return true;
@@ -401,7 +402,7 @@ public class Cliente implements ISalvavel {
      * 
      * @param data data que será adicionada na lista
      */
-    public void adicionarDataAssistida(int idMidia,String data) {
+    public void adicionarDataAssistida(int idMidia, String data) {
         this.dataAssitida.put(idMidia, data);
     }
 
@@ -441,18 +442,16 @@ public class Cliente implements ISalvavel {
     }
 
     private String getDadosMidia(Midia m, String tipo) {
-        String data = "";
-
-        if(this.dataAssitida.get(m.getId()) != null){
-            data = this.dataAssitida.get(m.getId());
-        }
-
+        String data = this.dataAssitida.getOrDefault(m.getId(), "semData");
         double nota = m.getNotaCliente(this.nomeDeUsuario);
-        if (m.eTrailer()) {
-            return this.nomeDeUsuario + ";" + tipo + ";" + m.getId() + "\n";
-        } else {
-            return this.nomeDeUsuario + ";" + tipo+ ";" + m.getId() + ";" + nota + ";" + data + "\n";     
+        String result = this.nomeDeUsuario + ";" + tipo + ";" + m.getId();
+        if (nota != -1 || !data.equals("semData")) {
+            result += ";" + data;
+            if (nota != -1) {
+                result += ";" + nota;
+            }
         }
+        return result + "\n";
     }
 
 }
