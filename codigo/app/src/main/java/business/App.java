@@ -225,6 +225,7 @@ public class App {
             System.out.println("7 - Ver nota média de uma mídia");
             System.out.println("8 - Ver relatórios");
             System.out.println("9 - Buscar mídia por nome");
+            System.out.println("10 - Ver todas as mídias da plataforma");
             System.out.println("0 - Sair");
             op = entrada.nextInt();
 
@@ -260,6 +261,9 @@ public class App {
                 case 9:
                     buscarMidiaNome(plat);
                     break;
+                case 10:
+                    verMidiasPlataforma(plat);
+                    break;
                 case 0:
                     break;
                 default:
@@ -268,6 +272,10 @@ public class App {
             }
 
         } while (op != 0);
+    }
+
+    private static void verMidiasPlataforma(PlataformaStreaming plat) {
+        System.out.println(plat.verMidiasPlataforma());
     }
 
     private static void buscarMidiaNome(PlataformaStreaming plat) {

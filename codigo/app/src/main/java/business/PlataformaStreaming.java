@@ -759,4 +759,13 @@ public class PlataformaStreaming implements IRelatorio {
 
     }
 
+    public String verMidiasPlataforma() {
+        StringBuilder sb = new StringBuilder();
+        midias.forEach((key, content) -> {
+            Midia m = midias.get(key);
+            sb.append(m.getNome()).append("\n");
+        });
+        return sb.toString();
+    }
+
 }
