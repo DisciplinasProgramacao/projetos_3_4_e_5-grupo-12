@@ -589,7 +589,6 @@ public class PlataformaStreaming implements IRelatorio {
      * @throws ClienteInvalidoException caso cliente invalido
      */
     public void setClienteEspecialista() throws ClienteInvalidoException {
-        System.out.println("Tamanho:" + clienteAtual.getTamanhoListaJaVista());
         if (this.clienteAtual.getTamanhoListaJaVista() >= 5) {
             HashMap<Integer, String> datasAssistidas = clienteAtual.getListaDataAssistida();
             LocalDate menos = LocalDate.now().minusDays(30);
