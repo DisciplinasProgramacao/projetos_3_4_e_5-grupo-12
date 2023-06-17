@@ -220,7 +220,7 @@ public class Cliente implements ISalvavel {
      * @param serie Serie que se deseja adicionar na lista
      */
     public void adicionarListaParaVer(IAssistivel midia) throws MidiaInvalidaException {
-        if (!listaParaVer.contains((Midia) midia)) {
+        if (!(listaParaVer.contains((Midia) midia)) && !(listaJaVistas.contains((Midia) midia))) {
             listaParaVer.add((Midia) midia);
         }
     }
