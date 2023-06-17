@@ -105,29 +105,29 @@ public class App {
     // Da pra juntar parte do cadastrarSerie e cadastrar filme olhar depois
     private static void cadastrarSerie(PlataformaStreaming plat) {
 
-        System.out.println("Opção 2 selecionada.");
-        System.out.println();
-        entrada.nextLine();
-
-        String nome, idioma, genero;
-        int qtdEpisodios;
-        System.out.println("Digite o nome da série");
-        nome = entrada.nextLine();
-
-        System.out.println("Digite o idioma da série");
-        idioma = entrada.nextLine();
-
-        System.out.println("Digite o genero da série");
-        genero = entrada.nextLine();
-
-        System.out.println("Digite a quantidade de episódios que a série possui");
-        qtdEpisodios = entrada.nextInt();
-
         try {
+            System.out.println("Opção 2 selecionada.");
+            System.out.println();
+            entrada.nextLine();
+
+            String nome, idioma, genero;
+            int qtdEpisodios;
+            System.out.println("Digite o nome da série");
+            nome = entrada.nextLine();
+
+            System.out.println("Digite o idioma da série");
+            idioma = entrada.nextLine();
+
+            System.out.println("Digite o genero da série");
+            genero = entrada.nextLine();
+
+            System.out.println("Digite a quantidade de episódios que a série possui");
+            qtdEpisodios = entrada.nextInt();
+
             boolean lancamento = eLancamento();
             plat.adicionarSerie(nome, idioma, genero, qtdEpisodios, lancamento);
 
-        } catch (MidiaInvalidaException e) {
+        } catch (MidiaInvalidaException | InputMismatchException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -155,7 +155,7 @@ public class App {
         try {
             boolean lancamento = eLancamento();
             plat.adicionarFilme(nome, idioma, genero, duracao, lancamento);
-        } catch (MidiaInvalidaException e) {
+        } catch (MidiaInvalidaException | InputMismatchException e) {
             System.out.println(e.getMessage());
         }
 
@@ -198,12 +198,12 @@ public class App {
 
         try {
             plat.login(nomeUsuario, senha);
-            System.out.println("Logado com sucesso");
+            menu2(plat);
         } catch (ClienteInvalidoException e) {
             System.out.println(e.getMessage());
         }
 
-        menu2(plat);
+        
 
     }
 

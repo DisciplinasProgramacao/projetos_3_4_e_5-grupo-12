@@ -297,17 +297,15 @@ public class PlataformaStreaming implements IRelatorio {
      * @throws ClienteInvalidoException
      */
     public boolean login(String nomeUsuario, String senha) throws ClienteInvalidoException {
-
-        boolean logado = true;
-
         clienteAtual = clientes.get(nomeUsuario);
+        if (clienteAtual == null) {
+            throw new ClienteInvalidoException("Login incorreto!");
+        }
         if (!senha.equals(clienteAtual.getSenha())) {
-            logado = false;
             this.clienteAtual = null;
             throw new ClienteInvalidoException("Senha incorreta!");
         }
-
-        return logado;
+        return true;
     }
 
     /**
@@ -385,8 +383,8 @@ public class PlataformaStreaming implements IRelatorio {
                     n = Integer.parseInt(str.nextToken());
                     tipo = str.nextToken();
                     lancamento = true;
-                } 
-                
+                }
+
                 if (tipo.equals("F")) {
                     midia = new Filme(id, nome, dataLancamento, n);
                     if (lancamento) {
@@ -397,7 +395,7 @@ public class PlataformaStreaming implements IRelatorio {
                     if (lancamento) {
                         midia.setLancamento(new Serie(id, nome, dataLancamento));
                     }
-                } else if (tipo.equals("T")){
+                } else if (tipo.equals("T")) {
                     midia = new Trailer(id, nome, dataLancamento);
                 } else {
                     continue;
@@ -461,7 +459,7 @@ public class PlataformaStreaming implements IRelatorio {
 
             reader.close();
 
-        } catch (IOException e ) {
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
 
