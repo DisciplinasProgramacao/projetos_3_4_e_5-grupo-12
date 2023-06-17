@@ -275,11 +275,7 @@ public class App {
         System.out.println("Nome da midia: ");
         entrada.nextLine();
         String input = entrada.nextLine();
-        try {
-            System.out.println(plat.filtrarMidiaPorNomeString(input));
-        } catch (MidiaInvalidaException e) {
-            System.out.println(e.getMessage());
-        }
+        System.out.println(plat.filtrarMidiaPorNomeString(input));
 
     }
 

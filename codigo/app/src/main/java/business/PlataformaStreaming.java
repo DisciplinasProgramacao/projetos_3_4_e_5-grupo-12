@@ -552,10 +552,15 @@ public class PlataformaStreaming implements IRelatorio {
                 .orElseThrow(() -> new MidiaInvalidaException("Nenhuma midia encontrada com esse nome!"));
     }
 
-    public String filtrarMidiaPorNomeString(String nome) throws MidiaInvalidaException {
-        Midia m = filtrarMidiaPorNome(nome);
-        return "Nome: " + m.getNome() + "\nGenero: " + m.getGenero() + "\nIdioma: " + m.getIdioma();
-
+    public String filtrarMidiaPorNomeString(String nome) {
+        String result = midias.values().stream()
+                .filter(m -> m.getNome().toLowerCase().contains(nome.toLowerCase()))
+                .map(m -> "Nome: " + m.getNome() + "\nGenero: " + m.getGenero() + "\nIdioma: " + m.getIdioma())
+                .collect(Collectors.joining("\n"));
+        if (result.isEmpty()) {
+            result = "Nenhuma mídia encontrada com o nome: " + nome;
+        }
+        return result;
     }
 
     /**
