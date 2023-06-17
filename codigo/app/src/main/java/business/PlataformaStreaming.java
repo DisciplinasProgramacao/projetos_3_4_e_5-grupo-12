@@ -10,15 +10,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import javax.lang.model.util.ElementScanner14;
 import javax.management.InvalidAttributeValueException;
 
 public class PlataformaStreaming implements IRelatorio {
     private static final String arqClientes = "codigo/POO_Espectadores.csv";
     private static final String arqAudiencia = "codigo/POO_Audiencia.csv";
-    private static final String arqSeries = "codigo/POO_Series.csv";
-    private static final String arqFilmes = "codigo/POO_Filmes.csv";
     private static final String arqMidias = "codigo/POO_Midias.csv";
     private String nome;
     private HashMap<Integer, Midia> midias = new HashMap<>();
@@ -508,7 +504,6 @@ public class PlataformaStreaming implements IRelatorio {
 
         try {
             FileWriter arquivo = new FileWriter(arqAudiencia, false);
-            LocalDate data = LocalDate.now();
 
             clientes.forEach((key, content) -> {
                 Cliente c = clientes.get(key);
