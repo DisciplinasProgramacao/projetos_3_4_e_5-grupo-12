@@ -462,7 +462,7 @@ public class App {
         System.out.println("Digite o nome da Midia que você deseja adicionar:");
         String nomeMidia = entrada.nextLine();
 
-        submenu(plat, nomeMidia); // fazer verificacao se a serie existe
+        submenu(plat, nomeMidia);
 
     }
 

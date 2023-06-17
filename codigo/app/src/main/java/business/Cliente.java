@@ -75,23 +75,15 @@ public class Cliente implements ISalvavel {
      * @throws MidiaInvalidaException     cria e propaga a exceção se o usuário
      *                                    ainda não assistiu a mídia
      */
-    public boolean criarAvaliacao(float nota, IAssistivel midia)
+    public void criarAvaliacao(float nota, IAssistivel midia)
             throws AvaliacaoInvalidaException, MidiaInvalidaException {
-        boolean permitido = false;
 
-        if (querVer((Midia) midia)) {
-            retirarDaLista(midia);
-        }
-
-        if ((this.listaJaVistas.contains((Midia) midia))) { // correto
-            permitido = true;
+        if ((this.listaJaVistas.contains((Midia) midia))) {
             Avaliacao avaliacao = new Avaliacao(nota);
             midia.colocarAvaliacao(getNomeDeUsuario(), avaliacao);
-            adicionarDataAssistida(((Midia) midia).getId(), LocalDate.now().toString());
         } else {
             throw new MidiaInvalidaException("Você ainda não assistiu essa mídia");
         }
-        return permitido;
     }
 
     /**
@@ -244,15 +236,18 @@ public class Cliente implements ISalvavel {
      * @return true se conseguir adicionar a midia ou false se não conseguir
      * @throws MidiaInvalidaException propaga exceção se houver valores inválidos
      */
-    public boolean adicionarMidiaVista(Midia midia) throws MidiaInvalidaException {
+    public void adicionarMidiaVista(Midia midia) throws MidiaInvalidaException {
 
+
+        if(listaParaVer.contains(midia)){
+            retirarDaLista((IAssistivel)midia);
+        }
         if (!listaJaVistas.contains(midia)) {
             adicionarDataAssistida(midia.getId(), LocalDate.now().toString());
             listaJaVistas.add(midia);
             midia.registrarAudienciaSeNecessario();
-            return true;
         } else {
-            return false;
+            throw new MidiaInvalidaException("Voce já assistiu essa midia");
         }
 
     }
