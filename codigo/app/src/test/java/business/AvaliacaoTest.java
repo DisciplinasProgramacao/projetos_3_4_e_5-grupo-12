@@ -35,7 +35,6 @@ class AvaliacaoTest {
     void testCalcularNotaMedia() throws AvaliacaoInvalidaException, MidiaInvalidaException{
         c1.adicionarMidiaVista(f1);
         c2.adicionarMidiaVista(f1);
-        c2.adicionarMidiaVista(f1);
         c3.adicionarMidiaVista(f1);
         c1.criarAvaliacao(4, f1);
         c2.criarAvaliacao(3, f1);
