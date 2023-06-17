@@ -222,6 +222,8 @@ public class Cliente implements ISalvavel {
     public void adicionarListaParaVer(IAssistivel midia) throws MidiaInvalidaException {
         if (!(listaParaVer.contains((Midia) midia)) && !(listaJaVistas.contains((Midia) midia))) {
             listaParaVer.add((Midia) midia);
+        } else {
+            throw new MidiaInvalidaException("Você ja assistiu ou já adicionou essa midia!");
         }
     }
 
