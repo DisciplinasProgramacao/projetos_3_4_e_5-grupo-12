@@ -648,7 +648,9 @@ public class PlataformaStreaming implements IRelatorio {
     @Override
     public String clienteComMaisAvaliacoes() {
         Map<String, Long> contadorAvaliacoes = midias.values().stream()
-                .flatMap(midia -> midia.getAvaliadores().stream())
+                .map(Midia::getAvaliadores)
+                .filter(Objects::nonNull)
+                .flatMap(List::stream)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
         Map.Entry<String, Long> entry = contadorAvaliacoes.entrySet().stream()
@@ -668,7 +670,9 @@ public class PlataformaStreaming implements IRelatorio {
     @Override
     public String porcentagemClientesComPeloMenos15Avaliacoes() {
         Map<String, Long> contadorAvaliacoes = midias.values().stream()
-                .flatMap(midia -> midia.getAvaliadores().stream())
+                .map(Midia::getAvaliadores)
+                .filter(Objects::nonNull)
+                .flatMap(List::stream)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
         long totalClientes = clientes.size();
@@ -677,7 +681,7 @@ public class PlataformaStreaming implements IRelatorio {
                 .count();
 
         double porcentagem = (double) clientesComMaisDe15Avaliacoes / totalClientes * 100;
-        String relatorio = "A media de clientes com mais que 15 avaliações é" + porcentagem;
+        String relatorio = "A media de clientes com mais que 15 avaliações é: " + porcentagem;
         return relatorio;
     }
 
