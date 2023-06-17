@@ -355,12 +355,13 @@ public class PlataformaStreaming implements IRelatorio {
 
             BufferedReader reader = new BufferedReader(new FileReader(tipoArquivo));
             String linha, tipo;
-            boolean lancamento = false;
+            boolean lancamento;
             int n = 0;
 
             reader.readLine();
 
             while ((linha = reader.readLine()) != null) {
+                lancamento = false;
 
                 StringTokenizer str = new StringTokenizer(linha, ";");
                 int id = Integer.parseInt(str.nextToken());
