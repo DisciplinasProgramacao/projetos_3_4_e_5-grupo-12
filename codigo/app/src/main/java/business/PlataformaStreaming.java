@@ -157,30 +157,17 @@ public class PlataformaStreaming implements IRelatorio {
 
         if (midia.getLancamento() != null) {
             if (this.clienteAtual.getMeuTipoProfissional() != null) {
-                verificarAdicionarMidiaVista(midia);
+                clienteAtual.adicionarMidiaVista(midia);
             } else {
                 throw new ClienteInvalidoException(
                         "Somente clientes profissionais podem assistir midias em lançamento!");
             }
         } else {
-            verificarAdicionarMidiaVista(midia);
+            clienteAtual.adicionarMidiaVista(midia);
         }
 
     }
 
-    // Drumond
-    public void verificarAdicionarMidiaVista(Midia midia) throws MidiaInvalidaException, ClassCastException {
-
-        if (clienteAtual.querVer(midia)) {
-            clienteAtual.retirarDaLista((IAssistivel) midia);
-        }
-
-        if (!clienteAtual.adicionarMidiaVista(midia)) {
-            throw new MidiaInvalidaException("Voce já assistiu essa midia");
-        }
-    }
-
-    // Drumond
     /**
      * Adiciona avaliacao do cliente recebendo como parametro o nome da midia que
      * quer avaliar e a nota
