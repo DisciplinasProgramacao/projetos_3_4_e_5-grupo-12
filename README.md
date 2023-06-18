@@ -4,8 +4,8 @@ Nesse projeto temos o objetivo de aprender java ao fazer uma plataforma de strea
 
 ## Alunos integrantes da equipe
 
-* Guilherme Drumond Silva
 * Giovanni Bogliolo Sirihal Duarte
+* Guilherme Drumond Silva
 * Pedro Ramos Vidigal
 * Samuel Lincoln de Oliveira Gomes
 * Rafael Ferraz Barra
