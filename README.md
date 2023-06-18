@@ -13,5 +13,5 @@ Nesse projeto temos o objetivo de aprender java ao fazer uma plataforma de strea
 ## Professores responsáveis
 
 * João Caram
-* Nome completo do professor 2
+  
 
