@@ -1,6 +1,7 @@
 package business;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,7 @@ class AvaliacaoTest {
     PlataformaStreaming p;
     Filme f1;
     Filme f2;
+    Trailer t1;
 
     @BeforeEach
     void setUp() throws ClienteInvalidoException, MidiaInvalidaException, Exception {
@@ -28,6 +30,7 @@ class AvaliacaoTest {
         s3 = new Serie("documentario", "Papaleguas", "ingles", 12);
         f1 = new Filme("aventura", "Demanda Dos Conselheiros", "portugues", 160);
         f2 = new Filme("terror", "Sinestesia Do Ódio", "portugues", 180);
+        t1 = new Trailer("terror", "Amoeba", "portugues");
     }
 
 
@@ -89,5 +92,16 @@ class AvaliacaoTest {
         p.comentar("Ola", "Papaleguas");
         
         assertTrue(((IAssistivel) p.filtrarMidiaPorNome("Papaleguas")).getAvaliacoes().contains(p.getClienteAtual().getNomeDeUsuario()));
+    }
+
+    
+    @Test
+    void testTrailerAvaliavel() throws MidiaInvalidaException{
+         assertThrows(business.MidiaInvalidaException.class, () -> {
+            p.adicionarCliente("Geoge o Curioso","George","123poGchAmp456");
+            p.login("George", "123poGchAmp456");
+            p.adicionarMidiaVista("Amoeba");
+            p.adicionarAvaliacao("Amoeba",2);
+         });
     }
 }

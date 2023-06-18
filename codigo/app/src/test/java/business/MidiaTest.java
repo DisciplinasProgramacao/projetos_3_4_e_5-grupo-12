@@ -11,21 +11,25 @@ import org.junit.jupiter.api.Test;
 
 public class MidiaTest {
 
+    Cliente c1;
     Serie s1;
     Serie s2;
     Serie s3;
     Serie s4;
     Filme f1;
     Filme f2;
+    Trailer t1;
 
     @BeforeEach
-    void setUp() throws MidiaInvalidaException {
+    void setUp() throws MidiaInvalidaException, ClienteInvalidoException {
+        c1 = new Cliente("Geoge o Curioso", "George", "123poGchamp456");
         s1 = new Serie("comedia", "Nana a Banana", "portugues", 12);
         s2 = new Serie("terror", "Polyforme", "ingles", 8);
         s3 = new Serie("documentario", "Papaleguas", "ingles", 12);
         s4 = new Serie("comedia", "Papaleguas", "espanhol", 12);
         f1 = new Filme("aventura", "Demanda Dos Conselheiros", "portugues", 160);
         f2 = new Filme("terror", "Sinestesia Do Ódio", "portugues", 180);
+        t1 = new Trailer("terror", "Laringite", "portugues");
     }
 
 
@@ -120,4 +124,11 @@ public class MidiaTest {
         assertSame(s2.getAudiencia(),s1.getAudiencia());
     }
 
+
+    @Test
+    void testTrailerNaoPorPraAssistir() throws MidiaInvalidaException{
+         assertThrows(java.lang.ClassCastException.class, () -> {
+            c1.adicionarListaParaVer((IAssistivel) t1);
+         });
+    }
 }
