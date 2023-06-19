@@ -5,12 +5,12 @@ public class Avaliacao {
     private float nota = -1;
     private String comentario;
 
-    /**
-     * Cria uma avaliação com somente a nota
-     * 
-     * @param nota nota da avaliação
-     * @throws AvaliacaoInvalidaException Exceção do setNota, se a nota for inválida
-     */
+  /**
+  * Cria uma instância da classe Avaliacao com a nota especificada.
+  *
+  * @param nota a nota da avaliação
+  * @throws AvaliacaoInvalidaException se a nota fornecida for inválida
+  */
     Avaliacao(float nota) throws AvaliacaoInvalidaException {
         setNota(nota);
     }
@@ -78,6 +78,11 @@ public class Avaliacao {
         return this.comentario;
     }
 
+    /**
+    * Retorna uma representação em formato de string da avaliação.
+    *
+    * @return uma representação em formato de string da avaliação
+    */
     @Override
     public String toString() {
         return "{" +

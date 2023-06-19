@@ -19,7 +19,7 @@ public class Cliente implements ISalvavel {
     private ClienteProfissional profissional = null;
 
     /**
-     * Cria um novo objeto Cliente com nome completo, nome de usuário e senha.
+     * Cria um novo objeto Cliente com nome completo, nome de usuário e senha especificados.
      * 
      * @param nomeCompleto  o nome completo do Cliente
      * @param nomeDeUsuario o nome de usuário do Cliente
@@ -72,7 +72,7 @@ public class Cliente implements ISalvavel {
      * @throws AvaliacaoInvalidaException propaga a exceção se existir valores
      *                                    inválidos na avaliação
      * @throws MidiaInvalidaException     cria e propaga a exceção se o usuário
-     *                                    ainda não assistiu a mídia
+     *                                    ainda não assistiu a mídia ou se a mídia for inválida
      */
     public void criarAvaliacao(float nota, IAssistivel midia)
             throws AvaliacaoInvalidaException, MidiaInvalidaException {
@@ -92,8 +92,7 @@ public class Cliente implements ISalvavel {
      * @param midia      Mídia em que o comentário será inserido
      * @throws AvaliacaoInvalidaException Propaga exceção se houver valores
      *                                    inválidos
-     * @throws ClienteInvalidoException   Propaga exceção se houver valores
-     *                                    inválidos
+     * @throws ClienteInvalidoException   Propaga exceção se o cliente não for um especialista (tipo de comentarista) válido
      */
     public void fazerComentario(String comentario, IAssistivel midia)
             throws AvaliacaoInvalidaException, ClienteInvalidoException {
@@ -105,7 +104,7 @@ public class Cliente implements ISalvavel {
     }
 
     /**
-     * Método de set do nome completo do usuário
+     * Método de set para definir o nome completo do usuário.
      * 
      * @param nomeCompleto Novo nome completo do usuário
      * @throws ClienteInvalidoException Cria e propaga exceção se o nomeCompleto for
@@ -142,8 +141,7 @@ public class Cliente implements ISalvavel {
      *
      * @param nomeDeUsuario o novo nome de usuário do cliente.
      * @throws ClienteInvalidoException Cria e propaga exceção se o nomeDeUsuario
-     *                                  for
-     *                                  vazio
+     *                                  for vazio
      */
     public void setNomeDeUsuario(String nomeDeUsuario) throws ClienteInvalidoException {
         if (nomeDeUsuario.length() > 0) {
@@ -439,21 +437,43 @@ public class Cliente implements ISalvavel {
             }
         }
     }
-
+ 
+    /**
+     * Define o tipo de comentarista como ClienteEspecialista para o cliente atual.
+    *
+    * @throws ClienteInvalidoException se ocorrer algum erro ao definir o tipo de comentarista
+    */
     public void setComentarista() throws ClienteInvalidoException {
         setMeuTipo(new ClienteEspecialista(getNomeCompleto(),
                 getNomeDeUsuario(), getSenha()));
     }
     
 
+    /**
+    * Retorna o tipo de comentarista como ClienteProfissional associado ao cliente.
+    *
+    * @return o tipo de comentarista ClienteProfissional associado ao cliente
+    */  
     public ClienteProfissional getMeuTipoProfissional() {
         return this.profissional;
     }
 
+
+    /**
+    * Define o tipo de comentarista ClienteProfissional para o cliente atual.
+    *
+    * @param cliente o tipo de comentarista ClienteProfissional a ser associado ao cliente
+    */
     public void setMeuTipoProfissional(ClienteProfissional cliente) {
         this.profissional = cliente;
     }
 
+
+    /**
+     * Retorna os dados de audiência do cliente.
+    *
+    * @return uma string contendo os dados de audiência do cliente
+    */  
     public String getDadosAudiencia() {
         String dados = "";
         for (Midia m : listaJaVistas) {
@@ -467,6 +487,14 @@ public class Cliente implements ISalvavel {
         return dados;
     }
 
+ 
+    /**
+    * Retorna os dados da mídia no formato especificado.
+    *
+     * @param m    a mídia para a qual obter os dados
+    * @param tipo o tipo de mídia (A para já vista, F para para ver)
+    * @return uma string contendo os dados da mídia no formato especificado
+    */
     private String getDadosMidia(Midia m, String tipo) {
         String data = this.dataAssitida.getOrDefault(m.getId(), "semData");
         double nota = m.getNotaCliente(this.nomeDeUsuario);

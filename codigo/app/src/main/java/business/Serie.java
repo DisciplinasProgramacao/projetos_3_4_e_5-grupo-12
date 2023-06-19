@@ -140,6 +140,11 @@ public class Serie extends Midia implements Lancavel, IAssistivel {
         return avaliacoes.toString();
     }
 
+    /**
+    * Retorna uma lista com os nomes dos avaliadores.
+    *
+    * @return uma lista contendo os nomes dos avaliadores
+    */
     @Override
     public List<String> getAvaliadores() {
         List<String> nomes = new ArrayList<>();
@@ -203,16 +208,30 @@ public class Serie extends Midia implements Lancavel, IAssistivel {
         return this.audiencia;
     }
 
+    /**
+    * Registra a audiência da mídia, se necessário.
+    */
     @Override
     public void registrarAudienciaSeNecessario() {
         registrarAudiencia();
     }
 
+    /**
+    * Verifica se a mídia é um trailer.
+    *
+    * @return true se a mídia for um trailer, false caso contrário.
+    */
     @Override
     public boolean eTrailer() {
         return false;
     }
 
+    /**
+    * Obtém a nota atribuída pelo cliente especificado.
+    *
+    * @param nomeUsuario o nome de usuário do cliente
+    * @return a nota atribuída pelo cliente, ou -1 se o cliente não tiver atribuído uma nota
+    */
     @Override
     public double getNotaCliente(String nomeUsuario) {
         if(avaliacoes.get(nomeUsuario) != null) {

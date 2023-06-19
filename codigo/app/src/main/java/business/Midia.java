@@ -88,6 +88,11 @@ public abstract class Midia implements ISalvavel {
         return this.genero;
     }
 
+    /**
+    * Obtém a lista de avaliadores.
+     *
+    * @return a lista de avaliadores
+    */
     public List<String> getAvaliadores() {
         return null;
     }
@@ -202,6 +207,10 @@ public abstract class Midia implements ISalvavel {
                 "}";
     }
 
+    /**
+     * Registra a audiência, se necessário.
+     * Este método é abstrato e deve ser implementado nas classes concretas que herdam essa classe abstrata.
+    */
     public abstract void registrarAudienciaSeNecessario();
 
     /**
@@ -216,20 +225,55 @@ public abstract class Midia implements ISalvavel {
         return ("\n" + nomeUsuario + ";" + tipo + ";" + id);
     }
 
+    /**
+     * Define o lançamento associado a este objeto.
+    *
+    * @param lancamento o objeto Lancavel a ser associado
+    */
     public void setLancamento(Lancavel lancamento) {
         this.lancamento = lancamento;
     }
 
+    /**
+    * Obtém o lançamento associado a este objeto.
+    *
+    * @return o objeto Lancavel associado
+    */
     public Lancavel getLancamento() {
         return this.lancamento;
     }
 
+    /**
+    * Calcula a nota média.
+    * Este método é abstrato e deve ser implementado nas classes concretas que herdam essa classe abstrata.
+    *
+    * @return a nota média calculada
+    */
     public abstract double calcularNotaMedia();
 
+    /**
+    * Obtém a audiência.
+    * Este método é abstrato e deve ser implementado nas classes concretas que herdam essa classe abstrata.
+    *
+    * @return a audiência obtida
+    */
     public abstract int getAudiencia();
 
+    /**
+    * Verifica se é um trailer.
+    * Este método é abstrato e deve ser implementado nas classes concretas que herdam essa classe abstrata.
+    *
+    * @return true se for um trailer, false caso contrário
+    */
     public abstract boolean eTrailer();
 
+    /**
+    * Obtém a nota dada pelo cliente especificado.
+    * Este método é abstrato e deve ser implementado nas classes concretas que herdam essa classe abstrata.
+    *
+    * @param nomeUsuario o nome de usuário do cliente
+    * @return a nota dada pelo cliente, ou -1 se o cliente não tiver dado uma nota
+    */
     public abstract double getNotaCliente(String nomeUsuario);
 
 }

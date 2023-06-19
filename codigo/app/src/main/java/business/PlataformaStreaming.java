@@ -534,6 +534,13 @@ public class PlataformaStreaming implements IRelatorio {
                 .orElseThrow(() -> new MidiaInvalidaException("Nenhuma midia encontrada com esse nome!"));
     }
 
+    /**
+    * Filtra as mídias por nome e retorna uma representação em formato de string.
+    *
+    * @param nome o nome a ser filtrado
+    * @return uma string contendo as informações das mídias cujos nomes correspondem à pesquisa,
+    *         ou uma mensagem informando que nenhuma mídia foi encontrada com o nome fornecido
+    */
     public String filtrarMidiaPorNomeString(String nome) {
         String result = midias.values().stream()
                 .filter(m -> m.getNome().toLowerCase().contains(nome.toLowerCase()))
@@ -584,6 +591,12 @@ public class PlataformaStreaming implements IRelatorio {
         return midia.calcularNotaMedia();
     }
 
+    /**
+    * Retorna um relatório contendo informações sobre o cliente que assistiu ao maior número de mídias.
+    *
+    * @return um relatório com o cliente que assistiu ao maior número de mídias e o número de mídias assistidas,
+    *         ou uma mensagem indicando que não há clientes registrados
+    */
     @Override
     public String clienteComMaisMidias() {
 
@@ -602,6 +615,12 @@ public class PlataformaStreaming implements IRelatorio {
         return relatorio;
     }
 
+    /**
+    * Retorna um relatório contendo informações sobre o cliente que fez o maior número de avaliações em mídias.
+    *
+    * @return um relatório com o cliente que fez o maior número de avaliações e o número de mídias avaliadas por esse cliente,
+    *         ou uma mensagem indicando que nenhum cliente realizou avaliações
+    */
     @Override
     public String clienteComMaisAvaliacoes() {
         Map<String, Long> contadorAvaliacoes = midias.values().stream()
@@ -624,6 +643,11 @@ public class PlataformaStreaming implements IRelatorio {
         return relatorio;
     }
 
+    /**
+    * Retorna a porcentagem de clientes que possuem pelo menos 15 avaliações em mídias.
+    *
+    * @return a porcentagem de clientes com pelo menos 15 avaliações
+    */
     @Override
     public String porcentagemClientesComPeloMenos15Avaliacoes() {
         Map<String, Long> contadorAvaliacoes = midias.values().stream()
@@ -642,6 +666,11 @@ public class PlataformaStreaming implements IRelatorio {
         return relatorio;
     }
 
+    /**
+    * Retorna um relatório com as 10 melhores mídias em termos de avaliação média.
+    *
+    * @return o relatório com as 10 melhores mídias em termos de avaliação média
+     */
     @Override
     public String top10MidiasMelhorAvaliacao() {
         String relatorio = midias.values().stream()
@@ -652,6 +681,11 @@ public class PlataformaStreaming implements IRelatorio {
         return relatorio;
     }
 
+    /**
+    * Retorna um relatório com as 10 mídias com maior número de visualizações.
+    *
+     * @return o relatório com as 10 mídias com maior número de visualizações
+    */
     @Override
     public String top10MidiasMaisVisualizacoes() {
         String relatorio = midias.values().stream()
@@ -662,6 +696,12 @@ public class PlataformaStreaming implements IRelatorio {
         return relatorio;
     }
 
+    /**
+    * Retorna um relatório com as 10 melhores mídias de um determinado gênero, com base na avaliação média.
+    *
+    * @param genero o gênero das mídias a serem consideradas
+    * @return o relatório com as 10 melhores mídias do gênero especificado
+    */
     @Override
     public String top10MidiasMelhorAvaliacaoPorGenero(String genero) {
         String relatorio = midias.values().stream()
@@ -677,6 +717,12 @@ public class PlataformaStreaming implements IRelatorio {
         return relatorio;
     }
 
+    /**
+    * Retorna um relatório com as 10 mídias mais visualizadas de um determinado gênero.
+    *
+    * @param genero o gênero das mídias a serem consideradas
+     * @return o relatório com as 10 mídias mais visualizadas do gênero especificado
+    */
     @Override
     public String top10MidiasMaisVisualizacoesPorGenero(String genero) {
         String relatorio = midias.values().stream()
@@ -692,10 +738,22 @@ public class PlataformaStreaming implements IRelatorio {
         return relatorio;
     }
 
+    /**
+    * Define a mídia especificada como lançamento.
+    *
+    * @param midia a mídia a ser definida como lançamento
+    * @throws MidiaInvalidaException se a mídia não for válida
+    */
     public void setLancamento(Midia midia) throws MidiaInvalidaException {
         midia.setLancamento((Lancavel) midia);
     }
 
+    /**
+    * Define o cliente com o nome de usuário especificado como cliente profissional.
+    *
+    * @param nomeUsuario o nome de usuário do cliente a ser definido como cliente profissional
+     * @throws ClienteInvalidoException se o cliente não for válido
+    */
     public void setClienteProfissional(String nomeUsuario) throws ClienteInvalidoException {
         this.clienteAtual = clientes.get(nomeUsuario);
         this.clienteAtual.setMeuTipoProfissional(new ClienteProfissional(clienteAtual.getNomeCompleto(),
@@ -703,15 +761,36 @@ public class PlataformaStreaming implements IRelatorio {
         clienteAtual.setComentarista();
     }
 
+    /**
+    * Adiciona uma nova mídia com os detalhes fornecidos.
+    *
+    * @param string  o nome da mídia
+    * @param string2 o gênero da mídia
+    * @param string3 o idioma da mídia
+    * @param i       o ano de lançamento da mídia
+    */
     public void adicionarMidia(String string, String string2, String string3, int i) {
     }
 
+    /**
+     * Salva os dados dos clientes, das mídias e da audiência em arquivos.
+     *
+     * @throws ClienteInvalidoException se ocorrer um erro ao salvar os dados dos clientes
+     */
     public void salvarDados() throws ClienteInvalidoException {
         escreveArqCliente();
         escreveArqMidia();
         escreveArqAudiencia();
     }
 
+    /**
+    * Adiciona um trailer à lista de mídias.
+    *
+    * @param nome    o nome do trailer
+    * @param idioma  o idioma do trailer
+    * @param genero  o gênero do trailer
+    * @throws MidiaInvalidaException se ocorrer um erro ao adicionar o trailer
+    */
     public void adicionarTrailer(String nome, String idioma, String genero) throws MidiaInvalidaException {
 
         Trailer trailerCad = new Trailer(genero, nome, idioma);
@@ -719,6 +798,11 @@ public class PlataformaStreaming implements IRelatorio {
 
     }
 
+    /**
+    * Retorna uma lista com o nome das mídias disponíveis na plataforma.
+     *
+    * @return uma string contendo os nomes das mídias
+    */
     public String verMidiasPlataforma() {
         StringBuilder sb = new StringBuilder();
         midias.forEach((key, content) -> {
