@@ -230,8 +230,6 @@ public abstract class Midia implements ISalvavel {
 
     public abstract boolean eTrailer();
 
-    public abstract String getTipoMidia();
-
     public abstract double getNotaCliente(String nomeUsuario);
 
 }

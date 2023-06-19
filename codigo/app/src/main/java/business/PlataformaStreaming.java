@@ -177,7 +177,7 @@ public class PlataformaStreaming implements IRelatorio {
     public void adicionarAvaliacao(String nomeMidia, float nota)
             throws MidiaInvalidaException, AvaliacaoInvalidaException, ClienteInvalidoException, ClassCastException {
         Midia m = filtrarMidiaPorNome(nomeMidia);
-        setClienteEspecialista();
+        clienteAtual.setClienteEspecialista();
         if (!m.eTrailer()) {
             IAssistivel midia = (IAssistivel) m;
 
@@ -569,32 +569,7 @@ public class PlataformaStreaming implements IRelatorio {
         clienteAtual.fazerComentario(comentario, midia);
     }
 
-    /**
-     * Seta o cliente como especialista caso ele tenha assistido 5 midias no ultimo
-     * mes.
-     * 
-     * @throws ClienteInvalidoException caso cliente invalido
-     */
-    public void setClienteEspecialista() throws ClienteInvalidoException {
-        if (this.clienteAtual.getTamanhoListaJaVista() >= 5) {
-            HashMap<Integer, String> datasAssistidas = clienteAtual.getListaDataAssistida();
-            LocalDate menos = LocalDate.now().minusDays(30);
-
-            long contador = datasAssistidas.values().stream()
-                    .map(LocalDate::parse)
-                    .filter(datassist -> datassist.isAfter(menos))
-                    .count();
-
-            if (contador >= 5) {
-                setComentarista();
-            }
-        }
-    }
-
-    public void setComentarista() throws ClienteInvalidoException {
-        this.clienteAtual.setMeuTipo(new ClienteEspecialista(clienteAtual.getNomeCompleto(),
-                clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha()));
-    }
+    
 
     /**
      * Retorna a nota media de uma midia especificada
@@ -725,8 +700,7 @@ public class PlataformaStreaming implements IRelatorio {
         this.clienteAtual = clientes.get(nomeUsuario);
         this.clienteAtual.setMeuTipoProfissional(new ClienteProfissional(clienteAtual.getNomeCompleto(),
                 clienteAtual.getNomeDeUsuario(), clienteAtual.getSenha()));
-        ;
-        setComentarista();
+        clienteAtual.setComentarista();
     }
 
     public void adicionarMidia(String string, String string2, String string3, int i) {

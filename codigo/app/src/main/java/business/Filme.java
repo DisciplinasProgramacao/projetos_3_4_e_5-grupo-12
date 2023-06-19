@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 public class Filme extends Midia implements Lancavel, IAssistivel {
 
     private int duracao;
-    private static final String arqFilmes = "codigo/POO_Filmes.csv";
     private HashMap<String, Avaliacao> avaliacoes = new HashMap<>();
     private int audiencia = 0;
 
@@ -193,11 +192,6 @@ public class Filme extends Midia implements Lancavel, IAssistivel {
                 "}";
     }
 
-    @Override
-    public String getArquivo() {
-        return arqFilmes;
-    }
-
     /**
      * Retorna a audiência associada a este objeto.
      * 
@@ -212,14 +206,9 @@ public class Filme extends Midia implements Lancavel, IAssistivel {
         registrarAudiencia();
     }
 
-        @Override
+    @Override
     public boolean eTrailer() {
         return false;
-    }
-
-    @Override
-    public String getTipoMidia() {
-        return "F";
     }
 
     @Override

@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 public class Trailer extends Midia {
 
-    private static final String arqTrailer = "codigo/POO_Trailers.csv";
 
     public Trailer(String genero, String nome, String idioma) throws MidiaInvalidaException {
         super(genero, nome, idioma);
@@ -13,12 +12,6 @@ public class Trailer extends Midia {
 
     public Trailer(int id, String nome, LocalDate dataLancamento) throws MidiaInvalidaException {
         super(id, nome, dataLancamento);
-    }
-
-    @Override
-    public String getArquivo() {
-
-        return arqTrailer;
     }
 
     @Override
@@ -68,11 +61,6 @@ public class Trailer extends Midia {
 
     public boolean eTrailer() {
         return true;
-    }
-
-    @Override
-    public String getTipoMidia() {
-        return "T";
     }
 
     @Override
