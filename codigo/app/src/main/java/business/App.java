@@ -18,7 +18,6 @@ public class App {
 
     public static void menu(PlataformaStreaming plat) throws Exception {
 
-        // mudar pro construtor da plataforma e deixar metodos privados - olhar ordem
 
         int op;
         do {
@@ -72,7 +71,6 @@ public class App {
 
     }
 
-    // tratar excecao com try catch dps
     private static void cadastrarCliente(PlataformaStreaming plat) throws Exception {
 
         System.out.println("Opção 1 selecionada.");
@@ -102,7 +100,6 @@ public class App {
 
     }
 
-    // Da pra juntar parte do cadastrarSerie e cadastrar filme olhar depois
     private static void cadastrarSerie(PlataformaStreaming plat) {
 
         try {
@@ -419,7 +416,6 @@ public class App {
         System.out.println(plat.filtrarPorIdioma(idioma));
     }
 
-    // ver se precisa de exception
     private static void filtrarPorGenero(PlataformaStreaming plat) {
 
         entrada.nextLine();
