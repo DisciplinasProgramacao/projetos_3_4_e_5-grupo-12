@@ -8,6 +8,4 @@ public interface ISalvavel {
      */
     String getDados();
 
-    String getArquivo();
-
 }

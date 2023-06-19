@@ -17,7 +17,6 @@ public class Cliente implements ISalvavel {
     private HashMap<Integer, String> dataAssitida = new HashMap<Integer, String>();
     private IComentarista meuTipo = null;
     private ClienteProfissional profissional = null;
-    private static final String arqClientes = "codigo/POO_Espectadores.csv";
 
     /**
      * Cria um novo objeto Cliente com nome completo, nome de usuário e senha.
@@ -418,17 +417,41 @@ public class Cliente implements ISalvavel {
         return this.dataAssitida;
     }
 
+
+    /**
+     * Seta o cliente como especialista caso ele tenha assistido 5 midias no ultimo
+     * mes.
+     * 
+     * @throws ClienteInvalidoException caso cliente invalido
+     */
+    public void setClienteEspecialista() throws ClienteInvalidoException {
+        if (getTamanhoListaJaVista() >= 5) {
+            HashMap<Integer, String> datasAssistidas = getListaDataAssistida();
+            LocalDate menos = LocalDate.now().minusDays(30);
+
+            long contador = datasAssistidas.values().stream()
+                    .map(LocalDate::parse)
+                    .filter(datassist -> datassist.isAfter(menos))
+                    .count();
+
+            if (contador >= 5) {
+                setComentarista();
+            }
+        }
+    }
+
+    public void setComentarista() throws ClienteInvalidoException {
+        setMeuTipo(new ClienteEspecialista(getNomeCompleto(),
+                getNomeDeUsuario(), getSenha()));
+    }
+    
+
     public ClienteProfissional getMeuTipoProfissional() {
         return this.profissional;
     }
 
     public void setMeuTipoProfissional(ClienteProfissional cliente) {
         this.profissional = cliente;
-    }
-
-    @Override
-    public String getArquivo() {
-        return arqClientes;
     }
 
     public String getDadosAudiencia() {

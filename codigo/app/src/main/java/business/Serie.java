@@ -13,7 +13,6 @@ public class Serie extends Midia implements Lancavel, IAssistivel {
 
     private int quantidadeEpisodios;
     private Random random = new Random();
-    private static final String arqSeries = "codigo/POO_Series.csv";
     private HashMap<String, Avaliacao> avaliacoes = new HashMap<>();
         private int audiencia = 0;
 
@@ -195,12 +194,7 @@ public class Serie extends Midia implements Lancavel, IAssistivel {
       return result;  
     }
 
-    @Override
-    public String getArquivo() {
-        return arqSeries;
-    }
-
-        /**
+    /**
      * Retorna a audiência associada a este objeto.
      * 
      * @return a audiência associada a este objeto.
@@ -217,11 +211,6 @@ public class Serie extends Midia implements Lancavel, IAssistivel {
     @Override
     public boolean eTrailer() {
         return false;
-    }
-
-    @Override
-    public String getTipoMidia() {
-        return "S";
     }
 
     @Override
