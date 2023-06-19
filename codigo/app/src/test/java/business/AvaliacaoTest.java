@@ -65,7 +65,6 @@ class AvaliacaoTest {
         p.adicionarAvaliacao("jardim", 2);
         p.adicionarAvaliacao("Lago", 1);
         p.adicionarAvaliacao("Destiny", 4);
-        p.setClienteEspecialista();
         assertTrue(p.eEspecialista());
     }
 
@@ -88,7 +87,6 @@ class AvaliacaoTest {
         p.adicionarAvaliacao("jardim", 2);
         p.adicionarAvaliacao("Lago", 1);
         p.adicionarAvaliacao("Destiny", 4);
-        p.setClienteEspecialista();
         p.comentar("Ola", "Papaleguas");
         
         assertTrue(((IAssistivel) p.filtrarMidiaPorNome("Papaleguas")).getAvaliacoes().contains(p.getClienteAtual().getNomeDeUsuario()));
