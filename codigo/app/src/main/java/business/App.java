@@ -412,7 +412,7 @@ public class App {
         entrada.nextLine();
         System.out.println("Digite o idioma:");
         String idioma = entrada.nextLine();
-
+        idioma = idioma.toLowerCase();
         System.out.println(plat.filtrarPorIdioma(idioma));
     }
 
@@ -421,7 +421,7 @@ public class App {
         entrada.nextLine();
         System.out.println("Digite o genero:");
         String genero = entrada.nextLine();
-
+        genero = genero.toLowerCase();
         System.out.println(plat.filtrarPorGenero(genero));
     }
 
