@@ -4,7 +4,7 @@ Nesse projeto temos o objetivo de aprender java ao fazer uma plataforma de strea
 
 # Comentários - Projeto 4
 
-## Nota base: 15
+## Nota base: 18
 
 ### Comentários
 
@@ -20,7 +20,7 @@ Nesse projeto temos o objetivo de aprender java ao fazer uma plataforma de strea
 - Requisitos de corretamente implementados: 14 pontos
     - só pode avaliar o que tiver visto		2/2 pontos
     - avaliar, calcular e exibir media 		2/2 pontos
-    - cliente não pode avaliar 2x			0/3 pontos
+    - cliente não pode avaliar 2x			3/3 pontos
     - especialistas podem comentar			4/4 pontos
     - verificação de especialistas			2/3 pontos
 	
